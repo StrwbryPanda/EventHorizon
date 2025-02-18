@@ -9,6 +9,7 @@ public final class EventHorizon extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        saveResource("config.yml", /* replace */ false);
     }
 
     @Override
