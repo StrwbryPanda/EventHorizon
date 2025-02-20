@@ -12,6 +12,7 @@ public class TournamentTimer extends BukkitRunnable {
     private final int totalTime = 3600; // Total time of  1hr in secs
     private int remainingTime;
     private final EventHorizon plugin;
+    static String timeDisplayed;
 
     public TournamentTimer(EventHorizon plugin) {
         this.plugin = plugin;
@@ -27,10 +28,12 @@ public class TournamentTimer extends BukkitRunnable {
           return;
       }
       //Display timer on action bar
+
       for (Player player : Bukkit.getOnlinePlayers()){
-          player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
-                  ChatColor.YELLOW + "Tournament Time: " + ChatColor.AQUA + formatTime(remainingTime)));
+          timeDisplayed = formatTime(remainingTime);
+          //player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.YELLOW + "Tournament Time: " + ChatColor.AQUA + timeDisplayed));
       }
+
       //Display in chat every min or last 10 mins
         if(remainingTime % 60 ==0 || remainingTime <=10){
             Bukkit.broadcastMessage(ChatColor.RED + "[Tournament] " + ChatColor.AQUA + "Time Remaining: " + formatTime(remainingTime));

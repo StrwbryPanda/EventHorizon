@@ -7,11 +7,19 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+
 public final class EventHorizon extends JavaPlugin implements CommandExecutor {
+
+    public static TournamentTimer tournamentTimer;
+    private ScoreboardManager ScoreboardManager;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
+
+        this.ScoreboardManager = new ScoreboardManager(this);
+        Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this, ScoreboardManager), this);
+
         saveResource("config.yml", /* replace */ false);
         //Commands for timer
         this.getCommand("starttournament").setExecutor(this);

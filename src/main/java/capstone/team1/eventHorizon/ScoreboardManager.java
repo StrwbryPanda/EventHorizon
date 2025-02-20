@@ -2,7 +2,6 @@ package capstone.team1.eventHorizon;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -19,7 +18,7 @@ public class ScoreboardManager {
     public void createScoreboard(Player player) {
         org.bukkit.scoreboard.ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard scoreboard = manager.getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("test", Criteria.DUMMY, ChatColor.GOLD + "Event Horizon");
+        Objective objective = scoreboard.registerNewObjective("test", Criteria.DUMMY, ChatColor.GOLD + "Timer");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         new BukkitRunnable() {
@@ -32,9 +31,11 @@ public class ScoreboardManager {
 
                 scoreboard.getEntries().forEach(scoreboard::resetScores); // clear the previous scoreboard
 
-                String playerName = player.getName(); //get online player names
+                if (EventHorizon.tournamentTimer == null) //if timer has not been started
+                    objective.getScore(ChatColor.WHITE + "01:00:00").setScore(0); //display timer in scoreboard
 
-                objective.getScore(ChatColor.WHITE + playerName).setScore(player.getStatistic(Statistic.DEATHS)); //shows players' name and death count
+                else //if time has been started
+                    objective.getScore(ChatColor.WHITE + TournamentTimer.timeDisplayed).setScore(0); //display timer in scoreboard
 
                 player.setScoreboard(scoreboard);
             }

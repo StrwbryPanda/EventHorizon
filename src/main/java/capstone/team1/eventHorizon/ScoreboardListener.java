@@ -9,7 +9,7 @@ public class ScoreboardListener implements Listener {
 
     private final ScoreboardManager ScoreboardManager;
 
-    public ScoreboardListener(Main plugin, ScoreboardManager scoreboardManager) {
+    public ScoreboardListener(EventHorizon plugin, ScoreboardManager scoreboardManager) {
         this.ScoreboardManager = scoreboardManager;
     }
 
