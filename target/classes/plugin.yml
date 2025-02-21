@@ -2,7 +2,7 @@ name: EventHorizon
 version: '1.0-SNAPSHOT'
 main: capstone.team1.eventHorizon.EventHorizon
 api-version: '1.21'
-depend: ["PlaceholderAPI"]
+softdepend: [PlaceholderAPI]
 commands:
   starttournament:
     description: Start the tournament timer.

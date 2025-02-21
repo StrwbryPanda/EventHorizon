@@ -1,1 +1,7 @@
+capstone\team1\eventHorizon\commands\CommandsManager.class
 capstone\team1\eventHorizon\EventHorizon.class
+capstone\team1\eventHorizon\ScoreboardManager$1.class
+capstone\team1\eventHorizon\ScoreboardListener.class
+capstone\team1\eventHorizon\commands\CmdEventHorizon.class
+capstone\team1\eventHorizon\ScoreboardManager.class
+capstone\team1\eventHorizon\TournamentTimer.class

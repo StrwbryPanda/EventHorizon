@@ -41,6 +41,15 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+<!--                                        Kylie's server-->
+<!--                                        <outputDirectory>C:\Users\kylie\Minecraft Server\1.21.4\plugins\update</outputDirectory>-->
+                </configuration>
+            </plugin>
         </plugins>
         <resources>
             <resource>
