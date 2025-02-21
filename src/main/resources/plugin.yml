@@ -4,9 +4,6 @@ main: capstone.team1.eventHorizon.EventHorizon
 api-version: '1.21'
 softdepend: [PlaceholderAPI]
 commands:
-  starttournament:
-    description: Start the tournament timer.
-    usage: /starttournament
-  stoptournament:
-    description: Stop the tournament timer.
-    usage: /stoptournament
+  eventhorizon:
+    description: EventHorizon commands
+    usage: /eventhorizon
