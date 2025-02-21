@@ -3,6 +3,7 @@ package capstone.team1.eventHorizon.commands;
 import capstone.team1.eventHorizon.TournamentTimer;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,14 +19,17 @@ public class CommandsManager implements BasicCommand
     @Override
     public void execute(CommandSourceStack commandSourceStack, String[] strings)
     {
-        if (!command.getName().equalsIgnoreCase("eventhorizon")) {
-            return false;
+
+        final Component name = commandSourceStack.getExecutor() != null
+                ? commandSourceStack.getExecutor().name()
+                : commandSourceStack.getSender().name();
+
+
+        if (strings.length == 0) {
+            commandSourceStack.getSender().sendRichMessage("<red>Type /eventhorizon help to see the list of commands");
+            return;
         }
-        if (strings.length == 1) {
-            commandSourceStack.getSender().sendMessage("EventHorizon base command");
-            return true;
-        }
-        String subCommand = args[0];
+        String subCommand = strings[0];
         switch (subCommand) {
             case "start":
                 CommandStart.run(commandSourceStack.getSender());
@@ -38,8 +42,7 @@ public class CommandsManager implements BasicCommand
                 break;
 
         }
-        commandSourceStack.getSender()
-        return true;
+        commandSourceStack.getSender();
     }
 
     @Override
