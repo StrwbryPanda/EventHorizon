@@ -1,8 +1,3 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
 C:\Users\kylie\GitHub\EventHorizon\src\main\java\capstone\team1\eventHorizon\commands\CommandHelp.java
 C:\Users\kylie\GitHub\EventHorizon\src\main\java\capstone\team1\eventHorizon\commands\CommandPause.java
 C:\Users\kylie\GitHub\EventHorizon\src\main\java\capstone\team1\eventHorizon\commands\CommandScoreboard.java
@@ -11,8 +6,7 @@ C:\Users\kylie\GitHub\EventHorizon\src\main\java\capstone\team1\eventHorizon\com
 C:\Users\kylie\GitHub\EventHorizon\src\main\java\capstone\team1\eventHorizon\commands\CommandStop.java
 C:\Users\kylie\GitHub\EventHorizon\src\main\java\capstone\team1\eventHorizon\commands\CommandTrigger.java
 C:\Users\kylie\GitHub\EventHorizon\src\main\java\capstone\team1\eventHorizon\Config.java
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 C:\Users\kylie\GitHub\EventHorizon\src\main\java\capstone\team1\eventHorizon\EventHorizon.java
+C:\Users\kylie\GitHub\EventHorizon\src\main\java\capstone\team1\eventHorizon\ScoreboardListener.java
+C:\Users\kylie\GitHub\EventHorizon\src\main\java\capstone\team1\eventHorizon\ScoreboardManager.java
+C:\Users\kylie\GitHub\EventHorizon\src\main\java\capstone\team1\eventHorizon\TournamentTimer.java
