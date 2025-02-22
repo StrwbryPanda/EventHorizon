@@ -8,6 +8,6 @@ public class CommandHelp
 {
     public static void run(CommandSender sender)
     {
-        sender.sendRichMessage("<light_purple>Please use MiniMessage components for this command, so when players hover over the command, they can see the description of the command.");
+        sender.sendRichMessage("<dark_purple>Please use MiniMessage components for this command, so when players hover over the command, they can see the description of the command.");
     }
 }
