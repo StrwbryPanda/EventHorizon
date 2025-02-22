@@ -18,8 +18,8 @@ import java.util.logging.Level;
 public class BaseMobSpawn
 {
     protected final JavaPlugin plugin;
-    protected int spawnAmount = 5; // default number of mobs to spawn
-    protected EntityType mobType = EntityType.ZOMBIE; // default mob type
+    protected int spawnAmount; // number of mobs to spawn
+    protected EntityType mobType; // mob type
     protected final Random random;
     protected final Map<UUID, Set<UUID>> playerMobs; // tracks spawned mobs per player
     protected final Map<UUID, Long> lastSpawnTime; // tracks last spawn time per player
@@ -31,7 +31,7 @@ public class BaseMobSpawn
 
     public BaseMobSpawn(JavaPlugin plugin, EntityType defaultMobType) {
         this.plugin = plugin;
-        this.spawnAmount = 1;
+        this.spawnAmount = 5;
         this.mobType = defaultMobType;
         this.random = new Random();
         this.playerMobs = new ConcurrentHashMap<>();
