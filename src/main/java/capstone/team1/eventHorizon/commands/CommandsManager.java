@@ -16,6 +16,7 @@ public class CommandsManager implements BasicCommand
 {
     public static TournamentTimer tournamentTimer;
 
+    //excecutes our base /eventhorizon command and subcommands
     @Override
     public void execute(CommandSourceStack commandSourceStack, String[] strings)
     {
@@ -25,10 +26,13 @@ public class CommandsManager implements BasicCommand
                 : commandSourceStack.getSender().name();
 
 
+        //base /eventhorizon command that executes with no subcommands
         if (strings.length == 0) {
             commandSourceStack.getSender().sendRichMessage("<red>Type /eventhorizon help to see the list of commands");
             return;
         }
+
+        //switch statement to execute subcommands
         String subCommand = strings[0];
         switch (subCommand) {
             case "start":
@@ -62,4 +66,35 @@ public class CommandsManager implements BasicCommand
     {
         return BasicCommand.super.permission();
     }
+
+
+
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (command.getName().equalsIgnoreCase("starttournament")) {
+            // if command statement to start timer is used then start tournament timer
+            if (tournamentTimer == null || tournamentTimer.isCancelled()) {
+                tournamentTimer = new TournamentTimer(this);
+                tournamentTimer.startTimer();
+                sender.sendMessage("Tournament timer started!");
+                //Timer already running
+            } else {
+                sender.sendMessage("Tournament is already running!");
+            }
+            return true;
+        }
+
+        if (command.getName().equalsIgnoreCase("stoptournament")) {
+            // if command statement to stop timer is used then stop tournament timer
+            if (tournamentTimer != null && !tournamentTimer.isCancelled()) {
+                tournamentTimer.cancel();
+                sender.sendMessage("Tournament timer stopped!");
+                //Timer is already stop
+            } else {
+                sender.sendMessage("No tournament is running.");
+            }
+            return true;
+        }
+        return false;
+    }
+
 }

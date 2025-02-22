@@ -11,6 +11,7 @@ public class ScoreboardManager {
 
     private final JavaPlugin plugin;
 
+    //look at setscore on line 37
     public ScoreboardManager(JavaPlugin plugin) {
         this.plugin = plugin;
     }
@@ -32,7 +33,8 @@ public class ScoreboardManager {
 //                scoreboard.getEntries().forEach(scoreboard::resetScores); // clear the previous scoreboard
 //
 ////                if (EventHorizon.tournamentTimer == null) //if timer has not been started
-////                    objective.getScore(ChatColor.WHITE + "01:00:00").setScore(0); //display timer in scoreboard
+////
+// objective.getScore(ChatColor.WHITE + "01:00:00").setScore(0); //display timer in scoreboard
 //
 ////                else //if time has been started
 ////                    objective.getScore(ChatColor.WHITE + TournamentTimer.timeDisplayed).setScore(0); //display timer in scoreboard
