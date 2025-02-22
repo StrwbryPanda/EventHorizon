@@ -1,5 +1,4 @@
 <<<<<<< Updated upstream
-
 =======
 #default integer value for tournament timer (in seconds)
 tournament-timer: 3600

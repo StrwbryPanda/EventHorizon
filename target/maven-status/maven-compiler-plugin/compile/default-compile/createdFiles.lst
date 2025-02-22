@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-capstone\team1\eventHorizon\EventHorizon.class
-=======
 capstone\team1\eventHorizon\commands\CommandsManager.class
 capstone\team1\eventHorizon\commands\CommandStart.class
 capstone\team1\eventHorizon\commands\CommandHelp.class
@@ -14,4 +11,3 @@ capstone\team1\eventHorizon\ScoreboardManager$1.class
 capstone\team1\eventHorizon\ScoreboardListener.class
 capstone\team1\eventHorizon\commands\CommandScoreboard.class
 capstone\team1\eventHorizon\commands\CommandTrigger.class
->>>>>>> Stashed changes
