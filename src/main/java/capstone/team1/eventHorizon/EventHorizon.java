@@ -4,6 +4,9 @@ package capstone.team1.eventHorizon;
 =======
 import capstone.team1.eventHorizon.commands.CommandsManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -11,7 +14,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("UnstableApiUsage")
 
+@SuppressWarnings("UnstableApiUsage")
+
 public final class EventHorizon extends JavaPlugin {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
     @Override
@@ -22,6 +28,11 @@ public final class EventHorizon extends JavaPlugin {
     public static EventHorizon plugin;
     @Override
     public void onEnable() {
+=======
+    public static EventHorizon plugin;
+    @Override
+    public void onEnable() {
+>>>>>>> Stashed changes
         plugin = this;
 
         // Plugin startup logic
@@ -33,6 +44,9 @@ public final class EventHorizon extends JavaPlugin {
         //initializes eventhorizon base command
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
                 event -> event.registrar().register("eventhorizon", new CommandsManager(this)));
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 
