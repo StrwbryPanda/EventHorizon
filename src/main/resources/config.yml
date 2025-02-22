@@ -1,0 +1,5 @@
+event:
+  frequency: 600
+  posWeight: 0.2
+  negWeight: 0.2
+  neutralWeight: 0.6
