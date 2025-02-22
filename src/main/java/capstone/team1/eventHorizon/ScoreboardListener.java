@@ -16,6 +16,6 @@ public class ScoreboardListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        //ScoreboardManager.createScoreboard(player);
+        ScoreboardManager.createScoreboard(player);
     }
 }

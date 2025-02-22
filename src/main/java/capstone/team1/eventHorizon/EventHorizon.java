@@ -1,39 +1,36 @@
 package capstone.team1.eventHorizon;
 
 import capstone.team1.eventHorizon.commands.CommandsManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 
+@SuppressWarnings("UnstableApiUsage")
 
 public final class EventHorizon extends JavaPlugin {
 
-    private ScoreboardManager ScoreboardManager;
+    public static EventHorizon plugin;
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        plugin = this;
 
-        this.ScoreboardManager = new ScoreboardManager(this);
-        Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this, ScoreboardManager), this);
+        // Plugin startup logic
+        capstone.team1.eventHorizon.ScoreboardManager scoreboardManager = new ScoreboardManager(this);
+        Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this, scoreboardManager), this);
 
         saveResource("config.yml", /* replace */ false);
-        //Commands for timer
-        this.getCommand("eventhorizon").setExecutor(new CommandsManager());
-        getLogger().info("EventHorizon has been enabled.");
+
+        //initializes eventhorizon base command
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
+                event -> event.registrar().register("eventhorizon", new CommandsManager(this)));
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        getLogger().info("EventHorizon has been disabled.");
     }
-
-
-
 
 
 }

@@ -1,7 +1,9 @@
-// Set the default value for start command timer
+<<<<<<< Updated upstream
+=======
+#default integer value for tournament timer (in seconds)
+tournament-timer: 3600
 
+#Scoreboard enabled true/false
 
-//Scoreboard enabled true/false
-
-
-//default weights for event frequency
+#default weights for event frequency
+>>>>>>> Stashed changes
