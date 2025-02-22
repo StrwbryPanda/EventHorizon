@@ -1,0 +1,9 @@
+<<<<<<< Updated upstream
+=======
+#default integer value for tournament timer (in seconds)
+tournament-timer: 3600
+
+#Scoreboard enabled true/false
+
+#default weights for event frequency
+>>>>>>> Stashed changes
