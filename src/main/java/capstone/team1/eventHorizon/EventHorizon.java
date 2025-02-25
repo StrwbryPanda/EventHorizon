@@ -12,6 +12,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor {
 
     public static TournamentTimer tournamentTimer;
     private ScoreboardManager ScoreboardManager;
+    private EventFrequencyTimer eventFrequencyTimer;
 
     @Override
     public void onEnable() {
@@ -30,6 +31,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+
         getLogger().info("EventHorizon has been disabled.");
     }
 
