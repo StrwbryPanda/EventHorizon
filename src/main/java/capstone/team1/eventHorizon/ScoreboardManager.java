@@ -1,5 +1,6 @@
 package capstone.team1.eventHorizon;
 
+import capstone.team1.eventHorizon.commands.CommandsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,6 +12,7 @@ public class ScoreboardManager {
 
     private final JavaPlugin plugin;
 
+    //look at setscore on line 37
     public ScoreboardManager(JavaPlugin plugin) {
         this.plugin = plugin;
     }
@@ -29,16 +31,20 @@ public class ScoreboardManager {
                     return;
                 }
 
-                scoreboard.getEntries().forEach(scoreboard::resetScores); // clear the previous scoreboard
+                // clear the previous scoreboard
+                scoreboard.getEntries().forEach(scoreboard::resetScores);
 
-                if (EventHorizon.tournamentTimer == null) //if timer has not been started
+                //if timer has not been started
+                if (CommandsManager.tournamentTimer == null){
+
                     objective.getScore(ChatColor.WHITE + "01:00:00").setScore(0); //display timer in scoreboard
-
-                else //if time has been started
+                }
+                //if time has been started
+                else {
                     objective.getScore(ChatColor.WHITE + TournamentTimer.timeDisplayed).setScore(0); //display timer in scoreboard
-
-                player.setScoreboard(scoreboard);
-            }
+                }
+                    player.setScoreboard(scoreboard);
+           }
         }.runTaskTimer(plugin, 0L, 20L); // repeats every second
     }
 
