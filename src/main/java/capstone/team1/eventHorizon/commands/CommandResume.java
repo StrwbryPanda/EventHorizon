@@ -6,18 +6,16 @@ import capstone.team1.eventHorizon.TournamentTimer;
 import org.bukkit.command.CommandSender;
 
 //command that starts the tournament timer
-public class CommandStart
+public class CommandResume
 {
-    public static int time = 60; //tournament time variable
-
 
     public static void run(CommandSender sender, EventHorizon plugin) {
-        if (CommandsManager.tournamentTimer == null || CommandsManager.tournamentTimer.isCancelled()) {
-            TournamentTimer.totalTime = time;
+        if (CommandStop.timeReamining > 0 && !TournamentTimer.isRunning) {
+            TournamentTimer.totalTime = CommandStop.timeReamining;
             CommandsManager.tournamentTimer = new TournamentTimer(plugin);
             CommandsManager.tournamentTimer.startTimer();
             TournamentTimer.isRunning = true;
-            sender.sendRichMessage("Starting tournament timer");
+            sender.sendRichMessage("Resuming tournament timer");
         }
         //Timer already running
         else {
