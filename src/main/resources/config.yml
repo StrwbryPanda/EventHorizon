@@ -1,9 +1,14 @@
 
+
 #default integer value for tournament timer (in seconds)
 tournament-timer: 3600
 
 #Scoreboard enabled true/false
 
 #default weights for event frequency
+event:
+  frequency: 10
+  posWeight: 0.2
+  negWeight: 0.2
+  neutralWeight: 0.6
 
-#default weights for event frequency

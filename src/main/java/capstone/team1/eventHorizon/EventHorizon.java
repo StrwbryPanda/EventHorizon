@@ -11,6 +11,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 @SuppressWarnings("UnstableApiUsage")
 public final class EventHorizon extends JavaPlugin {
 
+public final class EventHorizon extends JavaPlugin implements CommandExecutor {
+
+    public static TournamentTimer tournamentTimer;
+    private ScoreboardManager ScoreboardManager;
+    private EventFrequencyTimer eventFrequencyTimer;
+
     public static EventHorizon plugin;
     @Override
     public void onEnable() {
@@ -30,6 +36,8 @@ public final class EventHorizon extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+
+        getLogger().info("EventHorizon has been disabled.");
     }
 
 

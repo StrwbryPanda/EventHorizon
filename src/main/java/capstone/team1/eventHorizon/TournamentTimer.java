@@ -58,6 +58,10 @@ public static String formatTime(int seconds){
     public void startTimer() {
         //tournament will count down every second
         this.runTaskTimer(plugin, 0L, 20L);
+        //Tournament will count down every second
+
+        EventFrequencyTimer eventFrequencyTimer = new EventFrequencyTimer(plugin);
+        eventFrequencyTimer.startTimer();
     }
 
 }
