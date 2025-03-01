@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="EventHorizon:jar">
+    <output-path>$USER_HOME$/Desktop/MC Project/plugins</output-path>
+    <root id="archive" name="EventHorizon.jar">
+      <element id="module-output" name="EventHorizon" />
+    </root>
+  </artifact>
+</component>
