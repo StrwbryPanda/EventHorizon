@@ -5,21 +5,23 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import capstone.team1.eventHorizon.commands.CommandsManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("UnstableApiUsage")
-public final class EventHorizon extends JavaPlugin {
-
-public final class EventHorizon extends JavaPlugin implements CommandExecutor {
+public final class EventHorizon extends JavaPlugin implements CommandExecutor
+{
 
     public static TournamentTimer tournamentTimer;
     private ScoreboardManager ScoreboardManager;
     private EventFrequencyTimer eventFrequencyTimer;
 
     public static EventHorizon plugin;
+
     @Override
-    public void onEnable() {
+    public void onEnable()
+    {
         plugin = this;
 
         // Plugin startup logic
@@ -34,7 +36,8 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor {
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable()
+    {
         // Plugin shutdown logic
 
         getLogger().info("EventHorizon has been disabled.");
