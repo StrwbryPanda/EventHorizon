@@ -2,16 +2,16 @@ package capstone.team1.eventHorizon;
 
 import capstone.team1.eventHorizon.commands.CommandsManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import capstone.team1.eventHorizon.commands.CommandsManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("UnstableApiUsage")
-
 public final class EventHorizon extends JavaPlugin {
 
     public static EventHorizon plugin;
-
     @Override
     public void onEnable() {
         plugin = this;

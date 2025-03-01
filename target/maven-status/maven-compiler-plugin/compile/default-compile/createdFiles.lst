@@ -2,6 +2,7 @@ capstone\team1\eventHorizon\commands\CommandsManager.class
 capstone\team1\eventHorizon\commands\CommandStart.class
 capstone\team1\eventHorizon\commands\CommandHelp.class
 capstone\team1\eventHorizon\Config.class
+capstone\team1\eventHorizon\EventFreqTimer.class
 capstone\team1\eventHorizon\ScoreboardManager.class
 capstone\team1\eventHorizon\TournamentTimer.class
 capstone\team1\eventHorizon\EventHorizon.class

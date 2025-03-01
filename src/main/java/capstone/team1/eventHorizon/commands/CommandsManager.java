@@ -2,10 +2,12 @@ package capstone.team1.eventHorizon.commands;
 
 import capstone.team1.eventHorizon.Config;
 import capstone.team1.eventHorizon.EventHorizon;
+import capstone.team1.eventHorizon.ScoreboardManager;
 import capstone.team1.eventHorizon.TournamentTimer;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -55,10 +57,14 @@ public class CommandsManager implements BasicCommand
                 CommandStop.run(commandSourceStack.getSender(), eventHorizonInstance);
                 break;
             case "help":
-                CommandHelp.run(commandSourceStack.getSender());
+                CommandHelp.run(commandSourceStack.getSender(), eventHorizonInstance);
+                break;
             case "reload":
                 Config.reloadConfig();
                 commandSourceStack.getSender().sendRichMessage("Config reloaded");
+                break;
+            case "resume":
+                CommandResume.run(commandSourceStack.getSender(), eventHorizonInstance);
                 break;
             default:
                 commandSourceStack.getSender().sendRichMessage("Tournament timer status");
@@ -73,11 +79,11 @@ public class CommandsManager implements BasicCommand
     public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args)
     {
         if (args.length == 0) {
-            return List.of("start", "stop", "help");
+            return List.of("start", "stop", "help", "resume");
         }
         if(args.length == 1)
         {
-            return StringUtil.copyPartialMatches(args[0], List.of("start", "stop", "help"), new ArrayList<>());
+            return StringUtil.copyPartialMatches(args[0], List.of("start", "stop", "help", "resume"), new ArrayList<>());
         }
 
         return BasicCommand.super.suggest(commandSourceStack, args);
