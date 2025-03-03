@@ -23,21 +23,6 @@ public class WolfPack extends BaseMobSpawn {
                 .setYRange(0, 255);           // Valid Y-range for spawning
     }
 
-    /**
-     * Creates a variant of the wolf pack with custom settings
-     *
-     * @param plugin The plugin instance
-     * @param mobCount Number of wolves to spawn per player
-     * @param allowCaves Whether wolves can spawn in caves
-     * @return Configured WolfPack instance
-     */
-    public static WolfPack createCustomPack(Plugin plugin, int mobCount, boolean allowCaves) {
-        WolfPack pack = new WolfPack(plugin);
-        pack.setMobCount(mobCount)
-                .setAllowCaveSpawns(allowCaves);
-        return pack;
-    }
-
     @Override
     protected void onMobSpawned(Entity entity, Player player) {
         if (entity instanceof Wolf) {
