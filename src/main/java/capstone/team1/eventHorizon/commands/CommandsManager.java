@@ -66,10 +66,12 @@ public class CommandsManager implements BasicCommand
             case "resume":
                 CommandResume.run(commandSourceStack.getSender(), eventHorizonInstance);
                 break;
+            case "pause":
+                CommandPause.run(commandSourceStack.getSender(), eventHorizonInstance);
+                break;
             default:
                 commandSourceStack.getSender().sendRichMessage("Tournament timer status");
                 break;
-
         }
         commandSourceStack.getSender();
     }
@@ -79,11 +81,11 @@ public class CommandsManager implements BasicCommand
     public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args)
     {
         if (args.length == 0) {
-            return List.of("start", "stop", "help", "resume");
+            return List.of("start", "stop", "help", "resume", "pause");
         }
         if(args.length == 1)
         {
-            return StringUtil.copyPartialMatches(args[0], List.of("start", "stop", "help", "resume"), new ArrayList<>());
+            return StringUtil.copyPartialMatches(args[0], List.of("start", "stop", "help", "resume", "pause"), new ArrayList<>());
         }
 
         return BasicCommand.super.suggest(commandSourceStack, args);
