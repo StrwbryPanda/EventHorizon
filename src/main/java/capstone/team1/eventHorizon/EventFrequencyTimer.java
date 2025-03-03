@@ -19,7 +19,7 @@ public class EventFrequencyTimer extends BukkitRunnable {
 
         FileConfiguration config = plugin.getConfig();
         this.plugin = plugin;
-        this.eventFrequency = config.getInt("event.frequency", 10);
+        this.eventFrequency = config.getInt("event.frequency", 2);
         this.posWeight = config.getDouble("event.posWeight", 0.2);
         this.negWeight = config.getDouble("event.negWeight", 0.2);
         this.neutralWeight = config.getDouble("event.neutralWeight", 0.6);
@@ -40,14 +40,24 @@ public class EventFrequencyTimer extends BukkitRunnable {
 
     public void triggerEvent(){
         Bukkit.getLogger().info("Triggering event...");
-        double randomNumber = random.nextDouble();
-        if(randomNumber < posWeight){
+        double randomNumber = random.nextDouble(); // Returns a number between 0.0 and 1.0
+
+        // Calculate cumulative probabilities
+        double posThreshold = posWeight;
+        double negThreshold = posWeight + negWeight;
+        double neutralThreshold = posWeight + negWeight + neutralWeight;
+
+        // Validate that weights sum to approximately 1.0 (accounting for floating-point precision)
+        if (Math.abs(neutralThreshold - 1.0) > 0.0001) {
+            Bukkit.getLogger().warning("Event weights do not sum to 1.0! Current sum: " + neutralThreshold);
+            return;
+        }
+
+        if (randomNumber < posThreshold) {
             Bukkit.broadcastMessage(ChatColor.GREEN + "Positive event");
-        }
-        else if(randomNumber < posWeight + negWeight){
+        } else if (randomNumber < negThreshold) {
             Bukkit.broadcastMessage(ChatColor.RED + "Negative event");
-        }
-        else{
+        } else {
             Bukkit.broadcastMessage(ChatColor.YELLOW + "Neutral event");
         }
     }

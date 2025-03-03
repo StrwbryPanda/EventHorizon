@@ -15,6 +15,8 @@ public class TournamentTimer extends BukkitRunnable {
     public static int remainingTime;
     private final EventHorizon plugin;
     static String timeDisplayed;
+    private EventFrequencyTimer eventFrequencyTimer;
+
 
     public TournamentTimer(EventHorizon plugin) {
         this.plugin = plugin;
@@ -56,12 +58,17 @@ public static String formatTime(int seconds){
 }
 
     public void startTimer() {
-        //tournament will count down every second
         this.runTaskTimer(plugin, 0L, 20L);
-        //Tournament will count down every second
-
-        EventFrequencyTimer eventFrequencyTimer = new EventFrequencyTimer(plugin);
+        eventFrequencyTimer = new EventFrequencyTimer(plugin);
         eventFrequencyTimer.startTimer();
+    }
+
+    @Override
+    public void cancel() {
+        super.cancel();
+        if (eventFrequencyTimer != null) {
+            eventFrequencyTimer.cancel();
+        }
     }
 
 }
