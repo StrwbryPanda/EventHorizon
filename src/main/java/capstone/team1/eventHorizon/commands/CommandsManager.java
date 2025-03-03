@@ -69,6 +69,12 @@ public class CommandsManager implements BasicCommand
             case "pause":
                 CommandPause.run(commandSourceStack.getSender(), eventHorizonInstance);
                 break;
+            case "trigger":
+                // Handle the trigger subcommand with its own arguments
+                String[] triggerArgs = new String[strings.length - 1];
+                System.arraycopy(strings, 1, triggerArgs, 0, triggerArgs.length);
+                CommandTrigger.run(commandSourceStack.getSender(), eventHorizonInstance, triggerArgs);
+                break;
             default:
                 commandSourceStack.getSender().sendRichMessage("Tournament timer status");
                 break;
@@ -81,11 +87,18 @@ public class CommandsManager implements BasicCommand
     public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args)
     {
         if (args.length == 0) {
-            return List.of("start", "stop", "help", "resume", "pause");
+            return List.of("start", "stop", "help", "resume", "pause", "trigger");
         }
         if(args.length == 1)
         {
-            return StringUtil.copyPartialMatches(args[0], List.of("start", "stop", "help", "resume", "pause"), new ArrayList<>());
+            return StringUtil.copyPartialMatches(args[0], List.of("start", "stop", "help", "resume", "pause", "trigger"), new ArrayList<>());
+        }
+
+        // Handle trigger subcommand tab completions
+        if (args.length >= 2 && args[0].equalsIgnoreCase("trigger")) {
+            String[] triggerArgs = new String[args.length - 1];
+            System.arraycopy(args, 1, triggerArgs, 0, triggerArgs.length);
+            return CommandTrigger.getTabCompletions(commandSourceStack.getSender(), triggerArgs);
         }
 
         return BasicCommand.super.suggest(commandSourceStack, args);

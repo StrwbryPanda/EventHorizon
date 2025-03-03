@@ -12,3 +12,9 @@ event:
   negWeight: 0.2
   neutralWeight: 0.6
 
+# Mob spawn event settings
+mob-events:
+  wolf-pack:
+    mob-count: 4
+    max-spawn-radius: 15
+    min-spawn-radius: 5
