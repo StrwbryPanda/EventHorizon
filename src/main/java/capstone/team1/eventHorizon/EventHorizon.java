@@ -1,12 +1,10 @@
 package capstone.team1.eventHorizon;
 
 import capstone.team1.eventHorizon.commands.CommandsManager;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import capstone.team1.eventHorizon.commands.CommandsManager;
+import capstone.team1.eventHorizon.events.EventFrequencyTimer;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("UnstableApiUsage")

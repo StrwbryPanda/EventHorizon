@@ -7,6 +7,9 @@ public class Config
         return EventHorizon.plugin.getConfig().getInt("tournament-timer");
     }
 
+    public static int getEventFrequency() { return EventHorizon.plugin.getConfig().getInt("event-frequency");}
+
+
     public static void reloadConfig()
     {
         EventHorizon.plugin.reloadConfig();

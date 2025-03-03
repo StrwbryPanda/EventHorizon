@@ -1,10 +1,9 @@
 package capstone.team1.eventHorizon;
 
+import capstone.team1.eventHorizon.events.EventFrequencyTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 
