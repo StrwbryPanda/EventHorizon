@@ -46,10 +46,9 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.2</version>
                 <configuration>
-<!--                                        Kylie's test server-->
+
+                    <!--                    Kylie's test server output-->
 <!--                                        <outputDirectory>C:\Users\kylie\Minecraft Server\1.21.4\plugins\update</outputDirectory>-->
-                    <!--                    Nishik's test server-->
-                                        <outputDirectory>C:\Users\Nishik\Desktop\Minecraft Server\Paper 1.21.4\plugins\update</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
