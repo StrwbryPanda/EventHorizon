@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -157,8 +158,16 @@ public class CommandTrigger {
     /**
      * Get tab completions for the trigger command
      */
-    public static List<String> getTabCompletions(CommandSender sender, String[] args) {
+    public static Collection<String> suggest(CommandSender sender, String[] args) {
         List<String> completions = new ArrayList<>();
+
+        if (args.length == 0) {
+            // Return all event types if no argument is provided
+            for (EventType type : EventType.values()) {
+                completions.add(type.name().toLowerCase());
+            }
+            return completions;
+        }
 
         if (args.length == 1) {
             // First argument - event type

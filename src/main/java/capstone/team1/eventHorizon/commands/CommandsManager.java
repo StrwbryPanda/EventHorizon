@@ -98,7 +98,7 @@ public class CommandsManager implements BasicCommand
         if (args.length >= 2 && args[0].equalsIgnoreCase("trigger")) {
             String[] triggerArgs = new String[args.length - 1];
             System.arraycopy(args, 1, triggerArgs, 0, triggerArgs.length);
-            return CommandTrigger.getTabCompletions(commandSourceStack.getSender(), triggerArgs);
+            return CommandTrigger.suggest(commandSourceStack.getSender(), triggerArgs);
         }
 
         return BasicCommand.super.suggest(commandSourceStack, args);
