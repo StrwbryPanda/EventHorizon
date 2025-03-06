@@ -1,5 +1,6 @@
 package capstone.team1.eventHorizon.events.mobSpawn;
 
+import capstone.team1.eventHorizon.events.EventClassification;
 import org.bukkit.entity.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.attribute.Attribute;
@@ -12,7 +13,7 @@ import org.bukkit.potion.*;
 public class WolfPack extends BaseMobSpawn {
 
     public WolfPack(Plugin plugin) {
-        super(plugin, EntityType.WOLF);
+        super(plugin, EntityType.WOLF, EventClassification.NEGATIVE);
         setMobCount(4)               // Spawn 4 wolves per player
                 .setMaxSpawnRadius(15)
                 .setMinSpawnRadius(5)

@@ -1,5 +1,7 @@
 package capstone.team1.eventHorizon.events.mobSpawn;
 
+import capstone.team1.eventHorizon.events.BaseEvent;
+import capstone.team1.eventHorizon.events.EventClassification;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,7 +18,8 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class BaseMobSpawn {
+public abstract class BaseMobSpawn extends BaseEvent
+{
     protected final Plugin plugin;
     protected final Random random = new Random();
 
@@ -50,11 +53,20 @@ public abstract class BaseMobSpawn {
     public BukkitTask continuousTask = null;
     public int spawnInterval = DEFAULT_SPAWN_INTERVAL;
 
-    public BaseMobSpawn(Plugin plugin) {
+    public BaseMobSpawn(Plugin plugin, EventClassification classification) {
+        super(classification);
         this.plugin = plugin;
     }
 
     public BaseMobSpawn(Plugin plugin, EntityType defaultMobType) {
+
+        super(EventClassification.NEUTRAL);
+        this.plugin = plugin;
+        this.mobType = defaultMobType;
+    }
+
+    public BaseMobSpawn(Plugin plugin, EntityType defaultMobType, EventClassification classification) {
+        super(classification);
         this.plugin = plugin;
         this.mobType = defaultMobType;
     }
