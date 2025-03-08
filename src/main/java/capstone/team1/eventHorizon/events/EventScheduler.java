@@ -13,7 +13,9 @@ public class EventScheduler
 {
     private final Random random = new Random();
     private final EventHorizon plugin;
-    private final List<BaseEvent> events = new ArrayList<>();
+    private final List<BaseEvent> posEvents = new ArrayList<>();
+    private final List<BaseEvent> negEvents = new ArrayList<>();
+    private final List<BaseEvent> neutralEvents = new ArrayList<>();
 
     private double posWeight;
     private double negWeight;
@@ -37,14 +39,26 @@ public class EventScheduler
         double normalizedPosWeight = posWeight / totalWeight;
         double normalizedNegWeight = negWeight / totalWeight;
         double randomNumber = random.nextDouble();
-        if(randomNumber < normalizedPosWeight){
-            Bukkit.broadcastMessage(ChatColor.GREEN + "Positive event");
+        BaseEvent selectedEvent = null;
+
+        if (randomNumber < normalizedPosWeight) {
+            if (!posEvents.isEmpty()) {
+                selectedEvent = posEvents.get(random.nextInt(posEvents.size()));
+            }
+        } else if (randomNumber < normalizedPosWeight + normalizedNegWeight) {
+            if (!negEvents.isEmpty()) {
+                selectedEvent = negEvents.get(random.nextInt(negEvents.size()));
+            }
+        } else {
+            if (!neutralEvents.isEmpty()) {
+                selectedEvent = neutralEvents.get(random.nextInt(neutralEvents.size()));
+            }
         }
-        else if(randomNumber < normalizedPosWeight + normalizedNegWeight){
-            Bukkit.broadcastMessage(ChatColor.RED + "Negative event");
-        }
-        else{
-            Bukkit.broadcastMessage(ChatColor.YELLOW + "Neutral event");
+
+        if (selectedEvent != null) {
+            selectedEvent.execute();
+        } else {
+            Bukkit.getLogger().warning("No events available in the selected category!");
         }
     }
 }
