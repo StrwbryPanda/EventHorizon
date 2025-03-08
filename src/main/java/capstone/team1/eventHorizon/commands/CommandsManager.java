@@ -2,21 +2,16 @@ package capstone.team1.eventHorizon.commands;
 
 import capstone.team1.eventHorizon.Config;
 import capstone.team1.eventHorizon.EventHorizon;
-import capstone.team1.eventHorizon.ScoreboardManager;
 import capstone.team1.eventHorizon.TournamentTimer;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 //class that handles the command calls for the plugin
@@ -53,8 +48,11 @@ public class CommandsManager implements BasicCommand
             case "start":
                 CommandStart.run(commandSourceStack.getSender(), eventHorizonInstance);
                 break;
-            case "stop":
-                CommandStop.run(commandSourceStack.getSender(), eventHorizonInstance);
+            case "restart":
+                CommandRestart.run(commandSourceStack.getSender(), eventHorizonInstance);
+                break;
+            case "end":
+                CommandEnd.run(commandSourceStack.getSender(), eventHorizonInstance);
                 break;
             case "help":
                 CommandHelp.run(commandSourceStack.getSender(), eventHorizonInstance);
@@ -75,6 +73,15 @@ public class CommandsManager implements BasicCommand
                 System.arraycopy(strings, 1, triggerArgs, 0, triggerArgs.length);
                 CommandTrigger.run(commandSourceStack.getSender(), eventHorizonInstance, triggerArgs);
                 break;
+            case "yes": //dont inlcude these in CommandHelp. this is just for confirming cancellation in CommandEnd
+                CommandEnd.yes(commandSourceStack.getSender(), eventHorizonInstance);
+                break;
+            case "no": //dont inlcude these in CommandHelp. this is just for confirming cancellation in CommandEnd
+                CommandEnd.no(commandSourceStack.getSender(), eventHorizonInstance);
+                break;
+            case "scoreboard": //dont inlcude these in CommandHelp. this is just for confirming cancellation in CommandEnd
+                CommandScoreboard.run(commandSourceStack.getSender(), eventHorizonInstance);
+                break;
             default:
                 commandSourceStack.getSender().sendRichMessage("Tournament timer status");
                 break;
@@ -87,11 +94,11 @@ public class CommandsManager implements BasicCommand
     public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args)
     {
         if (args.length == 0) {
-            return List.of("start", "stop", "help", "resume", "pause", "trigger");
+            return List.of("start", "end", "help", "resume", "pause", "trigger", "restart", "scoreboard");
         }
         if(args.length == 1)
         {
-            return StringUtil.copyPartialMatches(args[0], List.of("start", "stop", "help", "resume", "pause", "trigger"), new ArrayList<>());
+            return StringUtil.copyPartialMatches(args[0], List.of("start", "end", "help", "resume", "pause", "trigger", "restart", "scoreboard"), new ArrayList<>());
         }
 
         // Handle trigger subcommand tab completions
