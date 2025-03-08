@@ -35,4 +35,8 @@ public class WolfPack extends BaseMobSpawn {
             wolf.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 999, 1));
         }
     }
+    @Override
+    public void execute()
+     {
+     }
 }

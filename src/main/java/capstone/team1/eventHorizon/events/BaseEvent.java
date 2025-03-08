@@ -13,4 +13,6 @@ public abstract class BaseEvent
     {
         return classification;
     }
+
+    public abstract void execute();
 }
