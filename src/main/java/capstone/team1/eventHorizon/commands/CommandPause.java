@@ -16,7 +16,7 @@ public class CommandPause
             timeReamining = TournamentTimer.remainingTime;
             CommandsManager.tournamentTimer.cancel();
             TournamentTimer.isRunning = false;
-            sender.sendRichMessage("Pausing tournament timer");
+            sender.sendRichMessage("Timer paused");
         }
         //Timer already running
         else {

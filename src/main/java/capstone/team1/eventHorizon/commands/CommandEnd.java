@@ -35,10 +35,10 @@ public static boolean isEnded;
         CommandsManager.tournamentTimer.cancel();
         TournamentTimer.isRunning = false;
         isEnded = true;
-        sender.sendRichMessage("Timer cancelled");
+        sender.sendRichMessage("Timer canceled");
     }
 
     public static void no(CommandSender sender, EventHorizon eventHorizonInstance) {
-        sender.sendRichMessage("The timer was NOT cancelled");
+        sender.sendRichMessage("The timer was NOT canceled");
     }
 }

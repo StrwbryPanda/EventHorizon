@@ -19,11 +19,10 @@ public class CommandRestart
             CommandsManager.tournamentTimer = new TournamentTimer(plugin);
             CommandsManager.tournamentTimer.startTimer();
             TournamentTimer.isRunning = true;
-            sender.sendRichMessage("Restarting tournament timer");
+            sender.sendRichMessage("Timer restarted");
         }
-        //Timer already running
         else {
-            sender.sendRichMessage("Unable to restart tournament");
+            sender.sendRichMessage("Unable to restart timer");
         }
 
     }

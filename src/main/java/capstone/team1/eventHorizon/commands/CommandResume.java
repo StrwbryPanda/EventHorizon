@@ -14,11 +14,11 @@ public class CommandResume
             CommandsManager.tournamentTimer = new TournamentTimer(plugin);
             CommandsManager.tournamentTimer.startTimer();
             TournamentTimer.isRunning = true;
-            sender.sendRichMessage("Resuming tournament timer");
+            sender.sendRichMessage("Timer resumed");
         }
         //Timer already running
         else {
-            sender.sendRichMessage("Tournament is already running");
+            sender.sendRichMessage("Timer is already running");
         }
 
     }
