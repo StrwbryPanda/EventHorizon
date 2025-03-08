@@ -4,6 +4,7 @@
 tournament-timer: 3600
 
 #Scoreboard enabled true/false
+scoreboard-setting: false
 
 #default weights for event frequency
 event:

@@ -84,6 +84,8 @@ public abstract class BaseMobSpawn extends BaseEvent
         this.mobType = defaultMobType;
     }
 
+    public abstract void execute();
+
     public int spawnForAllPlayers() {
         int totalSpawned = 0;
         for (Player player : plugin.getServer().getOnlinePlayers()) {

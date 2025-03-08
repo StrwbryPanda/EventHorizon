@@ -16,10 +16,14 @@ public class CommandHelp {
 
      private static void loadCommands() {
         commands.put("start", "Starts the Event Horizon game mode timer.");
-        commands.put("stop", "Stops the Event Horizon game mode timer.");
+        commands.put("end", "Stops the Event Horizon game mode timer.");
+        commands.put("restart", "Restart the Event Horizon game mode timer.");
+        commands.put("pause", "Pauses the Event Horizon game mode timer.");
         commands.put("help", "Displays available Event Horizon commands.");
         commands.put("resume", "Resumes the Event Horizon game mode timer.");
-    }
+        commands.put("scoreboard", "Toggles scoreboard display.");
+
+     }
 
     public static void run(@NotNull CommandSender sender, EventHorizon plugin) {
 

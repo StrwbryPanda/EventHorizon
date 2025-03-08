@@ -1,5 +1,6 @@
 package capstone.team1.eventHorizon;
 
+import capstone.team1.eventHorizon.commands.CommandScoreboard;
 import capstone.team1.eventHorizon.commands.CommandsManager;
 import capstone.team1.eventHorizon.events.EventFrequencyTimer;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -16,6 +17,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     private EventFrequencyTimer eventFrequencyTimer;
 
     public static EventHorizon plugin;
+    public boolean isScoreboardOn;
 
     @Override
     public void onEnable()
@@ -23,6 +25,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
         plugin = this;
 
         // Plugin startup logic
+        setCommandScoreboard(plugin);
         capstone.team1.eventHorizon.ScoreboardManager scoreboardManager = new ScoreboardManager(this);
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this, scoreboardManager), this);
 
@@ -31,6 +34,10 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
         //initializes eventhorizon base command
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
                 event -> event.registrar().register("eventhorizon", new CommandsManager(this)));
+    }
+
+    private void setCommandScoreboard(EventHorizon plugin) {
+        this.isScoreboardOn = plugin.getConfig().getBoolean("scoreboard.setting", Config.getScoreboardSetting()); //use config value
     }
 
     @Override
