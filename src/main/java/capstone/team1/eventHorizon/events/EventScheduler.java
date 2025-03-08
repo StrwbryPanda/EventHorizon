@@ -90,7 +90,7 @@ public class EventScheduler {
                     .newInstance(plugin);
             event.spawnForAllPlayers();
 
-            Bukkit.broadcastMessage(ChatColor.GREEN + "Triggered event: " + selectedEvent.name());
+            //Bukkit.broadcastMessage(ChatColor.GREEN + "Triggered event: " + selectedEvent.name());
         } catch (Exception e) {
             Bukkit.getLogger().warning("Failed to trigger event: " + e.getMessage());
         }

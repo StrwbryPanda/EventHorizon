@@ -14,4 +14,7 @@ public class Config
     {
         EventHorizon.plugin.reloadConfig();
     }
+
+    public static boolean getScoreboardSetting() { return EventHorizon.plugin.getConfig().getBoolean("scoreboard-setting");
+    }
 }
