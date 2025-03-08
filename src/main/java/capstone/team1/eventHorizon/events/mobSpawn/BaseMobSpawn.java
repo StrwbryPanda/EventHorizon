@@ -57,21 +57,6 @@ public abstract class BaseMobSpawn extends BaseEvent
         this.plugin = plugin;
     }
 
-    @Override
-    public boolean execute(Player player) {
-        List<Entity> spawnedEntities = spawnForPlayer(player);
-
-        // Call onMobSpawned for each entity (which child classes can override)
-        for (Entity entity : spawnedEntities) {
-            onMobSpawned(entity, player);
-        }
-
-        return !spawnedEntities.isEmpty();
-    }
-
-    protected void onMobSpawned(Entity entity, Player player) {
-    }
-
     public BaseMobSpawn(Plugin plugin, EntityType defaultMobType) {
         super(EventClassification.NEUTRAL);
         this.plugin = plugin;
@@ -84,7 +69,13 @@ public abstract class BaseMobSpawn extends BaseEvent
         this.mobType = defaultMobType;
     }
 
-    public abstract void execute();
+    @Override
+    public void execute() {
+        spawnForAllPlayers();
+    }
+
+    protected void onMobSpawned(Entity entity, Player player) {
+    }
 
     public int spawnForAllPlayers() {
         int totalSpawned = 0;
