@@ -11,6 +11,8 @@ import java.util.*;
 
 public class EventScheduler
 {
+    private final Map<String, Class<? extends BaseEvent>> registeredEventTypes = new HashMap<>();
+
     private final Random random = new Random();
     private final EventHorizon plugin;
     private final List<BaseEvent> posEvents = new ArrayList<>();
@@ -30,7 +32,8 @@ public class EventScheduler
         FileConfiguration config = plugin.getConfig();
         this.posWeight = config.getDouble("event.posWeight", 1.0);
         this.negWeight = config.getDouble("event.negWeight", 0.0);
-        this.neutralWeight = config.getDouble("event.neutralWeight", 0.0);    }
+        this.neutralWeight = config.getDouble("event.neutralWeight", 0.0);
+    }
 
     public void triggerEvent()
     {
@@ -60,5 +63,21 @@ public class EventScheduler
         } else {
             Bukkit.getLogger().warning("No events available in the selected category!");
         }
+    }
+
+    private void registerEvent(BaseEvent event) {
+        switch (event.getEventClassification(event)) {
+            case POSITIVE -> posEvents.add(event);
+            case NEGATIVE -> negEvents.add(event);
+            case NEUTRAL -> neutralEvents.add(event);
+        }
+    }
+
+    public void reloadEvents() {
+        posEvents.clear();
+        negEvents.clear();
+        neutralEvents.clear();
+        //loadWeightsFromConfig();
+        //loadEventsFromConfig();
     }
 }

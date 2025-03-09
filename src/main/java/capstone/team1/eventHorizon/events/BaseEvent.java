@@ -15,4 +15,7 @@ public abstract class BaseEvent
     }
 
     public abstract void execute();
+    public EventClassification getEventClassification(BaseEvent event){
+        return event.classification;
+    }
 }
