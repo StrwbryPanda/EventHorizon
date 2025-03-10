@@ -1,204 +1,183 @@
-//package capstone.team1.eventHorizon.commands;
-//
-//import capstone.team1.eventHorizon.EventHorizon;
-//import capstone.team1.eventHorizon.events.mobSpawn.*;
-//import net.kyori.adventure.text.Component;
-//import net.kyori.adventure.text.format.NamedTextColor;
-//import org.bukkit.Bukkit;
-//import org.bukkit.command.CommandSender;
-//import org.bukkit.entity.EntityType;
-//import org.bukkit.entity.Player;
-//
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.Collection;
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-//public class CommandTrigger {
-//
-//    // Store all available event types
-//    private enum EventType {
-//        WOLF_PACK(WolfPack.class),
-//        CUSTOM(null);
-//
-//        private final Class<? extends BaseMobSpawn> eventClass;
-//
-//        EventType(Class<? extends BaseMobSpawn> eventClass) {
-//            this.eventClass = eventClass;
-//        }
-//
-//        public Class<? extends BaseMobSpawn> getEventClass() {
-//            return eventClass;
-//        }
-//    }
-//
-//    /**
-//     * Run the trigger command
-//     */
-//    public static void run(CommandSender sender, EventHorizon plugin, String[] args) {
-//        if (args.length < 1) {
-//            showUsage(sender);
-//            return;
-//        }
-//
-//        String eventName = args[0].toUpperCase();
-//        EventType eventType;
-//
-//        try {
-//            eventType = EventType.valueOf(eventName);
-//        } catch (IllegalArgumentException e) {
-//            sender.sendMessage(Component.text("Unknown event type: " + args[0], NamedTextColor.RED));
-//            sender.sendMessage(Component.text("Available events: " +
-//                    Arrays.stream(EventType.values())
-//                            .map(Enum::name)
-//                            .collect(Collectors.joining(", ")), NamedTextColor.YELLOW));
-//            return;
-//        }
-//
-//        // Default to all players if not specified
-//        Player targetPlayer = null;
-//        if (args.length >= 2 && !args[1].equalsIgnoreCase("all")) {
-//            targetPlayer = Bukkit.getPlayer(args[1]);
-//            if (targetPlayer == null) {
-//                sender.sendMessage(Component.text("Player not found: " + args[1], NamedTextColor.RED));
-//                return;
-//            }
-//        }
-//
-//        try {
-//            if (eventType == EventType.CUSTOM) {
-//                // Handle custom mob spawning
-//                if (args.length < 3) {
-//                    sender.sendMessage(Component.text("For custom events: /eventhorizon trigger CUSTOM [player|all] <mobType> [count] [maxRadius] [minRadius]", NamedTextColor.RED));
-//                    return;
-//                }
-//
-//                EntityType mobType;
-//                try {
-//                    mobType = EntityType.valueOf(args[2].toUpperCase());
-//                } catch (IllegalArgumentException e) {
-//                    sender.sendMessage(Component.text("Invalid mob type: " + args[2], NamedTextColor.RED));
-//                    return;
-//                }
-//
-//                int count = (args.length >= 4) ? parsePositiveInt(args[3], 5) : 5;
-//                int maxRadius = (args.length >= 5) ? parsePositiveInt(args[4], 15) : 15;
-//                int minRadius = (args.length >= 6) ? parsePositiveInt(args[5], 5) : 5;
-//
-////                BaseMobSpawn spawnEvent = new BaseMobSpawn(plugin, mobType) {
-////                    @Override
-////                    protected void onMobSpawned(org.bukkit.entity.Entity entity, Player player) {
-////                        // This is where you could add custom behavior for the custom spawn
-////                    }
-////                };
-//
-//                spawnEvent.setMobCount(count)
-//                        .setMaxSpawnRadius(maxRadius)
-//                        .setMinSpawnRadius(minRadius);
-//
-//                spawnMobs(sender, spawnEvent, targetPlayer);
-//            } else if (eventType.getEventClass() != null) {
-//                // Create an instance of the specified event class
-//                BaseMobSpawn spawnEvent = eventType.getEventClass()
-//                        .getConstructor(org.bukkit.plugin.Plugin.class)
-//                        .newInstance(plugin);
-//
-//                // Parse optional parameters if provided (count, maxRadius, minRadius)
-//                if (args.length >= 3) {
-//                    spawnEvent.setMobCount(parsePositiveInt(args[2], spawnEvent.mobCount));
-//                }
-//                if (args.length >= 4) {
-//                    spawnEvent.setMaxSpawnRadius(parsePositiveInt(args[3], spawnEvent.maxSpawnRadius));
-//                }
-//                if (args.length >= 5) {
-//                    spawnEvent.setMinSpawnRadius(parsePositiveInt(args[4], spawnEvent.minSpawnRadius));
-//                }
-//
-//                spawnMobs(sender, spawnEvent, targetPlayer);
-//            } else {
-//                sender.sendMessage(Component.text("Event type not implemented yet: " + eventType, NamedTextColor.RED));
-//            }
-//        } catch (Exception e) {
-//            sender.sendMessage(Component.text("Error executing event: " + e.getMessage(), NamedTextColor.RED));
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private static void spawnMobs(CommandSender sender, BaseMobSpawn spawnEvent, Player targetPlayer) {
-//        int spawned;
-//        if (targetPlayer != null) {
-//            spawned = spawnEvent.spawnForPlayer(targetPlayer).size();
-//            sender.sendMessage(Component.text("Spawned " + spawned + " mobs for player " + targetPlayer.getName(), NamedTextColor.GREEN));
-//        } else {
-//            spawned = spawnEvent.spawnForAllPlayers();
-//            sender.sendMessage(Component.text("Spawned a total of " + spawned + " mobs for all online players", NamedTextColor.GREEN));
-//        }
-//    }
-//
-//    private static int parsePositiveInt(String input, int defaultValue) {
-//        try {
-//            int value = Integer.parseInt(input);
-//            return Math.max(1, value); // Ensure value is at least 1
-//        } catch (NumberFormatException e) {
-//            return defaultValue;
-//        }
-//    }
-//
-//    private static void showUsage(CommandSender sender) {
-//        sender.sendMessage(Component.text("Trigger Command Usage:", NamedTextColor.YELLOW));
-//        sender.sendMessage(Component.text("/eventhorizon trigger <eventType> [player|all] [options]", NamedTextColor.GOLD));
-//        sender.sendMessage(Component.text("Available event types: " +
-//                Arrays.stream(EventType.values())
-//                        .map(Enum::name)
-//                        .map(String::toLowerCase)
-//                        .collect(Collectors.joining(", ")), NamedTextColor.AQUA));
-//    }
-//
-//    /**
-//     * Get tab completions for the trigger command
-//     */
-//    public static Collection<String> suggest(CommandSender sender, String[] args) {
-//        List<String> completions = new ArrayList<>();
-//
-//        if (args.length == 0) {
-//            // Return all event types if no argument is provided
-//            for (EventType type : EventType.values()) {
-//                completions.add(type.name().toLowerCase());
-//            }
-//            return completions;
-//        }
-//
-//        if (args.length == 1) {
-//            // First argument - event type
-//            String currentArg = args[0].toUpperCase();
-//            for (EventType type : EventType.values()) {
-//                if (type.name().startsWith(currentArg)) {
-//                    completions.add(type.name().toLowerCase());
-//                }
-//            }
-//        } else if (args.length == 2) {
-//            // Second argument - player name or "all"
-//            String currentArg = args[1].toLowerCase();
-//            if ("all".startsWith(currentArg)) {
-//                completions.add("all");
-//            }
-//
-//            for (Player player : Bukkit.getOnlinePlayers()) {
-//                if (player.getName().toLowerCase().startsWith(currentArg)) {
-//                    completions.add(player.getName());
-//                }
-//            }
-//        } else if (args.length == 3 && args[0].equalsIgnoreCase("CUSTOM")) {
-//            // For custom events, third arg is mob type
-//            String currentArg = args[2].toUpperCase();
-//            for (EntityType type : EntityType.values()) {
-//                if (type.isSpawnable() && type.isAlive() && type.name().startsWith(currentArg)) {
-//                    completions.add(type.name().toLowerCase());
-//                }
-//            }
-//        }
-//
-//        return completions;
-//    }
-//}
+package capstone.team1.eventHorizon.commands;
+
+import capstone.team1.eventHorizon.EventHorizon;
+import capstone.team1.eventHorizon.events.BaseEvent;
+import capstone.team1.eventHorizon.events.EventClassification;
+import capstone.team1.eventHorizon.events.mobSpawn.BaseMobSpawn;
+import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+public class CommandTrigger {
+    private static final Random random = new Random();
+
+    // Create a map to store event name to creator function mapping
+    private static final Map<String, EventCreator> EVENT_MAP = new HashMap<>();
+
+    // Interface for event creation functions
+    @FunctionalInterface
+    private interface EventCreator {
+        BaseEvent create(EventHorizon plugin);
+    }
+
+    // Static initializer to populate the event map
+    static {
+        EVENT_MAP.put("wolfpack", WolfPack::new);
+        // Add more events here as needed
+        // EVENT_MAP.put("zombiehorde", plugin -> new ZombieHorde(plugin));
+    }
+
+    // Lists to categorize events by classification
+    private static final List<String> POSITIVE_EVENTS = new ArrayList<>();
+    private static final List<String> NEGATIVE_EVENTS = new ArrayList<>();
+    private static final List<String> NEUTRAL_EVENTS = new ArrayList<>();
+
+    // Static initializer to categorize events
+    static {
+        // This needs to be customized based on your actual events
+        NEGATIVE_EVENTS.add("wolfpack");
+        // POSITIVE_EVENTS.add("diamondrain");
+        // NEUTRAL_EVENTS.add("foggyweather");
+    }
+
+    // List of all available event names (including special commands)
+    private static final List<String> AVAILABLE_EVENTS = new ArrayList<>(EVENT_MAP.keySet());
+
+    static {
+        // Add special command options
+        AVAILABLE_EVENTS.add("random");
+        AVAILABLE_EVENTS.add("positive");
+        AVAILABLE_EVENTS.add("negative");
+        AVAILABLE_EVENTS.add("neutral");
+    }
+
+    /**
+     * Executes the trigger command
+     * @param sender The command sender
+     * @param plugin The EventHorizon plugin instance
+     * @param args Additional arguments (event name)
+     */
+    public static void run(CommandSender sender, EventHorizon plugin, String[] args) {
+        // Check if sender has permission
+        if (!sender.hasPermission("eventhorizon.trigger")) {
+            sender.sendRichMessage("<red>You don't have permission to trigger events!");
+            return;
+        }
+
+        // Check if args are present
+        if (args.length == 0) {
+            sender.sendRichMessage("<red>Please specify an event to trigger. Usage: /eventhorizon trigger <event>");
+            sender.sendRichMessage("<yellow>Available events: " + String.join(", ", AVAILABLE_EVENTS));
+            return;
+        }
+
+        String eventName = args[0].toLowerCase();
+        boolean success = false;
+
+        try {
+            // Method 1: Direct instantiation and execution of specific events
+            if (EVENT_MAP.containsKey(eventName)) {
+                BaseEvent event = EVENT_MAP.get(eventName).create(plugin);
+                event.execute();
+
+                if (event instanceof BaseMobSpawn) {
+                    BaseMobSpawn mobEvent = (BaseMobSpawn) event;
+                    int spawned = mobEvent.getLastSpawnCount();
+                    sender.sendRichMessage("<green>Triggered " + eventName + " event! Spawned " + spawned + " " + mobEvent.mobType.toString() + " entities.");
+                } else {
+                    sender.sendRichMessage("<green>Triggered " + eventName + " event!");
+                }
+                success = true;
+            }
+            // Method 2: Random event
+            else if (eventName.equals("random")) {
+                triggerRandomEvent(plugin, sender);
+                success = true;
+            }
+            // Method 3: Trigger events by classification
+            else if (eventName.equals("positive")) {
+                triggerEventByType(plugin, sender, POSITIVE_EVENTS, "positive");
+                success = true;
+            }
+            else if (eventName.equals("negative")) {
+                triggerEventByType(plugin, sender, NEGATIVE_EVENTS, "negative");
+                success = true;
+            }
+            else if (eventName.equals("neutral")) {
+                triggerEventByType(plugin, sender, NEUTRAL_EVENTS, "neutral");
+                success = true;
+            }
+            else {
+                sender.sendRichMessage("<red>Unknown event: " + eventName);
+                sender.sendRichMessage("<yellow>Available events: " + String.join(", ", AVAILABLE_EVENTS));
+            }
+        } catch (Exception e) {
+            sender.sendRichMessage("<red>Error triggering event: " + e.getMessage());
+            plugin.getLogger().warning("Error triggering event: " + e.getMessage());
+        }
+
+        if (success && sender instanceof Player) {
+            // Log the action
+            plugin.getLogger().info("Player " + sender.getName() + " triggered event: " + eventName);
+        }
+    }
+
+    /**
+     * Helper method to trigger a random event
+     */
+    private static void triggerRandomEvent(EventHorizon plugin, CommandSender sender) {
+        if (EVENT_MAP.isEmpty()) {
+            sender.sendRichMessage("<red>No events available to trigger!");
+            return;
+        }
+
+        List<String> eventNames = new ArrayList<>(EVENT_MAP.keySet());
+        String randomEvent = eventNames.get(random.nextInt(eventNames.size()));
+
+        BaseEvent event = EVENT_MAP.get(randomEvent).create(plugin);
+        event.execute();
+
+        sender.sendRichMessage("<green>Triggered random event: " + randomEvent);
+    }
+
+    /**
+     * Helper method to trigger a random event of a specific type
+     */
+    private static void triggerEventByType(EventHorizon plugin, CommandSender sender,
+                                           List<String> eventList, String typeName) {
+        if (eventList.isEmpty()) {
+            sender.sendRichMessage("<red>No " + typeName + " events available to trigger!");
+            return;
+        }
+
+        String randomEvent = eventList.get(random.nextInt(eventList.size()));
+
+        BaseEvent event = EVENT_MAP.get(randomEvent).create(plugin);
+        event.execute();
+
+        sender.sendRichMessage("<green>Triggered " + typeName + " event: " + randomEvent);
+    }
+
+    /**
+     * Provides tab completion suggestions for the trigger command
+     * @param sender The command sender
+     * @param args The current arguments
+     * @return Collection of strings for tab completion
+     */
+    public static Collection<String> suggest(CommandSender sender, String[] args) {
+        if (args.length == 1) {
+            // Use Paper's StringUtil for more efficient partial matching
+            return StringUtil.copyPartialMatches(args[0], AVAILABLE_EVENTS, new ArrayList<>());
+        }
+
+        return new ArrayList<>();
+    }
+}

@@ -22,8 +22,8 @@ public abstract class BaseMobSpawn extends BaseEvent
 
     // Default configuration values
     private static final int DEFAULT_MOB_COUNT = 5;
-    private static final int DEFAULT_MAX_SPAWN_RADIUS = 10;
-    private static final int DEFAULT_MIN_SPAWN_RADIUS = 5;
+    private static final int DEFAULT_MAX_SPAWN_RADIUS = 20;
+    private static final int DEFAULT_MIN_SPAWN_RADIUS = 3;
     private static final int DEFAULT_MAX_SPAWN_ATTEMPTS = 10;
     private static final int DEFAULT_SPAWN_INTERVAL = 60;
     private static final double DEFAULT_WIDTH_CLEARANCE = 1;
@@ -31,16 +31,17 @@ public abstract class BaseMobSpawn extends BaseEvent
     private static final int DEFAULT_GROUP_SPACING = 3;
 
     // Entity properties
-    EntityType mobType = EntityType.ZOMBIE;
+    public EntityType mobType = EntityType.ZOMBIE;
     public int mobCount = DEFAULT_MOB_COUNT;
     public int maxSpawnRadius = DEFAULT_MAX_SPAWN_RADIUS;
     public int minSpawnRadius = DEFAULT_MIN_SPAWN_RADIUS;
     public int maxSpawnAttempts = DEFAULT_MAX_SPAWN_ATTEMPTS;
-    public int maxYRadius = DEFAULT_MAX_SPAWN_RADIUS;
-    public int minYRadius = DEFAULT_MIN_SPAWN_RADIUS;
+    public int maxYRadius = 10;
+    public int minYRadius = 0;
     public double widthClearance = DEFAULT_WIDTH_CLEARANCE;
     public double heightClearance = DEFAULT_HEIGHT_CLEARANCE;
     public int groupSpacing = DEFAULT_GROUP_SPACING;
+    private int lastSpawnCount = 0;
 
     // Flags
     public boolean surfaceOnlySpawning = false;
@@ -71,7 +72,19 @@ public abstract class BaseMobSpawn extends BaseEvent
 
     @Override
     public void execute() {
-        spawnForAllPlayers();
+        try {
+            this.lastSpawnCount = 0;
+
+            int spawned = spawnForAllPlayers();
+            this.lastSpawnCount = spawned;
+
+            plugin.getLogger().info("Event " + this.getClass().getSimpleName() +
+                    " spawned " + spawned + " " + mobType.toString() +
+                    " mobs across " + plugin.getServer().getOnlinePlayers().size() +
+                    " players");
+        } catch (Exception e) {
+            plugin.getLogger().warning("Error spawning mobs in " + this.getClass().getSimpleName() + ": " + e.getMessage());
+        }
     }
 
     protected void onMobSpawned(Entity entity, Player player) {
@@ -79,8 +92,19 @@ public abstract class BaseMobSpawn extends BaseEvent
 
     public int spawnForAllPlayers() {
         int totalSpawned = 0;
+        plugin.getLogger().info("Attempting to spawn mobs for " + plugin.getServer().getOnlinePlayers().size() + " players");
+
         for (Player player : plugin.getServer().getOnlinePlayers()) {
-            totalSpawned += spawnForPlayer(player).size();
+            List<Entity> spawnedEntities = spawnForPlayer(player);
+            int playerSpawnCount = spawnedEntities.size();
+            totalSpawned += playerSpawnCount;
+
+            plugin.getLogger().info("Spawned " + playerSpawnCount + " " + mobType.toString() +
+                    " for player " + player.getName());
+
+            for (Entity entity : spawnedEntities) {
+                onMobSpawned(entity, player);
+            }
         }
         return totalSpawned;
     }
@@ -115,7 +139,7 @@ public abstract class BaseMobSpawn extends BaseEvent
             // For surface only spawning, find the highest block at this X,Z
             if (surfaceOnlySpawning) {
                 int highestY = world.getHighestBlockYAt(spawnLocation);
-                spawnLocation.setY(highestY + 1); // Set Y to one above the highest block
+                spawnLocation.setY(highestY);
             }
 
             // Check if the location is safe to spawn
@@ -153,7 +177,7 @@ public abstract class BaseMobSpawn extends BaseEvent
             // For surface only spawning, find the highest block at this X,Z
             if (surfaceOnlySpawning) {
                 int highestY = world.getHighestBlockYAt(potentialCenter);
-                potentialCenter.setY(highestY + 1);
+                potentialCenter.setY(highestY);
             }
 
             // Check if location is safe
@@ -291,6 +315,11 @@ public abstract class BaseMobSpawn extends BaseEvent
     public BaseMobSpawn setMobType(EntityType mobType) {
         this.mobType = mobType;
         return this;
+    }
+
+    // Getters
+    public int getLastSpawnCount() {
+        return lastSpawnCount;
     }
 
     // Setters

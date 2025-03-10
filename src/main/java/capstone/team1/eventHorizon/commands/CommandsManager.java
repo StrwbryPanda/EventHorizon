@@ -71,7 +71,7 @@ public class CommandsManager implements BasicCommand
                 // Handle the trigger subcommand with its own arguments
                 String[] triggerArgs = new String[strings.length - 1];
                 System.arraycopy(strings, 1, triggerArgs, 0, triggerArgs.length);
-                //CommandTrigger.run(commandSourceStack.getSender(), eventHorizonInstance, triggerArgs);
+                CommandTrigger.run(commandSourceStack.getSender(), eventHorizonInstance, triggerArgs);
                 break;
             case "yes": //dont inlcude these in CommandHelp. this is just for confirming cancellation in CommandEnd
                 CommandEnd.yes(commandSourceStack.getSender(), eventHorizonInstance);
@@ -102,10 +102,10 @@ public class CommandsManager implements BasicCommand
         }
 
         // Handle trigger subcommand tab completions
-        if (args.length >= 2 && args[0].equalsIgnoreCase("trigger")) {
+        if (args.length == 2 && args[0].equalsIgnoreCase("trigger")) {
             String[] triggerArgs = new String[args.length - 1];
             System.arraycopy(args, 1, triggerArgs, 0, triggerArgs.length);
-            //return CommandTrigger.suggest(commandSourceStack.getSender(), triggerArgs);
+            return CommandTrigger.suggest(commandSourceStack.getSender(), triggerArgs);
         }
 
         return BasicCommand.super.suggest(commandSourceStack, args);

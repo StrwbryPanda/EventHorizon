@@ -12,17 +12,17 @@ public class WolfPack extends BaseMobSpawn {
 
     public WolfPack(Plugin plugin) {
         super(plugin, EntityType.WOLF, EventClassification.NEGATIVE);
-            setMobCount(4)
+            setMobCount(5)
                     .setMaxSpawnRadius(30)
-                    .setMinSpawnRadius(5)
-                    .setMaxSpawnAttempts(50)
+                    .setMinSpawnRadius(3)
+                    .setMaxSpawnAttempts(100)
                     .setSurfaceOnlySpawning(false)
                     .setAllowWaterSpawns(false)
-                    .setAllowLavaSpawns(true)
-                    .setHeightClearance(0)
-                    .setWidthClearance(0)
+                    .setAllowLavaSpawns(false)
+                    .setHeightClearance(1)
+                    .setWidthClearance(1)
                     .setGroupSpawning(true)
-                    .setGroupSpacing(1);
+                    .setGroupSpacing(2);
     }
 
     @Override
