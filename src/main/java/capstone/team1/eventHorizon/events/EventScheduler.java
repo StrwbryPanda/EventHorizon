@@ -1,5 +1,6 @@
 package capstone.team1.eventHorizon.events;
 
+import capstone.team1.eventHorizon.Config;
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.mobSpawn.BaseMobSpawn;
 import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
@@ -30,9 +31,9 @@ public class EventScheduler
     {
         this.plugin = plugin;
         FileConfiguration config = plugin.getConfig();
-        this.posWeight = config.getDouble("event.posWeight", 1.0);
-        this.negWeight = config.getDouble("event.negWeight", 0.0);
-        this.neutralWeight = config.getDouble("event.neutralWeight", 0.0);
+        this.posWeight = config.getDouble("event.posWeight");
+        this.negWeight = config.getDouble("event.negWeight");
+        this.neutralWeight = config.getDouble("event.neutralWeight");
     }
 
     public void triggerEvent()
@@ -77,7 +78,31 @@ public class EventScheduler
         posEvents.clear();
         negEvents.clear();
         neutralEvents.clear();
-        //loadWeightsFromConfig();
-        //loadEventsFromConfig();
+        loadWeightsFromConfig();
+        loadEventsFromConfig();
+    }
+
+    private void loadEventsFromConfig() {
+        List<String> enabledEvents = Config.getEnabledEvents();
+
+        for (String eventName : enabledEvents) {
+            Class<? extends BaseEvent> eventClass = registeredEventTypes.get(eventName);
+            if (eventClass != null) {
+                try {
+                    BaseEvent event = eventClass.getDeclaredConstructor(EventHorizon.class)
+                            .newInstance(plugin);
+                    registerEvent(event);
+                    Bukkit.getLogger().info("Loaded event: " + eventName);
+                } catch (Exception e) {
+                    Bukkit.getLogger().warning("Failed to load event: " + eventName);
+                }
+            }
+        }
+    }
+
+    private void loadWeightsFromConfig() {
+        this.posWeight = Config.getPosWeight();
+        this.negWeight = Config.getNegWeight();
+        this.neutralWeight = Config.getNeutralWeight();
     }
 }

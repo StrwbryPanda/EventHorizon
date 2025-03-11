@@ -12,28 +12,30 @@ public class Config
         return EventHorizon.plugin.getConfig().getInt("event-frequency");
     }
 
-    public static void reloadConfig() {
-        EventHorizon.plugin.reloadConfig();
-    }
 
     public static boolean getScoreboardSetting() {
         return EventHorizon.plugin.getConfig().getBoolean("scoreboard-setting");
     }
 
     public static double getPosWeight() {
-        return EventHorizon.plugin.getConfig().getDouble("event.posWeight", 1.0);
+        return EventHorizon.plugin.getConfig().getDouble("event.posWeight", 0.33);
     }
 
     public static double getNegWeight() {
-        return EventHorizon.plugin.getConfig().getDouble("event.negWeight", 0.0);
+        return EventHorizon.plugin.getConfig().getDouble("event.negWeight", 0.33);
     }
 
     public static double getNeutralWeight() {
-        return EventHorizon.plugin.getConfig().getDouble("event.neutralWeight", 0.0);
+        return EventHorizon.plugin.getConfig().getDouble("event.neutralWeight", 0.33);
     }
 
     public static List<String> getEnabledEvents() {
         return EventHorizon.plugin.getConfig().getStringList("events.enabled");
     }
+
+    public static void reloadConfig() {
+        EventHorizon.plugin.reloadConfig();
+    }
+
 
 }
