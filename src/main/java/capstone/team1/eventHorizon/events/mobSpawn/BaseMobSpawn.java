@@ -24,7 +24,9 @@ public abstract class BaseMobSpawn extends BaseEvent
     private static final int DEFAULT_MOB_COUNT = 5;
     private static final int DEFAULT_MAX_SPAWN_RADIUS = 20;
     private static final int DEFAULT_MIN_SPAWN_RADIUS = 3;
-    private static final int DEFAULT_MAX_SPAWN_ATTEMPTS = 10;
+    private static final int DEFAULT_MAX_Y_RADIUS = 20;
+    private static final int DEFAULT_MIN_Y_RADIUS = 3;
+    private static final int DEFAULT_MAX_SPAWN_ATTEMPTS = 20;
     private static final int DEFAULT_SPAWN_INTERVAL = 60;
     private static final double DEFAULT_WIDTH_CLEARANCE = 1;
     private static final double DEFAULT_HEIGHT_CLEARANCE = 2;
@@ -36,8 +38,8 @@ public abstract class BaseMobSpawn extends BaseEvent
     public int maxSpawnRadius = DEFAULT_MAX_SPAWN_RADIUS;
     public int minSpawnRadius = DEFAULT_MIN_SPAWN_RADIUS;
     public int maxSpawnAttempts = DEFAULT_MAX_SPAWN_ATTEMPTS;
-    public int maxYRadius = 10;
-    public int minYRadius = 0;
+    public int maxYRadius = DEFAULT_MAX_Y_RADIUS;
+    public int minYRadius = DEFAULT_MIN_Y_RADIUS;
     public double widthClearance = DEFAULT_WIDTH_CLEARANCE;
     public double heightClearance = DEFAULT_HEIGHT_CLEARANCE;
     public int groupSpacing = DEFAULT_GROUP_SPACING;
@@ -128,28 +130,30 @@ public abstract class BaseMobSpawn extends BaseEvent
         while (spawned < mobCount && attempts < maxSpawnAttempts) {
             attempts++;
 
-            // Calculate random position within spawn radius
+            // Calculate random offset
             int xOffset = getRandomOffset(minSpawnRadius, maxSpawnRadius);
             int zOffset = getRandomOffset(minSpawnRadius, maxSpawnRadius);
-            int yOffset = surfaceOnlySpawning ? 0 : getRandomOffset(minYRadius, maxYRadius);
+            int yOffset = getRandomOffset(minYRadius, maxYRadius);
 
-            // Create spawn location
-            Location spawnLocation = playerLocation.clone().add(xOffset, yOffset, zOffset);
+            // Get initial coordinates
+            int initialX = playerLocation.getBlockX() + xOffset;
+            int initialY = playerLocation.getBlockY() + yOffset;
+            int initialZ = playerLocation.getBlockZ() + zOffset;
 
             // For surface only spawning, find the highest block at this X,Z
             if (surfaceOnlySpawning) {
-                int highestY = world.getHighestBlockYAt(spawnLocation);
-                spawnLocation.setY(highestY);
+                initialY = world.getHighestBlockYAt(initialX, initialZ);
             }
 
-            // Check if the location is safe to spawn
-            if (isSafeLocation(spawnLocation)) {
+            // Try to find a safe spawning location
+            Location spawnLocation = getSafeLocation(player, initialX, initialY, initialZ);
+
+            if (spawnLocation != null) {
                 Entity entity = world.spawnEntity(spawnLocation, mobType);
                 spawnedEntities.add(entity);
                 spawned++;
             }
         }
-
         return spawnedEntities;
     }
 
@@ -166,24 +170,23 @@ public abstract class BaseMobSpawn extends BaseEvent
         while (groupCenter == null && attempts < maxSpawnAttempts) {
             attempts++;
 
-            // Calculate random position within spawn radius for the group center
+            // Calculate random offset
             int xOffset = getRandomOffset(minSpawnRadius, maxSpawnRadius);
             int zOffset = getRandomOffset(minSpawnRadius, maxSpawnRadius);
-            int yOffset = surfaceOnlySpawning ? 0 : getRandomOffset(minYRadius, maxYRadius);
+            int yOffset = getRandomOffset(minYRadius, maxYRadius);
 
-            // Create potential group center location
-            Location potentialCenter = playerLocation.clone().add(xOffset, yOffset, zOffset);
+            // Get initial coordinates
+            int initialX = playerLocation.getBlockX() + xOffset;
+            int initialY = playerLocation.getBlockY() + yOffset;
+            int initialZ = playerLocation.getBlockZ() + zOffset;
 
             // For surface only spawning, find the highest block at this X,Z
             if (surfaceOnlySpawning) {
-                int highestY = world.getHighestBlockYAt(potentialCenter);
-                potentialCenter.setY(highestY);
+                initialY = world.getHighestBlockYAt(initialX, initialZ);
             }
 
-            // Check if location is safe
-            if (isSafeLocation(potentialCenter)) {
-                groupCenter = potentialCenter;
-            }
+            // Try to find safe spawning location
+            groupCenter = getSafeLocation(player, initialX, initialY, initialZ);
         }
 
         // If we couldn't find a suitable group center, return empty list
@@ -202,17 +205,20 @@ public abstract class BaseMobSpawn extends BaseEvent
             int xOffset = random.nextInt(groupSpacing * 2 + 1) - groupSpacing;
             int zOffset = random.nextInt(groupSpacing * 2 + 1) - groupSpacing;
 
-            // Create spawn location
-            Location spawnLocation = groupCenter.clone().add(xOffset, 0, zOffset);
+            // Get initial coordinates for group member
+            int initialX = groupCenter.getBlockX() + xOffset;
+            int initialY = groupCenter.getBlockY();
+            int initialZ = groupCenter.getBlockZ() + zOffset;
 
             // For surface only spawning, adjust Y to the highest block
             if (surfaceOnlySpawning) {
-                int highestY = world.getHighestBlockYAt(spawnLocation);
-                spawnLocation.setY(highestY + 1);
+                initialY = world.getHighestBlockYAt(initialX, initialZ);
             }
 
-            // Check if the location is safe to spawn
-            if (isSafeLocation(spawnLocation)) {
+            // Try to find a safe location
+            Location spawnLocation = getGroupSafeLocation(player, groupCenter, initialX, initialY, initialZ);
+
+            if (spawnLocation != null) {
                 Entity entity = world.spawnEntity(spawnLocation, mobType);
                 spawnedEntities.add(entity);
                 spawned++;
@@ -253,6 +259,138 @@ public abstract class BaseMobSpawn extends BaseEvent
         return true;
     }
 
+    protected Location getSafeLocation(Player player, int initialX, int initialY, int initialZ) {
+        World world = player.getWorld();
+        int maxTries = maxSpawnAttempts * 3;
+        int currentTry = 0;
+
+        int x = initialX;
+        int y = initialY;
+        int z = initialZ;
+
+        // Check world height boundaries
+        if (y < world.getMinHeight()) {
+            y = world.getMinHeight();
+        } else if (y >= world.getMaxHeight()) {
+            y = world.getMaxHeight() - 3;
+        }
+
+        while (currentTry < maxTries) {
+            Location location = new Location(world, x, y, z);
+
+            if (isSafeLocation(location)) {
+                // Center the location in the block
+                location.setX(x + 0.5);
+                location.setZ(z + 0.5);
+                return location;
+            }
+
+            // Adjust position based on issues
+            Block block = location.getBlock();
+            Block blockBelow = location.clone().subtract(0, 1, 0).getBlock();
+
+            if (block.getType().isSolid()) {
+                // If current block is solid, move up
+                y++;
+            } else if (!blockBelow.getType().isSolid() && !isLiquidLocation(blockBelow)) {
+                // If there's no solid block below, move down
+                y--;
+            } else {
+                // If other issues, try a small move horizontally
+                x += random.nextInt(3) - 1;
+                z += random.nextInt(3) - 1;
+            }
+
+            // Check if we're still within the radius
+            Location playerLocation = player.getLocation();
+            double distanceSquared = Math.pow(playerLocation.getX() - x, 2) +
+                    Math.pow(playerLocation.getZ() - z, 2);
+
+            if (distanceSquared > Math.pow(maxSpawnRadius, 2)) {
+                // If we've moved outside the radius, reset to a new random position within radius
+                int xOffset = getRandomOffset(minSpawnRadius, maxSpawnRadius);
+                int zOffset = getRandomOffset(minSpawnRadius, maxSpawnRadius);
+                x = playerLocation.getBlockX() + xOffset;
+                z = playerLocation.getBlockZ() + zOffset;
+
+                // Reset y based on surface setting
+                if (surfaceOnlySpawning) {
+                    y = world.getHighestBlockYAt(x, z);
+                } else {
+                    int yOffset = getRandomOffset(minYRadius, maxYRadius);
+                    y = playerLocation.getBlockY() + yOffset;
+                }
+            }
+            currentTry++;
+        }
+        return null;
+    }
+
+    protected Location getGroupSafeLocation(Player player, Location groupCenter, int initialX, int initialY, int initialZ) {
+        World world = player.getWorld();
+        int maxTries = maxSpawnAttempts;
+        int currentTry = 0;
+
+        int x = initialX;
+        int y = initialY;
+        int z = initialZ;
+
+        // Check world height boundaries
+        if (y < world.getMinHeight()) {
+            y = world.getMinHeight();
+        } else if (y >= world.getMaxHeight()) {
+            y = world.getMaxHeight() - 3;
+        }
+
+        while (currentTry < maxTries) {
+            Location location = new Location(world, x, y, z);
+
+            if (isSafeLocation(location)) {
+                // Center the location in the block
+                location.setX(x + 0.5);
+                location.setZ(z + 0.5);
+                return location;
+            }
+
+            // Adjust position based on issues
+            Block block = location.getBlock();
+            Block blockBelow = location.clone().subtract(0, 1, 0).getBlock();
+
+            if (block.getType().isSolid()) {
+                // If current block is solid, move up
+                y++;
+            } else if (!blockBelow.getType().isSolid() && !isLiquidLocation(blockBelow)) {
+                // If there's no solid block below, move down
+                y--;
+            } else {
+                // If other issues, try a small move horizontally (but stay within group spacing)
+                x += random.nextInt(3) - 1;
+                z += random.nextInt(3) - 1;
+            }
+
+            // Check if we're still within the group spacing radius
+            double distanceSquared = Math.pow(groupCenter.getX() - x, 2) + Math.pow(groupCenter.getZ() - z, 2);
+            if (distanceSquared > Math.pow(groupSpacing, 2)) {
+                // If we've moved outside the group radius, reset to a new position closer to group center
+                int xOffset = random.nextInt(groupSpacing * 2 + 1) - groupSpacing;
+                int zOffset = random.nextInt(groupSpacing * 2 + 1) - groupSpacing;
+                x = groupCenter.getBlockX() + xOffset;
+                z = groupCenter.getBlockZ() + zOffset;
+
+                // Reset y based on surface setting
+                if (surfaceOnlySpawning) {
+                    y = world.getHighestBlockYAt(x, z);
+                } else {
+                    y = groupCenter.getBlockY() + (random.nextInt(3) - 1); // Small y variance in groups
+                }
+            }
+
+            currentTry++;
+        }
+
+        return null;
+    }
+
     // Clearance checks
     private boolean isSafeLocation(Location location) {
         World world = location.getWorld();
@@ -291,11 +429,20 @@ public abstract class BaseMobSpawn extends BaseEvent
             return false;
         }
 
-        for (int y = 0; y < heightBlocks; y++) {
+        for (int y = 0; y <= heightBlocks; y++) {
             int checkY = baseY + y;
 
-            for (int x = -widthBlocks; x <= widthBlocks; x++) {
-                for (int z = -widthBlocks; z <= widthBlocks; z++) {
+            int xStart = 0;
+            int zStart = 0;
+
+            // If widthClearance is odd, check both negative and positive x and z directions
+            if (widthClearance % 2 == 1) {
+                xStart = -widthBlocks;
+                zStart = -widthBlocks;
+            }
+
+            for (int x = xStart; x <= widthBlocks; x++) {
+                for (int z = zStart; z <= widthBlocks; z++) {
                     if (!isSafeBlock(world.getBlockAt(baseX + x, checkY, baseZ + z))) {
                         return false;
                     }
