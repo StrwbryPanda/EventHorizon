@@ -7,6 +7,7 @@ import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -60,7 +61,7 @@ public class EventScheduler
         }
 
         if (selectedEvent != null) {
-            selectedEvent.execute();
+                selectedEvent.execute();
         } else {
             Bukkit.getLogger().warning("No events available in the selected category!");
         }

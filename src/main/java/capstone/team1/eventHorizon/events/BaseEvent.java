@@ -1,5 +1,7 @@
 package capstone.team1.eventHorizon.events;
 
+import org.bukkit.entity.Player;
+
 public abstract class BaseEvent
 {
     private final EventClassification classification;
