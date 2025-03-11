@@ -9,13 +9,13 @@ scoreboard-setting: false
 #default weights for event frequency
 event:
   frequency: 10
-  posWeight: 0.2
-  negWeight: 0.2
-  neutralWeight: 0.6
+  posWeight: 0.33
+  negWeight: 0.33
+  neutralWeight: 0.33
 
-# Mob spawn event settings
-mob-events:
-  wolf-pack:
-    mob-count: 4
-    max-spawn-radius: 15
-    min-spawn-radius: 5
+#determines if an event is enabled or disabled
+events:
+  enabled:
+    - "WolfPack" #MobSpawn: negative
+  disabled:
+    - "IceIsNice" #BlockModification: neutral
