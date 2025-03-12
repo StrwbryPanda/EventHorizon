@@ -7,63 +7,79 @@ import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
 public class EventScheduler
 {
-    private final Map<String, Class<? extends BaseEvent>> registeredEventTypes = new HashMap<>();
-
-    private final Random random = new Random();
     private final EventHorizon plugin;
+    private final HashMap<String, BaseEvent> registeredEvents = new HashMap<>();
+    private final HashMap<EventClassification,List<BaseEvent>> enabledEvents = new HashMap<>();
     private final List<BaseEvent> posEvents = new ArrayList<>();
     private final List<BaseEvent> negEvents = new ArrayList<>();
     private final List<BaseEvent> neutralEvents = new ArrayList<>();
-
     private double posWeight;
     private double negWeight;
     private double neutralWeight;
+    private final Random random = new Random();
+
 
 
 
 
     public EventScheduler(EventHorizon plugin)
     {
+        Bukkit.getLogger().warning("Neg event size: " + negEvents.size());
         this.plugin = plugin;
-        FileConfiguration config = plugin.getConfig();
-        this.posWeight = config.getDouble("event.posWeight");
-        this.negWeight = config.getDouble("event.negWeight");
-        this.neutralWeight = config.getDouble("event.neutralWeight");
+        this.posWeight = Config.getPosWeight();
+        this.negWeight = Config.getNegWeight();
+        this.neutralWeight = Config.getNeutralWeight();
+
+        registeredEvents.put("WolfPack", new WolfPack(plugin));
+
+        reloadEvents();
+        enabledEvents.put(EventClassification.POSITIVE, posEvents);
+        enabledEvents.put(EventClassification.NEGATIVE, negEvents);
+        enabledEvents.put(EventClassification.NEUTRAL, neutralEvents);
     }
 
-    public void triggerEvent()
-    {
+    public void triggerEvent() {
         Bukkit.getLogger().info("Triggering event...");
-        double totalWeight = posWeight + negWeight + neutralWeight;
-        double normalizedPosWeight = posWeight / totalWeight;
-        double normalizedNegWeight = negWeight / totalWeight;
-        double randomNumber = random.nextDouble();
+
+
         BaseEvent selectedEvent = null;
+        List<EventClassification> items = List.of(EventClassification.POSITIVE, EventClassification.NEGATIVE, EventClassification.NEUTRAL);
+        List<Double> weights = List.of(posWeight, negWeight, neutralWeight);
+        double totalWeight = 0.0;
+        for (Double weight : weights) {
+            totalWeight += weight;
+        }
 
-        if (randomNumber < normalizedPosWeight) {
-            if (!posEvents.isEmpty()) {
-                selectedEvent = posEvents.get(random.nextInt(posEvents.size()));
-            }
-        } else if (randomNumber < normalizedPosWeight + normalizedNegWeight) {
-            if (!negEvents.isEmpty()) {
-                selectedEvent = negEvents.get(random.nextInt(negEvents.size()));
-            }
-        } else {
-            if (!neutralEvents.isEmpty()) {
-                selectedEvent = neutralEvents.get(random.nextInt(neutralEvents.size()));
+        Random random = new Random();
+        double randomNumber = random.nextDouble() * totalWeight;
+        Bukkit.getLogger().warning("Random number: " + randomNumber);
+        Bukkit.getLogger().warning("total weight: " + totalWeight);
+
+
+        double cumulativeWeight = 0.0;
+        for (int i = 0; i < items.size(); i++) {
+            cumulativeWeight += weights.get(i);
+            Bukkit.getLogger().warning("cum weight: " + cumulativeWeight);
+
+            if (randomNumber < cumulativeWeight) {
+                EventClassification eventClassification = items.get(i);
+                Bukkit.getLogger().warning("event classification:" + eventClassification);
+                List<BaseEvent> selectedEvents = enabledEvents.get(eventClassification);
+                Bukkit.getLogger().warning("selected events: " + selectedEvents);
+                selectedEvent = selectedEvents.get(random.nextInt(selectedEvents.size()));
+                selectedEvent.execute();
+//                Bukkit.getLogger().warning("event" + selectedEvent.toString());
+                return;
             }
         }
 
-        if (selectedEvent != null) {
-            selectedEvent.execute();
-        } else {
-            Bukkit.getLogger().warning("No events available in the selected category!");
-        }
+
     }
 
     private void registerEvent(BaseEvent event) {
@@ -83,19 +99,16 @@ public class EventScheduler
     }
 
     private void loadEventsFromConfig() {
-        List<String> enabledEvents = Config.getEnabledEvents();
+        List<String> enabledEventNames = Config.getEnabledEvents();
+        Bukkit.getLogger().warning("Enabled events: " + enabledEvents);
 
-        for (String eventName : enabledEvents) {
-            Class<? extends BaseEvent> eventClass = registeredEventTypes.get(eventName);
-            if (eventClass != null) {
-                try {
-                    BaseEvent event = eventClass.getDeclaredConstructor(EventHorizon.class)
-                            .newInstance(plugin);
-                    registerEvent(event);
-                    Bukkit.getLogger().info("Loaded event: " + eventName);
-                } catch (Exception e) {
-                    Bukkit.getLogger().warning("Failed to load event: " + eventName);
-                }
+        for (String eventName : enabledEventNames) {
+            BaseEvent event = registeredEvents.get(eventName);
+
+            Bukkit.getLogger().warning("event class: " + event);
+
+            if (event != null) {
+                registerEvent(event);
             }
         }
     }
@@ -104,5 +117,11 @@ public class EventScheduler
         this.posWeight = Config.getPosWeight();
         this.negWeight = Config.getNegWeight();
         this.neutralWeight = Config.getNeutralWeight();
+
+        Bukkit.getLogger().info("Raw weights - Pos: " + this.posWeight +
+                ", Neg: " + this.negWeight +
+                ", Neutral: " + this.neutralWeight);
     }
+
+
 }

@@ -9,7 +9,7 @@ public class Config
     }
 
     public static int getEventFrequency() {
-        return EventHorizon.plugin.getConfig().getInt("event-frequency");
+        return EventHorizon.plugin.getConfig().getInt("event.frequency");
     }
 
 
@@ -18,15 +18,15 @@ public class Config
     }
 
     public static double getPosWeight() {
-        return EventHorizon.plugin.getConfig().getDouble("event.posWeight", 0.33);
+        return EventHorizon.plugin.getConfig().getDouble("event.posWeight");
     }
 
     public static double getNegWeight() {
-        return EventHorizon.plugin.getConfig().getDouble("event.negWeight", 0.33);
+        return EventHorizon.plugin.getConfig().getDouble("event.negWeight");
     }
 
     public static double getNeutralWeight() {
-        return EventHorizon.plugin.getConfig().getDouble("event.neutralWeight", 0.33);
+        return EventHorizon.plugin.getConfig().getDouble("event.neutralWeight");
     }
 
     public static List<String> getEnabledEvents() {

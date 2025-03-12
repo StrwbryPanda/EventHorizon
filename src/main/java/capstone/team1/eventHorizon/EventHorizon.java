@@ -3,10 +3,12 @@ package capstone.team1.eventHorizon;
 import capstone.team1.eventHorizon.commands.CommandScoreboard;
 import capstone.team1.eventHorizon.commands.CommandsManager;
 import capstone.team1.eventHorizon.events.EventFrequencyTimer;
+import capstone.team1.eventHorizon.events.EventScheduler;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
+import capstone.team1.eventHorizon.*;
 
 @SuppressWarnings("UnstableApiUsage")
 public final class EventHorizon extends JavaPlugin implements CommandExecutor
@@ -26,7 +28,9 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 
         // Plugin startup logic
         setCommandScoreboard(plugin);
-        capstone.team1.eventHorizon.ScoreboardManager scoreboardManager = new ScoreboardManager(this);
+        ScoreboardManager scoreboardManager = new ScoreboardManager(this);
+        EventScheduler eventScheduler  = new EventScheduler(this);
+
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this, scoreboardManager), this);
 
         saveResource("config.yml", /* replace */ false);
@@ -34,6 +38,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
         //initializes eventhorizon base command
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
                 event -> event.registrar().register("eventhorizon", new CommandsManager(this)));
+
     }
 
     private void setCommandScoreboard(EventHorizon plugin) {
