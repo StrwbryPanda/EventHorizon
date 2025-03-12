@@ -2,23 +2,18 @@ package capstone.team1.eventHorizon.commands;
 
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.BaseEvent;
-import capstone.team1.eventHorizon.events.EventClassification;
 import capstone.team1.eventHorizon.events.mobSpawn.BaseMobSpawn;
 import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class CommandTrigger {
     private static final Random random = new Random();
 
+    ///  DELETE THIS
     // Create a map to store event name to creator function mapping
     private static final Map<String, EventCreator> EVENT_MAP = new HashMap<>();
 
@@ -30,7 +25,7 @@ public class CommandTrigger {
 
     // Static initializer to populate the event map
     static {
-        EVENT_MAP.put("wolfpack", WolfPack::new);
+        EVENT_MAP.put("wolfpack", plugin -> new WolfPack());
         // Add more events here as needed
         // EVENT_MAP.put("zombiehorde", plugin -> new ZombieHorde(plugin));
     }
@@ -53,11 +48,13 @@ public class CommandTrigger {
 
     static {
         // Add special command options
-        AVAILABLE_EVENTS.add("random");
+        AVAILABLE_EVENTS.add("random"); // COOL TO HAVE THIS
         AVAILABLE_EVENTS.add("positive");
         AVAILABLE_EVENTS.add("negative");
         AVAILABLE_EVENTS.add("neutral");
     }
+
+    /// DELETE UP TO THIS
 
     /**
      * Executes the trigger command
@@ -84,9 +81,9 @@ public class CommandTrigger {
 
         try {
             // Method 1: Direct instantiation and execution of specific events
-            if (EVENT_MAP.containsKey(eventName)) {
+            if (EVENT_MAP.containsKey(eventName)) { // Kylie's .getEventByName(eventName).execute();
                 BaseEvent event = EVENT_MAP.get(eventName).create(plugin);
-                event.execute();
+                event.execute(); // Check if this is null first
 
                 if (event instanceof BaseMobSpawn) {
                     BaseMobSpawn mobEvent = (BaseMobSpawn) event;
@@ -98,21 +95,21 @@ public class CommandTrigger {
                 success = true;
             }
             // Method 2: Random event
-            else if (eventName.equals("random")) {
+            else if (eventName.equals("random")) { // Kylie's .getRandomEvent.execute();
                 triggerRandomEvent(plugin, sender);
                 success = true;
             }
             // Method 3: Trigger events by classification
             else if (eventName.equals("positive")) {
-                triggerEventByType(plugin, sender, POSITIVE_EVENTS, "positive");
+                triggerEventByType(plugin, sender, POSITIVE_EVENTS, "positive"); // Kylie's .getRandomPositiveEvent.execute();
                 success = true;
             }
             else if (eventName.equals("negative")) {
-                triggerEventByType(plugin, sender, NEGATIVE_EVENTS, "negative");
+                triggerEventByType(plugin, sender, NEGATIVE_EVENTS, "negative"); // Kylie's .getRandomNegativeEvent.execute();
                 success = true;
             }
             else if (eventName.equals("neutral")) {
-                triggerEventByType(plugin, sender, NEUTRAL_EVENTS, "neutral");
+                triggerEventByType(plugin, sender, NEUTRAL_EVENTS, "neutral"); // Kylie's .getRandomNeutralEvent.execute();
                 success = true;
             }
             else {
@@ -133,7 +130,7 @@ public class CommandTrigger {
     /**
      * Helper method to trigger a random event
      */
-    private static void triggerRandomEvent(EventHorizon plugin, CommandSender sender) {
+    private static void triggerRandomEvent(EventHorizon plugin, CommandSender sender) { // MOVE TO KYLIE'S
         if (EVENT_MAP.isEmpty()) {
             sender.sendRichMessage("<red>No events available to trigger!");
             return;
@@ -152,7 +149,7 @@ public class CommandTrigger {
      * Helper method to trigger a random event of a specific type
      */
     private static void triggerEventByType(EventHorizon plugin, CommandSender sender,
-                                           List<String> eventList, String typeName) {
+                                           List<String> eventList, String typeName) { // MOVE TO KYLIE'S
         if (eventList.isEmpty()) {
             sender.sendRichMessage("<red>No " + typeName + " events available to trigger!");
             return;

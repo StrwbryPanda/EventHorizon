@@ -1,14 +1,16 @@
 package capstone.team1.eventHorizon;
 
-import capstone.team1.eventHorizon.commands.CommandScoreboard;
 import capstone.team1.eventHorizon.commands.CommandsManager;
 import capstone.team1.eventHorizon.events.EventFrequencyTimer;
 import capstone.team1.eventHorizon.events.EventScheduler;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
-import capstone.team1.eventHorizon.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @SuppressWarnings("UnstableApiUsage")
 public final class EventHorizon extends JavaPlugin implements CommandExecutor
@@ -20,6 +22,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 
     public static EventHorizon plugin;
     public boolean isScoreboardOn;
+    public static Collection<NamespacedKey> entityKeysToDelete = new ArrayList<>();
 
     @Override
     public void onEnable()

@@ -36,7 +36,7 @@ public class EventScheduler
         this.negWeight = Config.getNegWeight();
         this.neutralWeight = Config.getNeutralWeight();
 
-        registeredEvents.put("WolfPack", new WolfPack(plugin));
+        registeredEvents.put("WolfPack", new WolfPack());
 
         reloadEvents();
         enabledEvents.put(EventClassification.POSITIVE, posEvents);
