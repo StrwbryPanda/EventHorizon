@@ -5,9 +5,9 @@ import capstone.team1.eventHorizon.events.EventClassification;
 
 public abstract class BaseBlockModification extends BaseEvent
 {
-    public BaseBlockModification(EventClassification classification)
+    public BaseBlockModification(EventClassification classification, String eventName)
     {
-        super(classification);
+        super(classification, eventName);
     }
     public abstract void execute();
 }

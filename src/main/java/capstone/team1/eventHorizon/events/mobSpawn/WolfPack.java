@@ -1,21 +1,24 @@
 package capstone.team1.eventHorizon.events.mobSpawn;
 
 import capstone.team1.eventHorizon.events.EventClassification;
-import org.bukkit.entity.*;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /**
  * Event that spawns a pack of angry wolves near players
  */
 public class WolfPack extends BaseMobSpawn {
 
-    public WolfPack(Plugin plugin) {
-        super(plugin, EntityType.WOLF, EventClassification.NEGATIVE);
+    public WolfPack() {
+        super(EntityType.WOLF, EventClassification.NEGATIVE, "wolfPack");
             setMobCount(5)
                     .setMaxSpawnRadius(30)
                     .setMinSpawnRadius(3)
-                    .setMaxSpawnAttempts(100)
+                    .setMaxSpawnAttempts(20)
                     .setSurfaceOnlySpawning(false)
                     .setAllowWaterSpawns(false)
                     .setAllowLavaSpawns(false)
@@ -37,5 +40,10 @@ public class WolfPack extends BaseMobSpawn {
     @Override
     public void execute() {
         super.execute();
+    }
+
+    public void stopEvent() {
+        //super.stopEvent();
+        killAllSpawnedMob();
     }
 }

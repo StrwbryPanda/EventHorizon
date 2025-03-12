@@ -4,11 +4,13 @@ import org.bukkit.entity.Player;
 
 public abstract class BaseEvent
 {
+    public final String eventName;
     private final EventClassification classification;
 
-    public BaseEvent(EventClassification classification)
+    public BaseEvent(EventClassification classification, String eventName)
     {
         this.classification = classification;
+        this.eventName = eventName;
     }
 
     public EventClassification getClassification()
@@ -20,4 +22,6 @@ public abstract class BaseEvent
     public EventClassification getEventClassification(BaseEvent event){
         return event.classification;
     }
+
+    // TODO: Add a method to stop the event from executing
 }

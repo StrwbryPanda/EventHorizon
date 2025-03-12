@@ -1,14 +1,14 @@
 package capstone.team1.eventHorizon.events.mobSpawn;
 
+import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.BaseEvent;
 import capstone.team1.eventHorizon.events.EventClassification;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -19,6 +19,7 @@ public abstract class BaseMobSpawn extends BaseEvent
 {
     protected final Plugin plugin;
     protected final Random random = new Random();
+    protected final NamespacedKey key;
 
     // Default configuration values
     private static final int DEFAULT_MOB_COUNT = 5;
@@ -55,21 +56,24 @@ public abstract class BaseMobSpawn extends BaseEvent
     public BukkitTask continuousTask = null;
     public int spawnInterval = DEFAULT_SPAWN_INTERVAL;
 
-    public BaseMobSpawn(Plugin plugin, EventClassification classification) {
-        super(classification);
-        this.plugin = plugin;
+    public BaseMobSpawn(EventClassification classification, String eventName) {
+        super(classification, eventName);
+        this.plugin = EventHorizon.plugin;
+        this.key = new NamespacedKey(plugin, this.eventName);
     }
 
-    public BaseMobSpawn(Plugin plugin, EntityType defaultMobType) {
-        super(EventClassification.NEUTRAL);
-        this.plugin = plugin;
+    public BaseMobSpawn(EntityType defaultMobType, String eventName) {
+        super(EventClassification.NEUTRAL, eventName);
+        this.plugin = EventHorizon.plugin;
         this.mobType = defaultMobType;
+        this.key = new NamespacedKey(plugin, this.eventName);
     }
 
-    public BaseMobSpawn(Plugin plugin, EntityType defaultMobType, EventClassification classification) {
-        super(classification);
-        this.plugin = plugin;
+    public BaseMobSpawn(EntityType defaultMobType, EventClassification classification, String eventName) {
+        super(classification, eventName);
+        this.plugin = EventHorizon.plugin;
         this.mobType = defaultMobType;
+        this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     @Override
@@ -150,6 +154,7 @@ public abstract class BaseMobSpawn extends BaseEvent
 
             if (spawnLocation != null) {
                 Entity entity = world.spawnEntity(spawnLocation, mobType);
+                markSpawnedMob(entity);
                 spawnedEntities.add(entity);
                 spawned++;
             }
@@ -220,6 +225,7 @@ public abstract class BaseMobSpawn extends BaseEvent
 
             if (spawnLocation != null) {
                 Entity entity = world.spawnEntity(spawnLocation, mobType);
+                markSpawnedMob(entity);
                 spawnedEntities.add(entity);
                 spawned++;
             }
@@ -246,6 +252,7 @@ public abstract class BaseMobSpawn extends BaseEvent
         return true;
     }
 
+    // TODO: Override this method to stop the continuous task in BaseEvent
     public boolean stopContinuousTask() {
         // Check if there's a task to stop
         if (continuousTask == null || continuousTask.isCancelled()) {
@@ -257,6 +264,25 @@ public abstract class BaseMobSpawn extends BaseEvent
         continuousTask = null;
 
         return true;
+    }
+
+    public void markSpawnedMob(Entity entity) {
+        entity.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
+    }
+
+    public boolean isSpawnedMobMarked(Entity entity) {
+        return entity.getPersistentDataContainer().has(key, PersistentDataType.BYTE);
+    }
+
+    public void killAllSpawnedMob() {
+        EventHorizon.entityKeysToDelete.add(key);
+        Bukkit.getWorlds().forEach(world -> {
+            world.getEntities().forEach(entity -> {
+                if (isSpawnedMobMarked(entity)) {
+                    entity.remove();
+                }
+            });
+        });
     }
 
     protected Location getSafeLocation(Player player, int initialX, int initialY, int initialZ) {

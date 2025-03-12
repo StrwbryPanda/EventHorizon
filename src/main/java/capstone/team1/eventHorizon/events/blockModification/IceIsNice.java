@@ -6,7 +6,7 @@ public class IceIsNice extends BaseBlockModification
 {
     public IceIsNice()
     {
-        super(EventClassification.NEUTRAL);
+        super(EventClassification.NEUTRAL, "iceIsNice");
     }
     public void execute(){};
 }
