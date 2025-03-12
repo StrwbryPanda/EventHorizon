@@ -26,4 +26,6 @@ public class EventFrequencyTimer extends BukkitRunnable {
         Bukkit.getLogger().info("Starting EventFrequencyTimer with frequency: " + eventFrequency + " seconds.");
         this.runTaskTimer(plugin, 0L, eventFrequency * 20L);
     }
+
+
 }

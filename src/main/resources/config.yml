@@ -4,14 +4,14 @@
 tournament-timer: 3600
 
 #Scoreboard enabled true/false
-scoreboard-setting: false
+scoreboard-setting: true
 
 #default weights for event frequency
 event:
-  frequency: 10
-  posWeight: 0.33
-  negWeight: 0.33
-  neutralWeight: 0.33
+  frequency: 2
+  posWeight: 2
+  negWeight: 2
+  neutralWeight: 6
 
 #determines if an event is enabled or disabled
 events:
