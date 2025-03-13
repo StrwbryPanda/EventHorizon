@@ -16,8 +16,7 @@ public class GrowthSpurt extends AttributesBase {
 
     @Override
     public void applyEffect(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1)); // Hide player
-
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
         Location loc = player.getLocation();
         ArmorStand largeStand = loc.getWorld().spawn(loc, ArmorStand.class);
 
@@ -27,14 +26,14 @@ public class GrowthSpurt extends AttributesBase {
         largeStand.setInvisible(false);
         largeStand.setSmall(false);
 
-        largeStand.addPassenger(player); // Attach player
+        largeStand.addPassenger(player); 
 
         player.sendMessage("You have grown into a giant!");
     }
 
     @Override
     public void execute() {
-        super.execute(); // Ensures it applies the effect to all online players
+        super.execute(); 
     }
 
 }
