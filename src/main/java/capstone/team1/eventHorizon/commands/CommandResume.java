@@ -8,18 +8,18 @@ import org.bukkit.command.CommandSender;
 public class CommandResume
 {
 
-    public static void run(CommandSender sender, EventHorizon plugin) {
-        if (CommandPause.timeReamining > 0 && !TournamentTimer.isRunning) {
-            TournamentTimer.totalTime = CommandPause.timeReamining;
-            CommandsManager.tournamentTimer = new TournamentTimer();
-            CommandsManager.tournamentTimer.startTimer();
-            TournamentTimer.isRunning = true;
-            sender.sendRichMessage("Timer resumed");
-        }
-        //Timer already running
-        else {
-            sender.sendRichMessage("Timer is already running");
-        }
+    public static void run(CommandSender sender) {
+//        if (CommandPause.timeReamining > 0 && !TournamentTimer.isRunning) {
+//            TournamentTimer.totalTime = CommandPause.timeReamining;
+//            CommandsManager.tournamentTimer = new TournamentTimer();
+//            CommandsManager.tournamentTimer.startTimer();
+//            TournamentTimer.isRunning = true;
+//            sender.sendRichMessage("Timer resumed");
+//        }
+//        //Timer already running
+//        else {
+//            sender.sendRichMessage("Timer is already running");
+//        }
 
     }
 }

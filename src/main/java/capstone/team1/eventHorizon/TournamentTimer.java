@@ -10,65 +10,67 @@ import org.bukkit.entity.Player;
 
 //class for the tournament timer that runs from the beginning to the end of the tournament
 public class TournamentTimer extends BukkitRunnable {
-    public static boolean isRunning;
-    public static int totalTime;
-    public static int remainingTime;
     private final EventHorizon plugin;
-    static String timeDisplayed;
-    private final EventFrequencyTimer eventFrequencyTimer;
 
 
     public TournamentTimer() {
         this.plugin = EventHorizon.plugin;
-        this.remainingTime = totalTime;
-        this.eventFrequencyTimer = EventHorizon.eventFrequencyTimer;
+
     }
   
     @Override
     public void run() {
         //stops timer is the remaining is less than 0
-      if(remainingTime < 0){
-          Bukkit.broadcastMessage(ChatColor.RED + "Tournament is over");
-          this.cancel();
+        if(remainingTime <= 0){
+          end();
           return;
-      }
-
-      //Display timer on action bar
-      for (Player player : Bukkit.getOnlinePlayers()){
-          timeDisplayed = formatTime(remainingTime);
-          //player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.YELLOW + "Tournament Time: " + ChatColor.AQUA + timeDisplayed));
-      }
-/*
-      //display in chat every min or last 10 mins
-        if(remainingTime % 60 ==0 || remainingTime <=10){
-            Bukkit.broadcastMessage(ChatColor.RED + "[Tournament] " + ChatColor.AQUA + "Time Remaining: " + formatTime(remainingTime));
         }
-
- */
+        //displays the remaining time
+        displayRemainingTime();
         remainingTime--;
     }
 
 
 
 //format for timer
-public static String formatTime(int seconds){
-    int hours = seconds / 3600;
-    int minutes = (seconds % 3600) / 60;
-    int sec = seconds % 60;
-    return String.format("%02d:%02d:%02d", hours, minutes, sec);
-}
-
-    public void startTimer() {
-        this.runTaskTimer(plugin, 0L, 20L);
-        eventFrequencyTimer.startTimer();
+    public static String formatTime(int seconds){
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        int sec = seconds % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, sec);
     }
 
-    @Override
-    public void cancel() {
-        super.cancel();
-        if (eventFrequencyTimer != null) {
-            eventFrequencyTimer.cancel();
+    public int remainingTime = -1;
+    public boolean hasStarted = false;
+
+    public void start(int duration) {
+        this.remainingTime = duration;
+        hasStarted = true;
+        this.runTaskTimerAsynchronously(plugin, 0, 20);
+    }
+
+    public void end(){
+        this.cancel();
+        Util.broadcast("<red>Tournament has ended");
+    }
+
+    public void pause(){
+        this.cancel();
+    }
+
+    public void resume(){
+        if(remainingTime == -1 || hasStarted == false){
+            return;
         }
+        this.start(remainingTime);
     }
 
+    public void restart(){
+        this.cancel();
+        this.runTaskTimer(plugin, 0, 20);
+    }
+
+    public void displayRemainingTime(){
+        Util.broadcast("<red>Tournament Time Remaining: <aqua>" + formatTime(remainingTime));
+    }
 }

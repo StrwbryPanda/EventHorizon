@@ -14,7 +14,15 @@ public class CommandHelp {
 
     private static final Map<String, String> commands = new LinkedHashMap<>(); // Keeps order
 
-     private static void loadCommands() {
+    public static void run(@NotNull CommandSender sender) {
+        loadCommands();
+        sender.sendMessage(Component.text("§aEvent Horizon Commands:"));
+        for (String key : commands.keySet() ) {
+            sender.sendMessage((MiniMessage.miniMessage().deserialize("<hover:show_text:'<gray>" + commands.get(key) + "'><gray>/eventhorizon " + key)));
+        }
+    }
+
+    private static void loadCommands() {
         commands.put("start", "Starts the Event Horizon game mode timer.");
         commands.put("end", "Stops the Event Horizon game mode timer.");
         commands.put("restart", "Restart the Event Horizon game mode timer.");
@@ -23,25 +31,7 @@ public class CommandHelp {
         commands.put("resume", "Resumes the Event Horizon game mode timer.");
         commands.put("scoreboard", "Toggles scoreboard display.");
 
-     }
-
-    public static void run(@NotNull CommandSender sender, EventHorizon plugin) {
-
-        // Send help message asynchronously
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                loadCommands();
-
-                sender.sendMessage(Component.text("§aEvent Horizon Commands:"));
-
-                for (String key : commands.keySet() ) {
-                    sender.sendMessage((MiniMessage.miniMessage().deserialize("<hover:show_text:'<gray>" + commands.get(key) + "'><gray>/eventhorizon " + key)));
-                }
-            }
-        }.runTaskAsynchronously(plugin);
     }
-
 }
 
 

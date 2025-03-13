@@ -12,18 +12,18 @@ public class CommandRestart
 
 
     public static void run(CommandSender sender) {
-        if (CommandsManager.tournamentTimer != null && !CommandEnd.isEnded) { //can only be used if there is already an existing timer, and it has not been ended
-            CommandsManager.tournamentTimer.cancel();
-            CommandEnd.isEnded = false;
-            TournamentTimer.totalTime = time;
-            CommandsManager.tournamentTimer = new TournamentTimer();
-            CommandsManager.tournamentTimer.startTimer();
-            TournamentTimer.isRunning = true;
-            sender.sendRichMessage("Timer restarted");
-        }
-        else {
-            sender.sendRichMessage("Unable to restart timer");
-        }
+//        if (CommandsManager.tournamentTimer != null && !CommandEnd.isEnded) { //can only be used if there is already an existing timer, and it has not been ended
+//            CommandsManager.tournamentTimer.cancel();
+//            CommandEnd.isEnded = false;
+//            TournamentTimer.totalTime = time;
+//            CommandsManager.tournamentTimer = new TournamentTimer();
+//            CommandsManager.tournamentTimer.startTimer();
+//            TournamentTimer.isRunning = true;
+//            sender.sendRichMessage("Timer restarted");
+//        }
+//        else {
+//            sender.sendRichMessage("Unable to restart timer");
+//        }
 
     }
 }

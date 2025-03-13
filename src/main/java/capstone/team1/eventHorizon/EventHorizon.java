@@ -18,7 +18,7 @@ import java.util.Collection;
 public final class EventHorizon extends JavaPlugin implements CommandExecutor
 {
 
-    private TournamentTimer tournamentTimer;
+    public static TournamentTimer tournamentTimer;
     private ScoreboardManager scoreboardManager;
     public static EventFrequencyTimer eventFrequencyTimer;
     private EventInitializer eventInitializer;
@@ -40,6 +40,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
         this.eventInitializer  = new EventInitializer();
         this.eventScheduler  = new EventScheduler(eventInitializer);
         eventFrequencyTimer = new EventFrequencyTimer(eventScheduler);
+        tournamentTimer = new TournamentTimer();
 
 
 
@@ -49,7 +50,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 
         //initializes eventhorizon base command
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
-                event -> event.registrar().register("eventhorizon", new CommandsManager(this)));
+                event -> event.registrar().register("eventhorizon", new CommandsManager()));
 
     }
 
@@ -63,6 +64,4 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
         // Plugin shutdown logic
         getLogger().info("EventHorizon has been disabled.");
     }
-
-
 }

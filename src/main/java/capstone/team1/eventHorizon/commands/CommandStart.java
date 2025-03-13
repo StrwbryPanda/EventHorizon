@@ -3,26 +3,16 @@ package capstone.team1.eventHorizon.commands;
 import capstone.team1.eventHorizon.Config;
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.TournamentTimer;
+import capstone.team1.eventHorizon.Util;
 import capstone.team1.eventHorizon.events.EventScheduler;
 import org.bukkit.command.CommandSender;
 
 //command that starts the tournament timer
 public class CommandStart
 {
-    public static int time; //tournament time variable
+    public static int time = 60; //tournament time variable
 
     public static void run(CommandSender sender) {
-        if (CommandsManager.tournamentTimer != null && !CommandsManager.tournamentTimer.isCancelled()) {
-            sender.sendRichMessage("Timer is already running");
-            return;
-        }
-
-        time = Config.getTournamentTimer(); //use config value
-        CommandEnd.isEnded = false;
-        TournamentTimer.totalTime = time;
-        CommandsManager.tournamentTimer = new TournamentTimer();
-        CommandsManager.tournamentTimer.startTimer();
-        TournamentTimer.isRunning = true;
-        sender.sendRichMessage("Timer started");
+        EventHorizon.tournamentTimer.start(time);
     }
 }
