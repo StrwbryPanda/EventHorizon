@@ -10,13 +10,13 @@ import org.bukkit.scoreboard.*;
 
 public class ScoreboardManager {
 
-    private final JavaPlugin plugin;
+    private final EventHorizon plugin;
     static org.bukkit.scoreboard.ScoreboardManager manager = Bukkit.getScoreboardManager();
     static Scoreboard scoreboard = manager.getNewScoreboard();
     public static Objective objective = scoreboard.registerNewObjective("test", Criteria.DUMMY, ChatColor.GOLD + "Timer");
 
-    public ScoreboardManager(JavaPlugin plugin) {
-        this.plugin = plugin;
+    public ScoreboardManager() {
+        this.plugin = EventHorizon.plugin;
     }
 
     public void createScoreboard(Player player) {

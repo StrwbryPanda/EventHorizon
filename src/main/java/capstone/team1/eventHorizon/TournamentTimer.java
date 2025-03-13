@@ -1,6 +1,7 @@
 package capstone.team1.eventHorizon;
 
 import capstone.team1.eventHorizon.events.EventFrequencyTimer;
+import jdk.jfr.Event;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -14,12 +15,13 @@ public class TournamentTimer extends BukkitRunnable {
     public static int remainingTime;
     private final EventHorizon plugin;
     static String timeDisplayed;
-    private EventFrequencyTimer eventFrequencyTimer;
+    private final EventFrequencyTimer eventFrequencyTimer;
 
 
-    public TournamentTimer(EventHorizon plugin) {
-        this.plugin = plugin;
+    public TournamentTimer() {
+        this.plugin = EventHorizon.plugin;
         this.remainingTime = totalTime;
+        this.eventFrequencyTimer = EventHorizon.eventFrequencyTimer;
     }
   
     @Override
@@ -58,7 +60,6 @@ public static String formatTime(int seconds){
 
     public void startTimer() {
         this.runTaskTimer(plugin, 0L, 20L);
-        eventFrequencyTimer = new EventFrequencyTimer(plugin);
         eventFrequencyTimer.startTimer();
     }
 

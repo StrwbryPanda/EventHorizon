@@ -46,13 +46,13 @@ public class CommandsManager implements BasicCommand
         String subCommand = strings[0];
         switch (subCommand) {
             case "start":
-                CommandStart.run(commandSourceStack.getSender(), eventHorizonInstance);
+                CommandStart.run(commandSourceStack.getSender());
                 break;
             case "restart":
-                CommandRestart.run(commandSourceStack.getSender(), eventHorizonInstance);
+                CommandRestart.run(commandSourceStack.getSender());
                 break;
             case "end":
-                CommandEnd.run(commandSourceStack.getSender(), eventHorizonInstance);
+                CommandEnd.run(commandSourceStack.getSender());
                 break;
             case "help":
                 CommandHelp.run(commandSourceStack.getSender(), eventHorizonInstance);
@@ -65,7 +65,7 @@ public class CommandsManager implements BasicCommand
                 CommandResume.run(commandSourceStack.getSender(), eventHorizonInstance);
                 break;
             case "pause":
-                CommandPause.run(commandSourceStack.getSender(), eventHorizonInstance);
+                CommandPause.run(commandSourceStack.getSender());
                 break;
             case "trigger":
                 // Handle the trigger subcommand with its own arguments
@@ -74,13 +74,13 @@ public class CommandsManager implements BasicCommand
                 CommandTrigger.run(commandSourceStack.getSender(), eventHorizonInstance, triggerArgs);
                 break;
             case "yes": //dont inlcude these in CommandHelp. this is just for confirming cancellation in CommandEnd
-                CommandEnd.yes(commandSourceStack.getSender(), eventHorizonInstance);
+                CommandEnd.yes(commandSourceStack.getSender());
                 break;
             case "no": //dont inlcude these in CommandHelp. this is just for confirming cancellation in CommandEnd
-                CommandEnd.no(commandSourceStack.getSender(), eventHorizonInstance);
+                CommandEnd.no(commandSourceStack.getSender());
                 break;
             case "scoreboard": //dont inlcude these in CommandHelp. this is just for confirming cancellation in CommandEnd
-                CommandScoreboard.run(commandSourceStack.getSender(), eventHorizonInstance);
+                CommandScoreboard.run(commandSourceStack.getSender());
                 break;
             default:
                 commandSourceStack.getSender().sendRichMessage("Tournament timer status");

@@ -11,7 +11,7 @@ public class CommandEnd
 {
 public static boolean isEnded;
 
-    public static void run(CommandSender sender, EventHorizon plugin) {
+    public static void run(CommandSender sender) {
         if (CommandsManager.tournamentTimer != null) { //only works if there is an existing timer
             MiniMessage miniMessage = MiniMessage.miniMessage();
 
@@ -31,14 +31,14 @@ public static boolean isEnded;
         }
     }
 
-    public static void yes(CommandSender sender, EventHorizon eventHorizonInstance) {
+    public static void yes(CommandSender sender) {
         CommandsManager.tournamentTimer.cancel();
         TournamentTimer.isRunning = false;
         isEnded = true;
         sender.sendRichMessage("Timer canceled");
     }
 
-    public static void no(CommandSender sender, EventHorizon eventHorizonInstance) {
+    public static void no(CommandSender sender) {
         sender.sendRichMessage("The timer was NOT canceled");
     }
 }

@@ -11,7 +11,7 @@ public class CommandPause
 
     public static int timeReamining;
 
-    public static void run(CommandSender sender, EventHorizon plugin) {
+    public static void run(CommandSender sender) {
         if (TournamentTimer.isRunning) { //can only be used it there is already an existing timer and it is running
             timeReamining = TournamentTimer.remainingTime;
             CommandsManager.tournamentTimer.cancel();

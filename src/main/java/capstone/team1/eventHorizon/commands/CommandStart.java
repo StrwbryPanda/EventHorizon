@@ -11,20 +11,18 @@ public class CommandStart
 {
     public static int time; //tournament time variable
 
-    public static void run(CommandSender sender, EventHorizon plugin) {
-        if (CommandsManager.tournamentTimer == null || CommandsManager.tournamentTimer.isCancelled()) {
-            time = plugin.getConfig().getInt("tournament.time", Config.getTournamentTimer()); //use config value
-            CommandEnd.isEnded = false;
-            TournamentTimer.totalTime = time;
-            CommandsManager.tournamentTimer = new TournamentTimer(plugin);
-            CommandsManager.tournamentTimer.startTimer();
-            TournamentTimer.isRunning = true;
-            sender.sendRichMessage("Timer started");
-        }
-        //Timer already running
-        else {
+    public static void run(CommandSender sender) {
+        if (CommandsManager.tournamentTimer != null && !CommandsManager.tournamentTimer.isCancelled()) {
             sender.sendRichMessage("Timer is already running");
+            return;
         }
 
+        time = Config.getTournamentTimer(); //use config value
+        CommandEnd.isEnded = false;
+        TournamentTimer.totalTime = time;
+        CommandsManager.tournamentTimer = new TournamentTimer();
+        CommandsManager.tournamentTimer.startTimer();
+        TournamentTimer.isRunning = true;
+        sender.sendRichMessage("Timer started");
     }
 }
