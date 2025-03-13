@@ -2,12 +2,9 @@ package capstone.team1.eventHorizon.events;
 
 import capstone.team1.eventHorizon.Config;
 import capstone.team1.eventHorizon.EventHorizon;
-import capstone.team1.eventHorizon.events.mobSpawn.BaseMobSpawn;
+import capstone.team1.eventHorizon.events.effects.*;
 import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -37,6 +34,11 @@ public class EventScheduler
         this.neutralWeight = Config.getNeutralWeight();
 
         registeredEvents.put("WolfPack", new WolfPack());
+        registeredEvents.put("GottaGoFast", new GottaGoFast());
+        registeredEvents.put("Overmine", new Overmine());
+        registeredEvents.put("YoureTooSlow", new YoureTooSlow());
+        registeredEvents.put("FoodComa", new FoodComa());
+        registeredEvents.put("aSecondWind", new ASecondWind());
 
         reloadEvents();
         enabledEvents.put(EventClassification.POSITIVE, posEvents);
