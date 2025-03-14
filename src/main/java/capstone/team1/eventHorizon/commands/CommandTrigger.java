@@ -2,6 +2,7 @@ package capstone.team1.eventHorizon.commands;
 
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.BaseEvent;
+import capstone.team1.eventHorizon.events.effects.*;
 import capstone.team1.eventHorizon.events.mobSpawn.BaseMobSpawn;
 import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.command.CommandSender;
@@ -28,6 +29,11 @@ public class CommandTrigger {
     static {
         EVENT_MAP.put("wolfpack", plugin -> new WolfPack());
         // Add more events here as needed
+        EVENT_MAP.put("gottagofast", plugin -> new GottaGoFast());
+        EVENT_MAP.put("overmine", plugin -> new Overmine());
+        EVENT_MAP.put("youretooslow", plugin -> new YoureTooSlow());
+        EVENT_MAP.put("foodcoma", plugin -> new FoodComa());
+        EVENT_MAP.put("asecondwind", plugin -> new ASecondWind());
         // EVENT_MAP.put("zombiehorde", plugin -> new ZombieHorde(plugin));
     }
 
@@ -42,6 +48,11 @@ public class CommandTrigger {
         NEGATIVE_EVENTS.add("wolfpack");
         // POSITIVE_EVENTS.add("diamondrain");
         // NEUTRAL_EVENTS.add("foggyweather");
+        POSITIVE_EVENTS.add("gottagofast");
+        POSITIVE_EVENTS.add("overmine");
+        POSITIVE_EVENTS.add("asecondwind");
+        NEGATIVE_EVENTS.add("youretooslow");
+        POSITIVE_EVENTS.add("foodcoma");
     }
 
     // List of all available event names (including special commands)

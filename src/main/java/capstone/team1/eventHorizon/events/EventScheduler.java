@@ -2,12 +2,9 @@ package capstone.team1.eventHorizon.events;
 
 import capstone.team1.eventHorizon.Config;
 import capstone.team1.eventHorizon.EventHorizon;
-import capstone.team1.eventHorizon.events.mobSpawn.BaseMobSpawn;
+import capstone.team1.eventHorizon.events.effects.*;
 import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -26,6 +23,7 @@ public class EventScheduler
         this.negWeight = Config.getNegWeight();
         this.neutralWeight = Config.getNeutralWeight();
         loadWeightsFromConfig();
+
     }
 
     public void triggerEvent() {
