@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,12 +18,9 @@ import java.util.Collection;
 public final class EventHorizon extends JavaPlugin implements CommandExecutor
 {
 
-    public static GameTimer gameTimer;
-    private ScoreboardManager scoreboardManager;
     public static Scheduler scheduler;
     private EventInitializer eventInitializer;
     private static EventManager eventManager;
-
 
     public static EventHorizon plugin;
     public boolean isScoreboardOn;
@@ -40,13 +38,14 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 
         // Plugin startup logic
         setCommandScoreboard(plugin);
-        this.scoreboardManager = new ScoreboardManager();
+
         this.eventInitializer  = new EventInitializer();
         eventManager = new EventManager(eventInitializer);
         scheduler = new Scheduler(eventManager);
 
-        Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this, scoreboardManager), this);
-
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) { //
+            new PlaceholderEventHorizon().register();
+        }
         saveResource("config.yml", /* replace */ false);
 
         //initializes eventhorizon base command

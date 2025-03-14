@@ -68,9 +68,7 @@ public class CommandsManager implements BasicCommand
 //            case "no": //dont inlcude these in CommandHelp. this is just for confirming cancellation in CommandEnd
 //                CommandEnd.no(commandSourceStack.getSender());
 //                break;
-//            case "scoreboard": //dont inlcude these in CommandHelp. this is just for confirming cancellation in CommandEnd
-//                CommandScoreboard.run(commandSourceStack.getSender());
-//                break;
+
             default:
                 commandSourceStack.getSender().sendRichMessage("<red>Invalid subcommand. Type /eventhorizon help to see the list of commands");
                 break;
@@ -83,11 +81,11 @@ public class CommandsManager implements BasicCommand
     public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args)
     {
         if (args.length == 0) {
-            return List.of("begin", "end", "help", "resume", "pause", "trigger", "scoreboard");
+            return List.of("begin", "end", "help", "resume", "pause", "trigger");
         }
         if(args.length == 1)
         {
-            return StringUtil.copyPartialMatches(args[0], List.of("begin", "end", "help", "resume", "pause", "trigger", "scoreboard"), new ArrayList<>());
+            return StringUtil.copyPartialMatches(args[0], List.of("begin", "end", "help", "resume", "pause", "trigger"), new ArrayList<>());
         }
 
         // Handle trigger subcommand tab completions
