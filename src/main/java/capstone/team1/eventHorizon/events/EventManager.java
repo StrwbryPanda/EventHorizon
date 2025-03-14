@@ -1,14 +1,11 @@
 package capstone.team1.eventHorizon.events;
 
 import capstone.team1.eventHorizon.Config;
-import capstone.team1.eventHorizon.EventHorizon;
-import capstone.team1.eventHorizon.events.effects.*;
-import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.Bukkit;
 
 import java.util.*;
 
-public class EventScheduler
+public class EventManager
 {
     private final EventInitializer eventInitializer;
     private double posWeight;
@@ -16,7 +13,7 @@ public class EventScheduler
     private double neutralWeight;
     private final Random random = new Random();
 
-    public EventScheduler(EventInitializer eventInitializer)
+    public EventManager(EventInitializer eventInitializer)
     {
         this.eventInitializer = eventInitializer;
         this.posWeight = Config.getPosWeight();

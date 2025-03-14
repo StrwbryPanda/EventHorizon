@@ -1,8 +1,6 @@
 package capstone.team1.eventHorizon.commands;
 
 import capstone.team1.eventHorizon.Config;
-import capstone.team1.eventHorizon.EventHorizon;
-import capstone.team1.eventHorizon.TournamentTimer;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
@@ -40,7 +38,7 @@ public class CommandsManager implements BasicCommand
         String subCommand = strings[0];
         switch (subCommand) {
             case "start":
-                CommandStart.run(commandSourceStack.getSender());
+                CommandBegin.run(commandSourceStack.getSender());
                 break;
             case "end":
                 CommandEnd.run(commandSourceStack.getSender());

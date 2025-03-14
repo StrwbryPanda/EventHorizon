@@ -1,24 +1,20 @@
 package capstone.team1.eventHorizon;
 
-import capstone.team1.eventHorizon.events.EventFrequencyTimer;
-import jdk.jfr.Event;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.Player;
 
 
 //class for the tournament timer that runs from the beginning to the end of the tournament
-public class TournamentTimer extends BukkitRunnable {
+public class GameTimer extends BukkitRunnable {
+    private GameTimer instance;
     private final EventHorizon plugin;
     public int remainingTime = -1;
     public boolean hasStarted = false;
     public boolean isPaused = false;
     public int duration = -1;
 
-    public TournamentTimer() {
+    public GameTimer() {
         this.plugin = EventHorizon.plugin;
-
+        this.instance = this;
     }
   
     @Override
@@ -52,24 +48,35 @@ public class TournamentTimer extends BukkitRunnable {
         return true;
     }
 
-    public void pause(){
+    public boolean pause(){
+        if (!hasStarted || isPaused) {
+            return false;
+        }
         this.cancel();
         isPaused = true;
+        return true;
     }
 
-    public void resume(){
+    public boolean resume(){
         if(remainingTime == -1 || !hasStarted){
-            return;
+            return false;
         }
-        this.start(remainingTime);
-        isPaused = false;
+        boolean hasStarted = this.start(remainingTime);
+        if(hasStarted){
+            isPaused = false;
+        }
+        return hasStarted;
     }
 
-    public void end(){
+    public boolean end(){
+        if (!hasStarted) {
+            return false;
+        }
         this.cancel();
         hasStarted = false;
         isPaused = false;
         Util.broadcast("<red>Tournament has ended");
+        return true;
     }
 
     public void displayRemainingTime(){

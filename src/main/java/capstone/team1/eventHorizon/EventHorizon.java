@@ -1,16 +1,13 @@
 package capstone.team1.eventHorizon;
 
 import capstone.team1.eventHorizon.commands.CommandsManager;
-import capstone.team1.eventHorizon.events.EventFrequencyTimer;
 import capstone.team1.eventHorizon.events.EventInitializer;
-import capstone.team1.eventHorizon.events.EventScheduler;
+import capstone.team1.eventHorizon.events.EventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,11 +16,11 @@ import java.util.Collection;
 public final class EventHorizon extends JavaPlugin implements CommandExecutor
 {
 
-    public static TournamentTimer tournamentTimer;
+    public static GameTimer gameTimer;
     private ScoreboardManager scoreboardManager;
-    public static EventFrequencyTimer eventFrequencyTimer;
+    public static Scheduler scheduler;
     private EventInitializer eventInitializer;
-    private EventScheduler eventScheduler;
+    private EventManager eventManager;
 
 
     public static EventHorizon plugin;
@@ -44,9 +41,9 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
         setCommandScoreboard(plugin);
         this.scoreboardManager = new ScoreboardManager();
         this.eventInitializer  = new EventInitializer();
-        this.eventScheduler  = new EventScheduler(eventInitializer);
-        eventFrequencyTimer = new EventFrequencyTimer(eventScheduler);
-        tournamentTimer = new TournamentTimer();
+        this.eventManager = new EventManager(eventInitializer);
+        scheduler = new Scheduler(eventManager);
+        gameTimer = new GameTimer();
 
 
 
