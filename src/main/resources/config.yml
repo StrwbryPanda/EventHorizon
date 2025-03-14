@@ -1,4 +1,4 @@
-
+#Configurations for the EventHorizon plugin
 
 #default integer value for tournament timer (in seconds)
 tournament-timer: 3600
@@ -13,9 +13,7 @@ event:
   negWeight: 2
   neutralWeight: 6
 
-#determines if an event is enabled or disabled
-events:
-  enabled:
-    - "WolfPack" #MobSpawn: negative
-  disabled:
-    - "IceIsNice" #BlockModification: neutral
+#to disable events, comment out the event name
+enabled-events:
+- "WolfPack" #MobSpawn: negative
+- "IceIsNice" #BlockModification: neutral

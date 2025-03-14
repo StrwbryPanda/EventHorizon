@@ -10,9 +10,8 @@ import org.bukkit.command.CommandSender;
 //command that starts the tournament timer
 public class CommandStart
 {
-    public static int time = 60; //tournament time variable
-
     public static void run(CommandSender sender) {
-        EventHorizon.tournamentTimer.start(time);
+        Util.message(sender, EventHorizon.tournamentTimer.start(Config.getTournamentTimer()) ? "The tournament has started." : "Error: The tournament has already started.");
     }
+
 }

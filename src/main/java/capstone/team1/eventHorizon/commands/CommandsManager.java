@@ -42,9 +42,6 @@ public class CommandsManager implements BasicCommand
             case "start":
                 CommandStart.run(commandSourceStack.getSender());
                 break;
-            case "restart":
-                CommandRestart.run(commandSourceStack.getSender());
-                break;
             case "end":
                 CommandEnd.run(commandSourceStack.getSender());
                 break;

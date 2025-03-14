@@ -23,7 +23,7 @@ public class Config
         return EventHorizon.plugin.getConfig().getDouble("event.neutralWeight");
     }
     public static List<String> getEnabledEvents() {
-        return EventHorizon.plugin.getConfig().getStringList("events.enabled");
+        return EventHorizon.plugin.getConfig().getStringList("enabled-events");
     }
     public static void reloadConfig() {
         EventHorizon.plugin.reloadConfig();

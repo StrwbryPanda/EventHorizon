@@ -42,33 +42,42 @@ public class TournamentTimer extends BukkitRunnable {
 
     public int remainingTime = -1;
     public boolean hasStarted = false;
+    public boolean isPaused = false;
+    public int duration = -1;
 
-    public void start(int duration) {
+    public boolean start(int duration) {
+        if (hasStarted && !isPaused) {
+            return false;
+        }
+        this.duration = duration;
         this.remainingTime = duration;
         hasStarted = true;
         this.runTaskTimerAsynchronously(plugin, 0, 20);
+        return true;
+    }
+
+
+
+    public void pause(){
+        this.cancel();
+        isPaused = true;
+    }
+
+    public void resume(){
+        if(remainingTime == -1 || !hasStarted){
+            return;
+        }
+        this.start(remainingTime);
+        isPaused = false;
     }
 
     public void end(){
         this.cancel();
+        hasStarted = false;
+        isPaused = false;
         Util.broadcast("<red>Tournament has ended");
     }
 
-    public void pause(){
-        this.cancel();
-    }
-
-    public void resume(){
-        if(remainingTime == -1 || hasStarted == false){
-            return;
-        }
-        this.start(remainingTime);
-    }
-
-    public void restart(){
-        this.cancel();
-        this.runTaskTimer(plugin, 0, 20);
-    }
 
     public void displayRemainingTime(){
         Util.broadcast("<red>Tournament Time Remaining: <aqua>" + formatTime(remainingTime));

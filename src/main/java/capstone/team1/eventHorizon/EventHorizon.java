@@ -8,6 +8,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.units.qual.C;
 
@@ -28,6 +29,11 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     public static EventHorizon plugin;
     public boolean isScoreboardOn;
     public static Collection<NamespacedKey> entityKeysToDelete = new ArrayList<>();
+
+    public static EventHorizon getPlugin()
+    {
+        return plugin;
+    }
 
     @Override
     public void onEnable()

@@ -13,12 +13,12 @@ public class Util
 {
     public static void log(String message)
     {
-        Bukkit.getLogger().info(message);
+        EventHorizon.getPlugin().getComponentLogger().info(parse(message));
     }
 
     public static void warning(String message)
     {
-        Bukkit.getLogger().warning(message);
+        EventHorizon.getPlugin().getComponentLogger().warn(parse(message));
     }
 
     public static void message(Audience audience, String message)
