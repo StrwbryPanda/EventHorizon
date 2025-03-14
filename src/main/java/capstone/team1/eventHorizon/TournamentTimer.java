@@ -11,7 +11,10 @@ import org.bukkit.entity.Player;
 //class for the tournament timer that runs from the beginning to the end of the tournament
 public class TournamentTimer extends BukkitRunnable {
     private final EventHorizon plugin;
-
+    public int remainingTime = -1;
+    public boolean hasStarted = false;
+    public boolean isPaused = false;
+    public int duration = -1;
 
     public TournamentTimer() {
         this.plugin = EventHorizon.plugin;
@@ -30,20 +33,13 @@ public class TournamentTimer extends BukkitRunnable {
         remainingTime--;
     }
 
-
-
-//format for timer
+    //format for timer
     public static String formatTime(int seconds){
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
         int sec = seconds % 60;
         return String.format("%02d:%02d:%02d", hours, minutes, sec);
     }
-
-    public int remainingTime = -1;
-    public boolean hasStarted = false;
-    public boolean isPaused = false;
-    public int duration = -1;
 
     public boolean start(int duration) {
         if (hasStarted && !isPaused) {
@@ -55,8 +51,6 @@ public class TournamentTimer extends BukkitRunnable {
         this.runTaskTimerAsynchronously(plugin, 0, 20);
         return true;
     }
-
-
 
     public void pause(){
         this.cancel();
@@ -77,7 +71,6 @@ public class TournamentTimer extends BukkitRunnable {
         isPaused = false;
         Util.broadcast("<red>Tournament has ended");
     }
-
 
     public void displayRemainingTime(){
         Util.broadcast("<red>Tournament Time Remaining: <aqua>" + formatTime(remainingTime));
