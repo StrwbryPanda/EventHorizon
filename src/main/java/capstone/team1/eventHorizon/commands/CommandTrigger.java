@@ -13,6 +13,7 @@ import java.util.*;
 
 public class CommandTrigger {
     private static final Random random = new Random();
+    private static EventHorizon plugin;
 
     ///  DELETE THIS
     // Create a map to store event name to creator function mapping
@@ -70,10 +71,10 @@ public class CommandTrigger {
     /**
      * Executes the trigger command
      * @param sender The command sender
-     * @param plugin The EventHorizon plugin instance
      * @param args Additional arguments (event name)
      */
-    public static void run(CommandSender sender, EventHorizon plugin, String[] args) {
+    public static void run(CommandSender sender, String[] args) {
+        plugin = EventHorizon.plugin;
         // Check if sender has permission
         if (!sender.hasPermission("eventhorizon.trigger")) {
             sender.sendRichMessage("<red>You don't have permission to trigger events!");

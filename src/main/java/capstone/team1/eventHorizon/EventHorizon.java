@@ -2,12 +2,15 @@ package capstone.team1.eventHorizon;
 
 import capstone.team1.eventHorizon.commands.CommandsManager;
 import capstone.team1.eventHorizon.events.EventFrequencyTimer;
+import capstone.team1.eventHorizon.events.EventInitializer;
 import capstone.team1.eventHorizon.events.EventScheduler;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,12 +20,20 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 {
 
     public static TournamentTimer tournamentTimer;
-    private ScoreboardManager ScoreboardManager;
-    private EventFrequencyTimer eventFrequencyTimer;
+    private ScoreboardManager scoreboardManager;
+    public static EventFrequencyTimer eventFrequencyTimer;
+    private EventInitializer eventInitializer;
+    private EventScheduler eventScheduler;
+
 
     public static EventHorizon plugin;
     public boolean isScoreboardOn;
     public static Collection<NamespacedKey> entityKeysToDelete = new ArrayList<>();
+
+    public static EventHorizon getPlugin()
+    {
+        return plugin;
+    }
 
     @Override
     public void onEnable()
@@ -31,8 +42,13 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 
         // Plugin startup logic
         setCommandScoreboard(plugin);
-        ScoreboardManager scoreboardManager = new ScoreboardManager(this);
-        EventScheduler eventScheduler  = new EventScheduler(this);
+        this.scoreboardManager = new ScoreboardManager();
+        this.eventInitializer  = new EventInitializer();
+        this.eventScheduler  = new EventScheduler(eventInitializer);
+        eventFrequencyTimer = new EventFrequencyTimer(eventScheduler);
+        tournamentTimer = new TournamentTimer();
+
+
 
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this, scoreboardManager), this);
 
@@ -40,7 +56,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 
         //initializes eventhorizon base command
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
-                event -> event.registrar().register("eventhorizon", new CommandsManager(this)));
+                event -> event.registrar().register("eventhorizon", new CommandsManager()));
 
     }
 
@@ -52,9 +68,6 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     public void onDisable()
     {
         // Plugin shutdown logic
-
         getLogger().info("EventHorizon has been disabled.");
     }
-
-
 }

@@ -13,9 +13,9 @@ public class ScoreboardListener implements Listener {
         this.ScoreboardManager = scoreboardManager;
     }
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        ScoreboardManager.createScoreboard(player);
-    }
+//    @EventHandler
+//    public void onPlayerJoin(PlayerJoinEvent event) {
+//        Player player = event.getPlayer();
+//        ScoreboardManager.createScoreboard(player);
+//    }
 }

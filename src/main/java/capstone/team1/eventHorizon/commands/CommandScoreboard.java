@@ -10,7 +10,7 @@ public class CommandScoreboard
     public static boolean isScoreboardOn = EventHorizon.plugin.isScoreboardOn;
 
 
-    public static void run(CommandSender sender, EventHorizon plugin){
+    public static void run(CommandSender sender){
 
         isScoreboardOn = !isScoreboardOn;
 

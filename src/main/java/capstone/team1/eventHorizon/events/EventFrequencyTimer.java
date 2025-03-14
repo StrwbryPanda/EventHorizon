@@ -10,10 +10,10 @@ public class EventFrequencyTimer extends BukkitRunnable {
     private final EventScheduler eventScheduler;
     private final EventHorizon plugin;
 
-    public EventFrequencyTimer(EventHorizon plugin) {
-        this.plugin = plugin;
+    public EventFrequencyTimer(EventScheduler eventScheduler) {
+        this.plugin = EventHorizon.plugin;
         this.eventFrequency = plugin.getConfig().getInt("event.frequency", Config.getEventFrequency());
-        this.eventScheduler = new EventScheduler(plugin);
+        this.eventScheduler = eventScheduler;  // Use the passed eventScheduler instead of creating new one
     }
 
     @Override
@@ -26,6 +26,4 @@ public class EventFrequencyTimer extends BukkitRunnable {
         Bukkit.getLogger().info("Starting EventFrequencyTimer with frequency: " + eventFrequency + " seconds.");
         this.runTaskTimer(plugin, 0L, eventFrequency * 20L);
     }
-
-
 }
