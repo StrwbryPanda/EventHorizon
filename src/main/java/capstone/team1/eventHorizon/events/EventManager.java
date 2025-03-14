@@ -1,10 +1,11 @@
 package capstone.team1.eventHorizon.events;
 
-import capstone.team1.eventHorizon.Config;
+import capstone.team1.eventHorizon.Utility.Config;
 import org.bukkit.Bukkit;
 
 import java.util.*;
 
+//class that handles event triggering
 public class EventManager
 {
     private final EventInitializer eventInitializer;

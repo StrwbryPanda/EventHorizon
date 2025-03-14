@@ -1,6 +1,5 @@
 package capstone.team1.eventHorizon.commands;
 
-import capstone.team1.eventHorizon.Config;
 import capstone.team1.eventHorizon.EventHorizon;
 import org.bukkit.command.CommandSender;
 

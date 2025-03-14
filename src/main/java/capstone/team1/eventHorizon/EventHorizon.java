@@ -1,5 +1,6 @@
 package capstone.team1.eventHorizon;
 
+import capstone.team1.eventHorizon.Utility.Config;
 import capstone.team1.eventHorizon.commands.CommandsManager;
 import capstone.team1.eventHorizon.events.EventInitializer;
 import capstone.team1.eventHorizon.events.EventManager;
@@ -43,9 +44,6 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
         this.eventInitializer  = new EventInitializer();
         this.eventManager = new EventManager(eventInitializer);
         scheduler = new Scheduler(eventManager);
-        gameTimer = new GameTimer();
-
-
 
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this, scoreboardManager), this);
 
@@ -54,11 +52,10 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
         //initializes eventhorizon base command
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
                 event -> event.registrar().register("eventhorizon", new CommandsManager()));
-
     }
 
     private void setCommandScoreboard(EventHorizon plugin) {
-        this.isScoreboardOn = plugin.getConfig().getBoolean("scoreboard.setting", Config.getScoreboardSetting()); //use config value
+        this.isScoreboardOn = Config.getScoreboardSetting(); //use config value
     }
 
     @Override

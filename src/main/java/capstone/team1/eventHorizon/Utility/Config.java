@@ -1,4 +1,6 @@
-package capstone.team1.eventHorizon;
+package capstone.team1.eventHorizon.Utility;
+
+import capstone.team1.eventHorizon.EventHorizon;
 
 import java.util.List;
 

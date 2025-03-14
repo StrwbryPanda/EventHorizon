@@ -1,6 +1,6 @@
 package capstone.team1.eventHorizon.commands;
 
-import capstone.team1.eventHorizon.Config;
+import capstone.team1.eventHorizon.Utility.Config;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
@@ -37,7 +37,7 @@ public class CommandsManager implements BasicCommand
         //switch statement to execute subcommands
         String subCommand = strings[0];
         switch (subCommand) {
-            case "start":
+            case "begin":
                 CommandBegin.run(commandSourceStack.getSender());
                 break;
             case "end":
@@ -83,11 +83,11 @@ public class CommandsManager implements BasicCommand
     public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args)
     {
         if (args.length == 0) {
-            return List.of("start", "end", "help", "resume", "pause", "trigger", "restart", "scoreboard");
+            return List.of("begin", "end", "help", "resume", "pause", "trigger", "scoreboard");
         }
         if(args.length == 1)
         {
-            return StringUtil.copyPartialMatches(args[0], List.of("start", "end", "help", "resume", "pause", "trigger", "restart", "scoreboard"), new ArrayList<>());
+            return StringUtil.copyPartialMatches(args[0], List.of("begin", "end", "help", "resume", "pause", "trigger", "scoreboard"), new ArrayList<>());
         }
 
         // Handle trigger subcommand tab completions

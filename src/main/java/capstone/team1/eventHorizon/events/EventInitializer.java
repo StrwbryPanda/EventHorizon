@@ -1,7 +1,6 @@
 package capstone.team1.eventHorizon.events;
 
-import capstone.team1.eventHorizon.Config;
-import capstone.team1.eventHorizon.EventHorizon;
+import capstone.team1.eventHorizon.Utility.Config;
 import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.Bukkit;
 
@@ -10,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//class that handles event loading and registration
 public class EventInitializer
 {
     private final HashMap<String, BaseEvent> registeredEvents = new HashMap<>();
@@ -41,12 +41,12 @@ public class EventInitializer
             Bukkit.getLogger().warning("event class: " + event);
 
             if (event != null) {
-                registerEvent(event);
+                enableEvent(event);
             }
         }
     }
 
-    private void registerEvent(BaseEvent event) {
+    private void enableEvent(BaseEvent event) {
         switch (event.getEventClassification(event)) {
             case POSITIVE -> posEvents.add(event);
             case NEGATIVE -> negEvents.add(event);

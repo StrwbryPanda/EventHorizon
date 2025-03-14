@@ -1,35 +1,65 @@
 package capstone.team1.eventHorizon;
 
-import capstone.team1.eventHorizon.Config;
-import capstone.team1.eventHorizon.EventHorizon;
+import capstone.team1.eventHorizon.Utility.Config;
+import capstone.team1.eventHorizon.Utility.MsgUtil;
 import capstone.team1.eventHorizon.events.EventManager;
-import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class Scheduler extends BukkitRunnable {
+public class Scheduler {
     private final int eventFrequency;
     private final EventManager eventManager;
     private final EventHorizon plugin;
+    private GameTimer gameTimer;
+
+    public boolean hasStarted = false;
+    public boolean isPaused = false;
+    public int pausedTime = -1;
+
 
     public Scheduler(EventManager eventManager) {
         this.plugin = EventHorizon.plugin;
-        this.eventFrequency = plugin.getConfig().getInt("event.frequency", Config.getEventFrequency());
-        this.eventManager = eventManager;  // Use the passed eventScheduler instead of creating new one
+        this.eventFrequency = Config.getEventFrequency();
+        this.eventManager = eventManager;
     }
 
-    @Override
-    public void run() {
-        Bukkit.getLogger().info("EventFrequencyTimer running...");
-        eventManager.triggerEvent();
+    public boolean start(int duration) {
+        if (hasStarted && !isPaused) {
+            return false;
+        }
+        gameTimer = new GameTimer(duration);
+        gameTimer.runTaskTimerAsynchronously(plugin, 0, 20);
+        hasStarted = true;
+        return true;
     }
 
-    public void startTimer() {
-        Bukkit.getLogger().info("Starting EventFrequencyTimer with frequency: " + eventFrequency + " seconds.");
-        this.runTaskTimer(plugin, 0L, eventFrequency * 20L);
+    public boolean pause(){
+        if (!hasStarted || isPaused) {
+            return false;
+        }
+        pausedTime = gameTimer.endTimer();
+        isPaused = true;
+        return true;
     }
 
-    //min = 5mins
-    //max = 10 mins
-    //random (5,10)
-    //timertracker += random
+    public boolean resume(){
+        if(pausedTime == -1 || !hasStarted){
+            return false;
+        }
+        boolean hasStarted = this.start(pausedTime);
+        if(hasStarted){
+            isPaused = false;
+        }
+        return hasStarted;
+    }
+
+    public boolean end(){
+        if (!hasStarted) {
+            return false;
+        }
+        gameTimer.endTimer();
+        hasStarted = false;
+        isPaused = false;
+        MsgUtil.broadcast("<red>Tournament has ended");
+        return true;
+    }
+
 }
