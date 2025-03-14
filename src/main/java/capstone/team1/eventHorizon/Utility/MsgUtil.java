@@ -1,15 +1,13 @@
-package capstone.team1.eventHorizon;
+package capstone.team1.eventHorizon.Utility;
 
-import com.mojang.brigadier.Message;
+import capstone.team1.eventHorizon.EventHorizon;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 
-public class Util
+public class MsgUtil
 {
     public static void log(String message)
     {

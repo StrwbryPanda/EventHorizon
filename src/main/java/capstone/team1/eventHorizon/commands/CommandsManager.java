@@ -1,8 +1,6 @@
 package capstone.team1.eventHorizon.commands;
 
-import capstone.team1.eventHorizon.Config;
-import capstone.team1.eventHorizon.EventHorizon;
-import capstone.team1.eventHorizon.TournamentTimer;
+import capstone.team1.eventHorizon.Utility.Config;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
@@ -39,8 +37,8 @@ public class CommandsManager implements BasicCommand
         //switch statement to execute subcommands
         String subCommand = strings[0];
         switch (subCommand) {
-            case "start":
-                CommandStart.run(commandSourceStack.getSender());
+            case "begin":
+                CommandBegin.run(commandSourceStack.getSender());
                 break;
             case "end":
                 CommandEnd.run(commandSourceStack.getSender());
@@ -70,11 +68,9 @@ public class CommandsManager implements BasicCommand
 //            case "no": //dont inlcude these in CommandHelp. this is just for confirming cancellation in CommandEnd
 //                CommandEnd.no(commandSourceStack.getSender());
 //                break;
-//            case "scoreboard": //dont inlcude these in CommandHelp. this is just for confirming cancellation in CommandEnd
-//                CommandScoreboard.run(commandSourceStack.getSender());
-//                break;
+
             default:
-                commandSourceStack.getSender().sendRichMessage("Tournament timer status");
+                commandSourceStack.getSender().sendRichMessage("<red>Invalid subcommand. Type /eventhorizon help to see the list of commands");
                 break;
         }
         commandSourceStack.getSender();
@@ -85,11 +81,11 @@ public class CommandsManager implements BasicCommand
     public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args)
     {
         if (args.length == 0) {
-            return List.of("start", "end", "help", "resume", "pause", "trigger", "restart", "scoreboard");
+            return List.of("begin", "end", "help", "resume", "pause", "trigger");
         }
         if(args.length == 1)
         {
-            return StringUtil.copyPartialMatches(args[0], List.of("start", "end", "help", "resume", "pause", "trigger", "restart", "scoreboard"), new ArrayList<>());
+            return StringUtil.copyPartialMatches(args[0], List.of("begin", "end", "help", "resume", "pause", "trigger"), new ArrayList<>());
         }
 
         // Handle trigger subcommand tab completions

@@ -1,7 +1,7 @@
 package capstone.team1.eventHorizon.events;
 
-import capstone.team1.eventHorizon.Config;
-import capstone.team1.eventHorizon.EventHorizon;
+import capstone.team1.eventHorizon.Utility.Config;
+import capstone.team1.eventHorizon.Utility.MsgUtil;
 import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.Bukkit;
 
@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//class that handles event loading and registration
 public class EventInitializer
 {
     private final HashMap<String, BaseEvent> registeredEvents = new HashMap<>();
@@ -20,8 +21,8 @@ public class EventInitializer
 
     public EventInitializer()
     {
-        reloadEvents();
         registerAvailableEvents();
+        reloadEvents();
         enabledEvents.put(EventClassification.POSITIVE, posEvents);
         enabledEvents.put(EventClassification.NEGATIVE, negEvents);
         enabledEvents.put(EventClassification.NEUTRAL, neutralEvents);
@@ -34,19 +35,19 @@ public class EventInitializer
     private void loadEventsFromConfig() {
         List<String> enabledEventNames = Config.getEnabledEvents();
         Bukkit.getLogger().warning("Enabled events: " + enabledEvents);
-
         for (String eventName : enabledEventNames) {
             BaseEvent event = registeredEvents.get(eventName);
 
             Bukkit.getLogger().warning("event class: " + event);
+            MsgUtil.broadcast("event name: " + eventName);
 
             if (event != null) {
-                registerEvent(event);
+                enableEvent(event);
             }
         }
     }
 
-    private void registerEvent(BaseEvent event) {
+    private void enableEvent(BaseEvent event) {
         switch (event.getEventClassification(event)) {
             case POSITIVE -> posEvents.add(event);
             case NEGATIVE -> negEvents.add(event);
