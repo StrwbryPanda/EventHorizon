@@ -21,7 +21,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     private ScoreboardManager scoreboardManager;
     public static Scheduler scheduler;
     private EventInitializer eventInitializer;
-    private EventManager eventManager;
+    private static EventManager eventManager;
 
 
     public static EventHorizon plugin;
@@ -42,7 +42,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
         setCommandScoreboard(plugin);
         this.scoreboardManager = new ScoreboardManager();
         this.eventInitializer  = new EventInitializer();
-        this.eventManager = new EventManager(eventInitializer);
+        eventManager = new EventManager(eventInitializer);
         scheduler = new Scheduler(eventManager);
 
         Bukkit.getPluginManager().registerEvents(new ScoreboardListener(this, scoreboardManager), this);
@@ -63,5 +63,9 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     {
         // Plugin shutdown logic
         getLogger().info("EventHorizon has been disabled.");
+    }
+
+    public static EventManager getEventManager() {
+        return eventManager;
     }
 }

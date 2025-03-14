@@ -13,6 +13,7 @@ public class Scheduler {
     public boolean hasStarted = false;
     public boolean isPaused = false;
     public int pausedTime = -1;
+    private int eventInterval = 5;
 
 
     public Scheduler(EventManager eventManager) {
@@ -25,7 +26,7 @@ public class Scheduler {
         if (hasStarted && !isPaused) {
             return false;
         }
-        gameTimer = new GameTimer(duration);
+        gameTimer = new GameTimer(duration, eventInterval);
         gameTimer.runTaskTimerAsynchronously(plugin, 0, 20);
         hasStarted = true;
         return true;
@@ -61,5 +62,8 @@ public class Scheduler {
         MsgUtil.broadcast("<red>Tournament has ended");
         return true;
     }
+
+
+
 
 }

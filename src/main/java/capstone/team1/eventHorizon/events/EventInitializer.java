@@ -1,6 +1,7 @@
 package capstone.team1.eventHorizon.events;
 
 import capstone.team1.eventHorizon.Utility.Config;
+import capstone.team1.eventHorizon.Utility.MsgUtil;
 import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.Bukkit;
 
@@ -20,8 +21,8 @@ public class EventInitializer
 
     public EventInitializer()
     {
-        reloadEvents();
         registerAvailableEvents();
+        reloadEvents();
         enabledEvents.put(EventClassification.POSITIVE, posEvents);
         enabledEvents.put(EventClassification.NEGATIVE, negEvents);
         enabledEvents.put(EventClassification.NEUTRAL, neutralEvents);
@@ -34,11 +35,11 @@ public class EventInitializer
     private void loadEventsFromConfig() {
         List<String> enabledEventNames = Config.getEnabledEvents();
         Bukkit.getLogger().warning("Enabled events: " + enabledEvents);
-
         for (String eventName : enabledEventNames) {
             BaseEvent event = registeredEvents.get(eventName);
 
             Bukkit.getLogger().warning("event class: " + event);
+            MsgUtil.broadcast("event name: " + eventName);
 
             if (event != null) {
                 enableEvent(event);

@@ -12,12 +12,14 @@ public class GameTimer extends BukkitRunnable {
     private GameTimer instance;
     private final EventHorizon plugin;
     public int remainingTime = -1;
+    private final int eventInterval;
 
 
-    public GameTimer(int duration) {
+    public GameTimer(int duration, int eventInterval) {
         this.plugin = EventHorizon.plugin;
         this.instance = this;
         this.remainingTime = duration;
+        this.eventInterval = eventInterval;
     }
   
     @Override
@@ -31,6 +33,9 @@ public class GameTimer extends BukkitRunnable {
         //displays the remaining time
         displayRemainingTime();
         remainingTime--;
+        if (remainingTime % eventInterval == 0) {
+            plugin.getEventManager().triggerEvent();
+        }
     }
 
     //format for timer

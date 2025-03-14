@@ -72,7 +72,7 @@ public class CommandsManager implements BasicCommand
 //                CommandScoreboard.run(commandSourceStack.getSender());
 //                break;
             default:
-                commandSourceStack.getSender().sendRichMessage("Tournament timer status");
+                commandSourceStack.getSender().sendRichMessage("<red>Invalid subcommand. Type /eventhorizon help to see the list of commands");
                 break;
         }
         commandSourceStack.getSender();

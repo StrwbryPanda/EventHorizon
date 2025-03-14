@@ -1,6 +1,8 @@
 package capstone.team1.eventHorizon.events;
 
+import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.Utility.Config;
+import capstone.team1.eventHorizon.Utility.MsgUtil;
 import org.bukkit.Bukkit;
 
 import java.util.*;
@@ -27,7 +29,7 @@ public class EventManager
     public void triggerEvent() {
         Bukkit.getLogger().info("Triggering event...");
 
-        BaseEvent selectedEvent = null;
+
         List<EventClassification> items = List.of(EventClassification.POSITIVE, EventClassification.NEGATIVE, EventClassification.NEUTRAL);
         List<Double> weights = List.of(posWeight, negWeight, neutralWeight);
         double totalWeight = 0.0;
@@ -35,7 +37,6 @@ public class EventManager
             totalWeight += weight;
         }
 
-        Random random = new Random();
         double randomNumber = random.nextDouble() * totalWeight;
 
 
@@ -46,12 +47,16 @@ public class EventManager
             if (randomNumber < cumulativeWeight) {
                 EventClassification eventClassification = items.get(i);
                 List<BaseEvent> selectedEvents = eventInitializer.getEnabledEvents().get(eventClassification);
-                selectedEvent = selectedEvents.get(random.nextInt(selectedEvents.size()));
-                selectedEvent.execute();
+                MsgUtil.broadcast("Selected event classification: " + eventClassification);
+                MsgUtil.broadcast("Selected events: " + selectedEvents);
+                BaseEvent selectedEvent = selectedEvents.get(random.nextInt(selectedEvents.size()));
+                Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> selectedEvent.execute());
                 return;
             }
         }
     }
+
+
 
     private void loadWeightsFromConfig() {
         this.posWeight = Config.getPosWeight();
