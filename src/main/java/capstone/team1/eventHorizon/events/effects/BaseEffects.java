@@ -40,6 +40,7 @@ public abstract class BaseEffects extends BaseEvent {
 }
 
 //remove start/stop --> execute/terminate
+//add other attributes
 //getter/setter for globalAmplifier and globalDuration
 //change 999 to infinite/max_value
 //remove potion effect in terminate
