@@ -6,10 +6,13 @@ import capstone.team1.eventHorizon.events.EventClassification;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public abstract class BaseEffects extends BaseEvent {
@@ -25,12 +28,7 @@ public abstract class BaseEffects extends BaseEvent {
     private static final boolean DEFAULT_SHOW_ICON = true;
 
     // Effects properties
-    public PotionEffectType effectType = PotionEffectType.SPEED;
-    public int duration = DEFAULT_DURATION;
-    public int amplifier = DEFAULT_AMPLIFIER;
-    public boolean ambient = DEFAULT_AMBIENT;
-    public boolean showParticles = DEFAULT_SHOW_PARTICLES;
-    public boolean showIcon = DEFAULT_SHOW_ICON;
+    public List<PotionEffect> effects = new ArrayList<>();
 
     // Constructors
     public BaseEffects(EventClassification classification, String eventName) {
@@ -41,37 +39,66 @@ public abstract class BaseEffects extends BaseEvent {
 
     public BaseEffects(PotionEffectType effectType, String eventName) {
         super(EventClassification.NEUTRAL, eventName);
-        this.plugin = EventHorizon.plugin;
-        this.effectType = effectType;
+        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
+
+        addEffect(effectType, DEFAULT_DURATION, DEFAULT_AMPLIFIER, DEFAULT_AMBIENT,
+                DEFAULT_SHOW_PARTICLES, DEFAULT_SHOW_ICON);
     }
 
     public BaseEffects(PotionEffectType effectType, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.plugin;
-        this.effectType = effectType;
+        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
+
+        addEffect(effectType, DEFAULT_DURATION, DEFAULT_AMPLIFIER, DEFAULT_AMBIENT,
+                DEFAULT_SHOW_PARTICLES, DEFAULT_SHOW_ICON);
     }
 
     // Executes the event
     @Override
     public void execute() {
-        applyPotionEffectToAllPlayers();
+        applyPotionEffectsToAllPlayers();
     }
 
     //  stops the event
     @Override
     public void terminate() {
-        removePotionEffectFromAllPlayers();
+        removePotionEffectsFromAllPlayers();
     }
 
-    public void applyPotionEffectToAllPlayers() {
+    public void applyPotionEffectsToAllPlayers() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            applyPotionEffectToPlayer(player);
+            applyPotionEffectsToPlayer(player);
         }
     }
 
-    public void applyPotionEffectToPlayer(Player player) {
+    public void applyPotionEffectsToPlayer(Player player) {
+        for (PotionEffect effect : effects) {
+            player.addPotionEffect(effect);
+        }
+        markEffectPlayer(player);
+    }
+
+    public void removePotionEffectsFromAllPlayers() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            removePotionEffectsFromPlayer(player);
+        }
+    }
+
+    public void removePotionEffectsFromPlayer(Player player) {
+        for (PotionEffect effect : effects) {
+            PotionEffectType effectType = effect.getType();
+            if (player.hasPotionEffect(effectType)) {
+                player.removePotionEffect(effectType);
+            }
+        }
+        unmarkEffectPlayer(player);
+    }
+
+    // Methods to add and remove effects
+    public BaseEffects addEffect(PotionEffectType effectType, int duration, int amplifier,
+                                 boolean ambient, boolean showParticles, boolean showIcon) {
         PotionEffect effect = new PotionEffect(
                 effectType,
                 duration,
@@ -80,64 +107,59 @@ public abstract class BaseEffects extends BaseEvent {
                 showParticles,
                 showIcon
         );
-        player.addPotionEffect(effect);
+        effects.add(effect);
+        return this;
     }
 
-    public void removePotionEffectFromAllPlayers() {
+    public BaseEffects addEffect(PotionEffectType effectType) {
+        return addEffect(effectType, DEFAULT_DURATION, DEFAULT_AMPLIFIER, DEFAULT_AMBIENT,
+                DEFAULT_SHOW_PARTICLES, DEFAULT_SHOW_ICON);
+    }
+
+    public BaseEffects addEffect(PotionEffect effect) {
+        effects.add(effect);
+        return this;
+    }
+
+    public BaseEffects removeEffect(PotionEffectType effectType) {
+        effects.removeIf(effect -> effect.getType().equals(effectType));
+        return this;
+    }
+
+    public PotionEffect getEffect(PotionEffectType effectType) {
+        for (PotionEffect effect : effects) {
+            if (effect.getType().equals(effectType)) {
+                return effect;
+            }
+        }
+        return null;
+    }
+
+    public boolean hasEffect(PotionEffectType effectType) {
+        return getEffect(effectType) != null;
+    }
+
+    public void markEffectPlayer(Player player) {
+        player.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
+    }
+
+    public boolean isEffectPlayerMarked(Player player) {
+        return player.getPersistentDataContainer().has(key, PersistentDataType.BYTE);
+    }
+
+    public void unmarkEffectPlayer(Player player) {
+        player.getPersistentDataContainer().remove(key);
+    }
+
+    public void removeEffectsFromAllMarkedPlayers() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            removePotionEffectFromPlayer(player);
+            if (isEffectPlayerMarked(player)) {
+                removePotionEffectsFromPlayer(player);
+            }
         }
     }
 
-    public void removePotionEffectFromPlayer(Player player) {
-        if (effectType != null && player.hasPotionEffect(effectType)) {
-            player.removePotionEffect(effectType);
-        }
+    public List<PotionEffect> getAllEffects() {
+        return new ArrayList<>(effects);
     }
-
-//    public void markPotionEffectPlayer(Player player) {
-//
-//    }
-//
-//    public boolean isPotionEffectPlayerMarked(Player player) {
-//
-//    }
-
-    // Setters
-    public BaseEffects setDuration(int duration) {
-        this.duration = duration;
-        return this;
-    }
-
-    public BaseEffects setAmplifier(int amplifier) {
-        this.amplifier = amplifier;
-        return this;
-    }
-
-    public BaseEffects setAmbient(boolean ambient) {
-        this.ambient = ambient;
-        return this;
-    }
-
-    public BaseEffects setShowParticles(boolean showParticles) {
-        this.showParticles = showParticles;
-        return this;
-    }
-
-    public BaseEffects setShowIcon(boolean showIcon) {
-        this.showIcon = showIcon;
-        return this;
-    }
-    public void terminate(){};
-
 }
-
-//remove start/stop --> execute/terminate
-//add other attributes
-//getter/setter for globalAmplifier and globalDuration
-//change 999 to infinite/max_value
-//remove potion effect in terminate
-//move logic to parent and feed stuff in constructor
-//method to add potion effect to one player
-//method to call ^ for all players
-//same for remove

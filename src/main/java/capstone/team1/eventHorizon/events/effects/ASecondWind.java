@@ -6,12 +6,9 @@ import org.bukkit.potion.PotionEffectType;
 //Player strength (attack power/damage dealt) is doubled
 public class ASecondWind extends BaseEffects {
     public ASecondWind() {
-        super(PotionEffectType.STRENGTH, EventClassification.POSITIVE, "aSecondWind");
-        setDuration(Integer.MAX_VALUE)
-                .setAmplifier(0)
-                .setAmbient(false)
-                .setShowParticles(true)
-                .setShowIcon(true);
+        super(EventClassification.POSITIVE, "aSecondWind");
+        addEffect(PotionEffectType.STRENGTH, Integer.MAX_VALUE, 1,
+                false, true, true);
     }
 
     @Override
@@ -23,7 +20,4 @@ public class ASecondWind extends BaseEffects {
     public void terminate() {
         super.terminate();
     }
-
-    public void terminate(){};
-
 }

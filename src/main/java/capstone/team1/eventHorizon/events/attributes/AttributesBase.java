@@ -28,8 +28,22 @@ public abstract class AttributesBase extends BaseEvent{
     // Constructors
     public AttributesBase(EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.plugin;
+        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
+    }
+
+    public AttributesBase(Attribute attributeType, String eventName) {
+        super(EventClassification.NEUTRAL, eventName);
+        this.plugin = EventHorizon.getPlugin();
+        this.attributeType = attributeType;
+        this.key = new NamespacedKey(plugin, this.eventName);
+    }
+
+    public AttributesBase(EventClassification classification, String eventName, Attribute attributeType) {
+        super(classification, eventName);
+        this.plugin = EventHorizon.getPlugin();
+        this.key = new NamespacedKey(plugin, this.eventName);
+        this.attributeType = attributeType;
     }
 
     public abstract void applyAttribute(Player player);
