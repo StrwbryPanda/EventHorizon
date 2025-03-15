@@ -1,5 +1,6 @@
 package capstone.team1.eventHorizon.commands;
 
+import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.utility.Config;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;

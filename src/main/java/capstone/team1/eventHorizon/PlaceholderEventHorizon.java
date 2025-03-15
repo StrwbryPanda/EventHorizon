@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public class PlaceholderEventHorizon extends PlaceholderExpansion
 {
 
-    private final EventHorizon plugin; //
+    private final EventHorizon plugin;
 
     public PlaceholderEventHorizon() {
         this.plugin = EventHorizon.getPlugin();

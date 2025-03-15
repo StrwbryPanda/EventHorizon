@@ -50,7 +50,7 @@ public class EventManager
                 MsgUtil.broadcast("Selected event classification: " + eventClassification);
                 MsgUtil.broadcast("Selected events: " + selectedEvents);
                 BaseEvent selectedEvent = selectedEvents.get(random.nextInt(selectedEvents.size()));
-                Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> selectedEvent.execute());
+                Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> selectedEvent.execute()); //uses a lamba function to run the event on the main thread on the next available tick
                 return;
             }
         }

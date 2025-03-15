@@ -12,9 +12,6 @@ public class Config
     public static int getEventFrequency() {
         return EventHorizon.getPlugin().getConfig().getInt("event.frequency");
     }
-    public static boolean getScoreboardSetting() {
-        return EventHorizon.getPlugin().getConfig().getBoolean("scoreboard-setting");
-    }
     public static double getPosWeight() {
         return EventHorizon.getPlugin().getConfig().getDouble("event.posWeight");
     }
