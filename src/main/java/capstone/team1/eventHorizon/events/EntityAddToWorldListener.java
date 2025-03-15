@@ -1,4 +1,4 @@
-package capstone.team1.eventHorizon.events.mobSpawn;
+package capstone.team1.eventHorizon.events;
 
 import capstone.team1.eventHorizon.EventHorizon;
 import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;

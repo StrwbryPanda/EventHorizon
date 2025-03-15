@@ -10,13 +10,18 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
-public abstract class BaseMobSpawn extends BaseEvent
-{
+import static capstone.team1.eventHorizon.Utility.MsgUtil.log;
+import static capstone.team1.eventHorizon.Utility.MsgUtil.warning;
+
+public abstract class BaseMobSpawn extends BaseEvent {
     protected final Plugin plugin;
     protected final Random random = new Random();
     protected final NamespacedKey key;
@@ -28,19 +33,19 @@ public abstract class BaseMobSpawn extends BaseEvent
     private static final int DEFAULT_MAX_Y_RADIUS = 20;
     private static final int DEFAULT_MIN_Y_RADIUS = 3;
     private static final int DEFAULT_MAX_SPAWN_ATTEMPTS = 20;
-    private static final int DEFAULT_SPAWN_INTERVAL = 60;
     private static final double DEFAULT_WIDTH_CLEARANCE = 1;
     private static final double DEFAULT_HEIGHT_CLEARANCE = 2;
     private static final int DEFAULT_GROUP_SPACING = 3;
+    private static final int DEFAULT_SPAWN_INTERVAL = 60; // Seconds
 
     // Entity properties
     public EntityType mobType = EntityType.ZOMBIE;
     public int mobCount = DEFAULT_MOB_COUNT;
     public int maxSpawnRadius = DEFAULT_MAX_SPAWN_RADIUS;
     public int minSpawnRadius = DEFAULT_MIN_SPAWN_RADIUS;
-    public int maxSpawnAttempts = DEFAULT_MAX_SPAWN_ATTEMPTS;
     public int maxYRadius = DEFAULT_MAX_Y_RADIUS;
     public int minYRadius = DEFAULT_MIN_Y_RADIUS;
+    public int maxSpawnAttempts = DEFAULT_MAX_SPAWN_ATTEMPTS;
     public double widthClearance = DEFAULT_WIDTH_CLEARANCE;
     public double heightClearance = DEFAULT_HEIGHT_CLEARANCE;
     public int groupSpacing = DEFAULT_GROUP_SPACING;
@@ -50,12 +55,14 @@ public abstract class BaseMobSpawn extends BaseEvent
     public boolean surfaceOnlySpawning = false;
     public boolean allowWaterSpawns = false;
     public boolean allowLavaSpawns = false;
-    public boolean groupSpawning = false;
+    public boolean useGroupSpawning = false;
+    public boolean useContinuousSpawning = false;
 
     // Task management
     public BukkitTask continuousTask = null;
     public int spawnInterval = DEFAULT_SPAWN_INTERVAL;
 
+    // Constructors
     public BaseMobSpawn(EventClassification classification, String eventName) {
         super(classification, eventName);
         this.plugin = EventHorizon.plugin;
@@ -76,36 +83,96 @@ public abstract class BaseMobSpawn extends BaseEvent
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
+    // Executes the event
     @Override
     public void execute() {
         try {
             this.lastSpawnCount = 0;
 
-            int spawned = spawnForAllPlayers();
-            this.lastSpawnCount = spawned;
+            if (useContinuousSpawning) {
+                // Start continuous task for ongoing spawning
+                boolean started = startContinuousTask();
+                if (started) {
+                    log("Event " + eventName +
+                            " started continuous spawning of " + mobType.toString() +
+                            " mobs with interval of " + spawnInterval + " seconds");
+                } else {
+                    log("Event " + eventName +
+                            " tried to start continuous spawning but it was already running");
+                }
+            } else {
+                // Do a one-time spawn for all players
+                int spawned = spawnForAllPlayers();
+                this.lastSpawnCount = spawned;
 
-            plugin.getLogger().info("Event " + this.getClass().getSimpleName() +
-                    " spawned " + spawned + " " + mobType.toString() +
-                    " mobs across " + plugin.getServer().getOnlinePlayers().size() +
-                    " players");
+                log("Event " + eventName +
+                        " spawned " + spawned + " " + mobType.toString() +
+                        " mobs across " + plugin.getServer().getOnlinePlayers().size() +
+                        " players");
+            }
         } catch (Exception e) {
-            plugin.getLogger().warning("Error spawning mobs in " + this.getClass().getSimpleName() + ": " + e.getMessage());
+            warning("Error spawning mobs in " + eventName + ": " + e.getMessage());
         }
     }
 
+    //  stops the event
+    @Override
+    public void stop() {
+        boolean stopped = stopContinuousTask();
+
+        if (stopped) {
+            log("Event " + eventName + " stopped continuous spawning of " + mobType.toString() + " mobs");
+        } else {
+            warning("Event " + eventName + " tried to stop continuous spawning but it was already stopped");
+        }
+    }
+
+    //  Continuous task management
+    public boolean startContinuousTask() {
+        // Check if task is already running
+        if (continuousTask != null && !continuousTask.isCancelled()) {
+            return false;
+        }
+
+        // Use BukkitRunnable for continuous task that spawns mobs for all players
+        continuousTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                spawnForAllPlayers();
+            }
+        }.runTaskTimer(plugin, 20L, spawnInterval * 20L);
+
+        return true;
+    }
+
+    public boolean stopContinuousTask() {
+        // Check if there's a task to stop
+        if (continuousTask == null || continuousTask.isCancelled()) {
+            return false;
+        }
+
+        // Cancel the task
+        continuousTask.cancel();
+        continuousTask = null;
+
+        return true;
+    }
+
+    // Called when a mob is spawned
     protected void onMobSpawned(Entity entity, Player player) {
     }
 
+    // Calls spawning methods for all online players
     public int spawnForAllPlayers() {
         int totalSpawned = 0;
-        plugin.getLogger().info("Attempting to spawn mobs for " + plugin.getServer().getOnlinePlayers().size() + " players");
+//        log("Attempting to spawn mobs for " + plugin.getServer().getOnlinePlayers().size() + " players");
 
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             List<Entity> spawnedEntities = spawnForPlayer(player);
             int playerSpawnCount = spawnedEntities.size();
             totalSpawned += playerSpawnCount;
 
-            plugin.getLogger().info("Spawned " + playerSpawnCount + " " + mobType.toString() +
+            log("Spawned " + playerSpawnCount + " " + mobType.toString() +
                     " for player " + player.getName());
 
             for (Entity entity : spawnedEntities) {
@@ -119,7 +186,7 @@ public abstract class BaseMobSpawn extends BaseEvent
         if (player == null || !player.isOnline()) {
             return Collections.emptyList();
         }
-        return groupSpawning ? spawnGroupForPlayer(player) : spawnSpreadForPlayer(player);
+        return useGroupSpawning ? spawnGroupForPlayer(player) : spawnSpreadForPlayer(player);
     }
 
     // Spawns mobs spread around the player
@@ -234,46 +301,17 @@ public abstract class BaseMobSpawn extends BaseEvent
         return spawnedEntities;
     }
 
-    //  Continuous task management
-    public boolean startContinuousTask() {
-        // Check if task is already running
-        if (continuousTask != null && !continuousTask.isCancelled()) {
-            return false;
-        }
-
-        // Use BukkitRunnable for continuous task that spawns mobs for all players
-        continuousTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                spawnForAllPlayers();
-            }
-        }.runTaskTimer(plugin, 20L, spawnInterval * 20L);
-
-        return true;
-    }
-
-    // TODO: Override this method to stop the continuous task in BaseEvent
-    public boolean stopContinuousTask() {
-        // Check if there's a task to stop
-        if (continuousTask == null || continuousTask.isCancelled()) {
-            return false;
-        }
-
-        // Cancel the task
-        continuousTask.cancel();
-        continuousTask = null;
-
-        return true;
-    }
-
+    // Marks a spawned mob as marked
     public void markSpawnedMob(Entity entity) {
         entity.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
     }
 
+    // Checks if a spawned mob is marked
     public boolean isSpawnedMobMarked(Entity entity) {
         return entity.getPersistentDataContainer().has(key, PersistentDataType.BYTE);
     }
 
+    // Kills all spawned marked mobs
     public void killAllSpawnedMob() {
         EventHorizon.entityKeysToDelete.add(key);
         Bukkit.getWorlds().forEach(world -> {
@@ -285,6 +323,7 @@ public abstract class BaseMobSpawn extends BaseEvent
         });
     }
 
+    // Gets a safe location for a spawned mob
     protected Location getSafeLocation(Player player, int initialX, int initialY, int initialZ) {
         World world = player.getWorld();
         int maxTries = maxSpawnAttempts * 3;
@@ -352,6 +391,7 @@ public abstract class BaseMobSpawn extends BaseEvent
         return null;
     }
 
+    // Gets a safe location for a group of spawned mobs
     protected Location getGroupSafeLocation(Player player, Location groupCenter, int initialX, int initialY, int initialZ) {
         World world = player.getWorld();
         int maxTries = maxSpawnAttempts;
@@ -479,15 +519,11 @@ public abstract class BaseMobSpawn extends BaseEvent
         return true;
     }
 
+    // Gets a random offset between min and max
     private int getRandomOffset(int min, int max) {
         int range = max - min;
         int offset = random.nextInt(range + 1) + min;
         return random.nextBoolean() ? offset : -offset;
-    }
-
-    public BaseMobSpawn setMobType(EntityType mobType) {
-        this.mobType = mobType;
-        return this;
     }
 
     // Getters
@@ -496,6 +532,11 @@ public abstract class BaseMobSpawn extends BaseEvent
     }
 
     // Setters
+    public BaseMobSpawn setMobType(EntityType mobType) {
+        this.mobType = mobType;
+        return this;
+    }
+
     public BaseMobSpawn setMobCount(int count) {
         this.mobCount = count;
         return this;
@@ -511,11 +552,6 @@ public abstract class BaseMobSpawn extends BaseEvent
         return this;
     }
 
-    public BaseMobSpawn setMaxSpawnAttempts(int attempts) {
-        this.maxSpawnAttempts = attempts;
-        return this;
-    }
-
     public BaseMobSpawn setMaxYRadius(int radius) {
         this.maxYRadius = radius;
         return this;
@@ -523,6 +559,11 @@ public abstract class BaseMobSpawn extends BaseEvent
 
     public BaseMobSpawn setMinYRadius(int radius) {
         this.minYRadius = radius;
+        return this;
+    }
+
+    public BaseMobSpawn setMaxSpawnAttempts(int attempts) {
+        this.maxSpawnAttempts = attempts;
         return this;
     }
 
@@ -541,6 +582,11 @@ public abstract class BaseMobSpawn extends BaseEvent
         return this;
     }
 
+    public BaseMobSpawn setSpawnInterval(int seconds) {
+        this.spawnInterval = seconds;
+        return this;
+    }
+
     public BaseMobSpawn setSurfaceOnlySpawning(boolean surfaceOnly) {
         this.surfaceOnlySpawning = surfaceOnly;
         return this;
@@ -556,13 +602,13 @@ public abstract class BaseMobSpawn extends BaseEvent
         return this;
     }
 
-    public BaseMobSpawn setGroupSpawning(boolean groupSpawn) {
-        this.groupSpawning = groupSpawn;
+    public BaseMobSpawn setUseGroupSpawning(boolean groupSpawn) {
+        this.useGroupSpawning = groupSpawn;
         return this;
     }
 
-    public BaseMobSpawn setSpawnInterval(int seconds) {
-        this.spawnInterval = seconds;
+    public BaseMobSpawn setUseContinuousSpawning(boolean continuousSpawn) {
+        this.useContinuousSpawning = continuousSpawn;
         return this;
     }
 }
