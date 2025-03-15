@@ -65,20 +65,20 @@ public abstract class BaseMobSpawn extends BaseEvent {
     // Constructors
     public BaseMobSpawn(EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.plugin;
+        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     public BaseMobSpawn(EntityType defaultMobType, String eventName) {
         super(EventClassification.NEUTRAL, eventName);
-        this.plugin = EventHorizon.plugin;
+        this.plugin = EventHorizon.getPlugin();
         this.mobType = defaultMobType;
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     public BaseMobSpawn(EntityType defaultMobType, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.plugin;
+        this.plugin = EventHorizon.getPlugin();
         this.mobType = defaultMobType;
         this.key = new NamespacedKey(plugin, this.eventName);
     }

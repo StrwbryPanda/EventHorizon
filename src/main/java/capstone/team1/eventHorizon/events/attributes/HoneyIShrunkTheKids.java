@@ -33,5 +33,6 @@ public class HoneyIShrunkTheKids extends AttributesBase {
     public void execute() {
         super.execute(); 
     }
+    public void terminate(){};
 
 }

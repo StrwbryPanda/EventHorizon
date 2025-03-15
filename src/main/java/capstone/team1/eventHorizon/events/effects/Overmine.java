@@ -30,4 +30,6 @@ public class Overmine extends BaseEffects{
             player.removePotionEffect(PotionEffectType.HASTE);
         }
     }
+    public void terminate(){};
+
 }

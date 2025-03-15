@@ -17,7 +17,7 @@ public class Scheduler {
 
 
     public Scheduler(EventManager eventManager) {
-        this.plugin = EventHorizon.plugin;
+        this.plugin = EventHorizon.getPlugin();
         this.eventFrequency = Config.getEventFrequency();
         this.eventManager = eventManager;
     }

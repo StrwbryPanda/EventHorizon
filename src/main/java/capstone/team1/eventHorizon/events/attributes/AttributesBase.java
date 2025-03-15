@@ -13,7 +13,7 @@ public abstract class AttributesBase extends BaseEvent{
 
     public AttributesBase(EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.plugin;
+        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
@@ -26,4 +26,6 @@ public abstract class AttributesBase extends BaseEvent{
             applyEffect(player);
         }
     }
+    public void terminate(){};
+
 }

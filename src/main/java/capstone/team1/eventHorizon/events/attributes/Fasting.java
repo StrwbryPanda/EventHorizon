@@ -16,5 +16,6 @@ public class Fasting extends AttributesBase {
     public void execute() {
         super.execute();
     }
+    public void terminate(){};
 
 }

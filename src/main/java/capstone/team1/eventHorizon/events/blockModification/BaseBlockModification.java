@@ -10,4 +10,6 @@ public abstract class BaseBlockModification extends BaseEvent
         super(classification, eventName);
     }
     public abstract void execute();
+    public void terminate(){};
+
 }

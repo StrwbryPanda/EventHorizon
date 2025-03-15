@@ -52,20 +52,20 @@ public abstract class BaseItemSpawn extends BaseEvent {
     // Constructors
     public BaseItemSpawn(EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.plugin;
+        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     public BaseItemSpawn(ItemStack defaultItemType, String eventName) {
         super(EventClassification.NEUTRAL, eventName);
-        this.plugin = EventHorizon.plugin;
+        this.plugin = EventHorizon.getPlugin();
         this.itemType = defaultItemType;
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     public BaseItemSpawn(ItemStack defaultItemType, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.plugin;
+        this.plugin = EventHorizon.getPlugin();
         this.itemType = defaultItemType;
         this.key = new NamespacedKey(plugin, this.eventName);
     }

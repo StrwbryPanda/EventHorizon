@@ -74,7 +74,7 @@ public class CommandTrigger {
      * @param args Additional arguments (event name)
      */
     public static void run(CommandSender sender, String[] args) {
-        plugin = EventHorizon.plugin;
+        plugin = EventHorizon.getPlugin();
         // Check if sender has permission
         if (!sender.hasPermission("eventhorizon.trigger")) {
             sender.sendRichMessage("<red>You don't have permission to trigger events!");

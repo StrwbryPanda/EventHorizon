@@ -31,4 +31,7 @@ public class ASecondWind extends BaseEffects {
             player.removePotionEffect(PotionEffectType.STRENGTH);
         }
     }
+
+    public void terminate(){};
+
 }
