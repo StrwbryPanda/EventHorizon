@@ -33,4 +33,6 @@ public class FoodComa extends BaseEffects {
             player.removePotionEffect(PotionEffectType.SLOWNESS);
         }
     }
+    public void terminate(){};
+
 }

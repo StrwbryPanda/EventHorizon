@@ -17,7 +17,7 @@ public class Scheduler {
 
 
     public Scheduler(EventManager eventManager) {
-        this.plugin = EventHorizon.plugin;
+        this.plugin = EventHorizon.getPlugin();
         this.eventFrequency = Config.getEventFrequency();
         this.eventManager = eventManager;
     }
@@ -27,7 +27,7 @@ public class Scheduler {
             return false;
         }
         gameTimer = new GameTimer(duration, eventFrequency);
-        gameTimer.runTaskTimerAsynchronously(plugin, 0, 20);
+        gameTimer.runTaskTimerAsynchronously(plugin, 0, 20); //runs an async timer that triggers events every eventFrequency seconds
         hasStarted = true;
         return true;
     }

@@ -34,4 +34,6 @@ public class ZeroGravity extends AttributesBase {
         super.execute();
         applyZeroGravityToEntities();
     }
+    public void terminate(){};
+
 }

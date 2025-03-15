@@ -30,4 +30,6 @@ public class YoureTooSlow extends BaseEffects{
             player.removePotionEffect(PotionEffectType.SLOWNESS);
         }
     }
+    public void terminate(){};
+
 }

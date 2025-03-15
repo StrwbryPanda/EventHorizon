@@ -9,4 +9,5 @@ public class IceIsNice extends BaseBlockModification
         super(EventClassification.NEUTRAL, "iceIsNice");
     }
     public void execute(){};
+    public void terminate(){};
 }

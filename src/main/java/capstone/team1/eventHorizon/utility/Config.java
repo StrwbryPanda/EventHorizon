@@ -7,28 +7,25 @@ import java.util.List;
 public class Config
 {
     public static int getTournamentTimer() {
-        return EventHorizon.plugin.getConfig().getInt("tournament-timer");
+        return EventHorizon.getPlugin().getConfig().getInt("tournament-timer");
     }
     public static int getEventFrequency() {
-        return EventHorizon.plugin.getConfig().getInt("event.frequency");
-    }
-    public static boolean getScoreboardSetting() {
-        return EventHorizon.plugin.getConfig().getBoolean("scoreboard-setting");
+        return EventHorizon.getPlugin().getConfig().getInt("event.frequency");
     }
     public static double getPosWeight() {
-        return EventHorizon.plugin.getConfig().getDouble("event.posWeight");
+        return EventHorizon.getPlugin().getConfig().getDouble("event.posWeight");
     }
     public static double getNegWeight() {
-        return EventHorizon.plugin.getConfig().getDouble("event.negWeight");
+        return EventHorizon.getPlugin().getConfig().getDouble("event.negWeight");
     }
     public static double getNeutralWeight() {
-        return EventHorizon.plugin.getConfig().getDouble("event.neutralWeight");
+        return EventHorizon.getPlugin().getConfig().getDouble("event.neutralWeight");
     }
     public static List<String> getEnabledEvents() {
-        return EventHorizon.plugin.getConfig().getStringList("enabled-events");
+        return EventHorizon.getPlugin().getConfig().getStringList("enabled-events");
     }
     public static void reloadConfig() {
-        EventHorizon.plugin.reloadConfig();
+        EventHorizon.getPlugin().reloadConfig();
     }
 
 }

@@ -31,4 +31,6 @@ public class GottaGoFast extends BaseEffects {
             player.removePotionEffect(PotionEffectType.SPEED);
         }
     }
+    public void terminate(){};
+
 }

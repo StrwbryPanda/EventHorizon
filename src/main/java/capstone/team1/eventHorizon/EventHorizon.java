@@ -21,8 +21,8 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     private EventInitializer eventInitializer;
     private static EventManager eventManager;
 
-    public static EventHorizon plugin;
-    public boolean isScoreboardOn;
+    private static EventHorizon plugin;
+
     public static Collection<NamespacedKey> entityKeysToDelete = new ArrayList<>();
 
     public static EventHorizon getPlugin()
@@ -34,9 +34,6 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     public void onEnable()
     {
         plugin = this;
-
-        // Plugin startup logic
-        setCommandScoreboard(plugin);
 
         this.eventInitializer  = new EventInitializer();
         eventManager = new EventManager(eventInitializer);
@@ -52,9 +49,6 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
                 event -> event.registrar().register("eventhorizon", new CommandsManager()));
     }
 
-    private void setCommandScoreboard(EventHorizon plugin) {
-        this.isScoreboardOn = Config.getScoreboardSetting(); //use config value
-    }
 
     @Override
     public void onDisable()

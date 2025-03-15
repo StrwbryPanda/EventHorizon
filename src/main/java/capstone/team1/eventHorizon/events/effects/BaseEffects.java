@@ -35,7 +35,7 @@ public abstract class BaseEffects extends BaseEvent {
     // Constructors
     public BaseEffects(EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.plugin;
+        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
@@ -128,6 +128,8 @@ public abstract class BaseEffects extends BaseEvent {
         this.showIcon = showIcon;
         return this;
     }
+    public void terminate(){};
+
 }
 
 //remove start/stop --> execute/terminate

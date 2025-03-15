@@ -40,4 +40,6 @@ public class LifestealOnly extends AttributesBase implements Listener {
             }
         }
     }
+    public void terminate(){};
+
 }

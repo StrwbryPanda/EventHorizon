@@ -35,5 +35,6 @@ public class GrowthSpurt extends AttributesBase {
     public void execute() {
         super.execute(); 
     }
+    public void terminate(){};
 
 }

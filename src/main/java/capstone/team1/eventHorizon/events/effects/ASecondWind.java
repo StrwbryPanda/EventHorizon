@@ -23,4 +23,7 @@ public class ASecondWind extends BaseEffects {
     public void terminate() {
         super.terminate();
     }
+
+    public void terminate(){};
+
 }
