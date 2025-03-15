@@ -18,8 +18,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static capstone.team1.eventHorizon.Utility.MsgUtil.log;
-import static capstone.team1.eventHorizon.Utility.MsgUtil.warning;
+import static capstone.team1.eventHorizon.utility.MsgUtil.log;
+import static capstone.team1.eventHorizon.utility.MsgUtil.warning;
 
 public abstract class BaseMobSpawn extends BaseEvent {
     protected final Plugin plugin;
@@ -117,7 +117,7 @@ public abstract class BaseMobSpawn extends BaseEvent {
 
     //  stops the event
     @Override
-    public void stop() {
+    public void terminate() {
         boolean stopped = stopContinuousTask();
 
         if (stopped) {

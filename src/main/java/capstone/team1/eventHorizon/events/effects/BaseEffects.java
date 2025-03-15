@@ -38,3 +38,12 @@ public abstract class BaseEffects extends BaseEvent {
         return globalAmplifier;
     }
 }
+
+//remove start/stop --> execute/terminate
+//getter/setter for globalAmplifier and globalDuration
+//change 999 to infinite/max_value
+//remove potion effect in terminate
+//move logic to parent and feed stuff in constructor
+//method to add potion effect to one player
+//method to call ^ for all players
+//same for remove

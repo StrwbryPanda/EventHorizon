@@ -1,4 +1,4 @@
-package capstone.team1.eventHorizon.events;
+package capstone.team1.eventHorizon.events.utility;
 
 import capstone.team1.eventHorizon.EventHorizon;
 import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;

@@ -3,6 +3,7 @@ package capstone.team1.eventHorizon.events.items;
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.BaseEvent;
 import capstone.team1.eventHorizon.events.EventClassification;
+import capstone.team1.eventHorizon.utility.MsgUtil;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -12,10 +13,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Random;
 
-import static capstone.team1.eventHorizon.Util.log;
-import static capstone.team1.eventHorizon.Util.warning;
-import static capstone.team1.eventHorizon.Utility.MsgUtil.log;
-import static capstone.team1.eventHorizon.Utility.MsgUtil.warning;
+import capstone.team1.eventHorizon.utility.MsgUtil;
 
 public abstract class BaseItemSpawn extends BaseEvent {
     protected final Plugin plugin;
@@ -82,11 +80,11 @@ public abstract class BaseItemSpawn extends BaseEvent {
                 // Start continuous task for ongoing spawning
                 boolean started = startContinuousTask();
                 if (started) {
-                    log("Event " + eventName +
+                    MsgUtil.log("Event " + eventName +
                             " started continuous spawning of " + itemType.toString() +
                             " items with interval of " + spawnInterval + " seconds");
                 } else {
-                    log("Event " + eventName +
+                    MsgUtil.log("Event " + eventName +
                             " tried to start continuous spawning but it was already running");
                 }
             } else {
@@ -94,25 +92,25 @@ public abstract class BaseItemSpawn extends BaseEvent {
                 int spawned = spawnForAllPlayers();
                 this.lastSpawnCount = spawned;
 
-                log("Event " + eventName +
+                MsgUtil.log("Event " + eventName +
                         " spawned " + spawned + " " + itemType.toString() +
                         " items across " + plugin.getServer().getOnlinePlayers().size() +
                         " players");
             }
         } catch (Exception e) {
-            warning("Error spawning items in " + eventName + ": " + e.getMessage());
+            MsgUtil.warning("Error spawning items in " + eventName + ": " + e.getMessage());
         }
     }
 
     //  stops the event
     @Override
-    public void stop() {
+    public void terminate() {
         boolean stopped = stopContinuousTask();
 
         if (stopped) {
-            log("Event " + eventName + " stopped continuous spawning of " + itemType.toString() + " items");
+            MsgUtil.log("Event " + eventName + " stopped continuous spawning of " + itemType.toString() + " items");
         } else {
-            warning("Event " + eventName + " tried to stop continuous spawning but it was already stopped");
+            MsgUtil.warning("Event " + eventName + " tried to stop continuous spawning but it was already stopped");
         }
     }
 
@@ -145,6 +143,11 @@ public abstract class BaseItemSpawn extends BaseEvent {
         continuousTask = null;
 
         return true;
+    }
+
+    public int spawnForAllPlayers() {
+        MsgUtil.warning("spawnForAllPlayers() not implemented");
+        return 0;
     }
 
 }

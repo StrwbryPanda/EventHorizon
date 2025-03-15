@@ -1,7 +1,7 @@
 package capstone.team1.eventHorizon.events;
 
-import capstone.team1.eventHorizon.Utility.Config;
-import capstone.team1.eventHorizon.Utility.MsgUtil;
+import capstone.team1.eventHorizon.utility.Config;
+import capstone.team1.eventHorizon.utility.MsgUtil;
 import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.Bukkit;
 

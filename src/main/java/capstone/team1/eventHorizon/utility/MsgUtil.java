@@ -1,4 +1,4 @@
-package capstone.team1.eventHorizon.Utility;
+package capstone.team1.eventHorizon.utility;
 
 import capstone.team1.eventHorizon.EventHorizon;
 import net.kyori.adventure.audience.Audience;

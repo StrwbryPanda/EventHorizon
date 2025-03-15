@@ -1,7 +1,7 @@
 package capstone.team1.eventHorizon;
 
-import capstone.team1.eventHorizon.Utility.Config;
-import capstone.team1.eventHorizon.Utility.MsgUtil;
+import capstone.team1.eventHorizon.utility.Config;
+import capstone.team1.eventHorizon.utility.MsgUtil;
 import capstone.team1.eventHorizon.events.EventManager;
 
 public class Scheduler {

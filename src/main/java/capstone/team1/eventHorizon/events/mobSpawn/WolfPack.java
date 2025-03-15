@@ -46,8 +46,8 @@ public class WolfPack extends BaseMobSpawn {
     }
 
     @Override
-    public void stop() {
-        super.stop();
+    public void terminate() {
+        super.terminate();
         killAllSpawnedMob();
     }
 }

@@ -1,7 +1,7 @@
 package capstone.team1.eventHorizon.commands;
 
 import capstone.team1.eventHorizon.EventHorizon;
-import capstone.team1.eventHorizon.Utility.MsgUtil;
+import capstone.team1.eventHorizon.utility.MsgUtil;
 import org.bukkit.command.CommandSender;
 
 //command that resumes a paused tournament timer

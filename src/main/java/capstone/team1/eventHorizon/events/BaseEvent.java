@@ -12,7 +12,7 @@ public abstract class BaseEvent
     }
 
     public abstract void execute();
-    public abstract void stop();
+    public abstract void terminate();
 
     public EventClassification getClassification()
     {

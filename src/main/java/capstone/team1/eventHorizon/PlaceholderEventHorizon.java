@@ -48,7 +48,7 @@ public class PlaceholderEventHorizon extends PlaceholderExpansion
             return formatTime(plugin.scheduler.getRemainingTime());
         }
 
-        return null; //
+        return null;
     }
 
     public String formatTime(int seconds){

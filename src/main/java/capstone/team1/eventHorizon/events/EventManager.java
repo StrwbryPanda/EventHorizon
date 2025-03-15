@@ -1,8 +1,8 @@
 package capstone.team1.eventHorizon.events;
 
 import capstone.team1.eventHorizon.EventHorizon;
-import capstone.team1.eventHorizon.Utility.Config;
-import capstone.team1.eventHorizon.Utility.MsgUtil;
+import capstone.team1.eventHorizon.utility.Config;
+import capstone.team1.eventHorizon.utility.MsgUtil;
 import org.bukkit.Bukkit;
 
 import java.util.*;
@@ -55,7 +55,6 @@ public class EventManager
             }
         }
     }
-
 
 
     private void loadWeightsFromConfig() {

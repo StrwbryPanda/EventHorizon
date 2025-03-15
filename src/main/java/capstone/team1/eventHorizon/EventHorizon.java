@@ -1,6 +1,6 @@
 package capstone.team1.eventHorizon;
 
-import capstone.team1.eventHorizon.Utility.Config;
+import capstone.team1.eventHorizon.utility.Config;
 import capstone.team1.eventHorizon.commands.CommandsManager;
 import capstone.team1.eventHorizon.events.EventInitializer;
 import capstone.team1.eventHorizon.events.EventManager;
@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
