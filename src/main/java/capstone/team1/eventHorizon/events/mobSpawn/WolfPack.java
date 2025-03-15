@@ -19,13 +19,16 @@ public class WolfPack extends BaseMobSpawn {
                     .setMaxSpawnRadius(30)
                     .setMinSpawnRadius(3)
                     .setMaxSpawnAttempts(20)
+                    .setHeightClearance(1)
+                    .setWidthClearance(1)
                     .setSurfaceOnlySpawning(false)
                     .setAllowWaterSpawns(false)
                     .setAllowLavaSpawns(false)
-                    .setHeightClearance(1)
-                    .setWidthClearance(1)
-                    .setGroupSpawning(true)
-                    .setGroupSpacing(2);
+                    .setUseGroupSpawning(true)
+                    .setGroupSpacing(2)
+                    .setUseContinuousSpawning(false)
+                    .setSpawnInterval(60);
+
     }
 
     @Override
@@ -42,8 +45,9 @@ public class WolfPack extends BaseMobSpawn {
         super.execute();
     }
 
-    public void stopEvent() {
-        //super.stopEvent();
+    @Override
+    public void stop() {
+        super.stop();
         killAllSpawnedMob();
     }
 }

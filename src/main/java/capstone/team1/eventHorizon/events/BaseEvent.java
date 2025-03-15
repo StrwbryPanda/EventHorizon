@@ -1,7 +1,5 @@
 package capstone.team1.eventHorizon.events;
 
-import org.bukkit.entity.Player;
-
 public abstract class BaseEvent
 {
     public final String eventName;
@@ -13,15 +11,14 @@ public abstract class BaseEvent
         this.eventName = eventName;
     }
 
+    public abstract void execute();
+    public abstract void stop();
+
     public EventClassification getClassification()
     {
         return classification;
     }
-
-    public abstract void execute();
     public EventClassification getEventClassification(BaseEvent event){
         return event.classification;
     }
-
-    // TODO: Add a method to stop the event from executing
 }
