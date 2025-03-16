@@ -3,11 +3,13 @@ package capstone.team1.eventHorizon.events.effects;
 import capstone.team1.eventHorizon.events.EventClassification;
 import org.bukkit.potion.PotionEffectType;
 
-//Player strength (attack power/damage dealt) is doubled
+/**
+ * Event that gives the player a strength effect for 6000 ticks (5 minutes)
+ */
 public class ASecondWind extends BaseEffects {
     public ASecondWind() {
         super(EventClassification.POSITIVE, "aSecondWind");
-        addEffect(PotionEffectType.STRENGTH, Integer.MAX_VALUE, 1,
+        addEffect(PotionEffectType.STRENGTH, 6000, 1,
                 false, true, true);
     }
 

@@ -3,6 +3,7 @@ package capstone.team1.eventHorizon.events.effects;
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.BaseEvent;
 import capstone.team1.eventHorizon.events.EventClassification;
+import capstone.team1.eventHorizon.utility.MsgUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -28,7 +29,7 @@ public abstract class BaseEffects extends BaseEvent {
     private static final boolean DEFAULT_SHOW_ICON = true;
 
     // Effects properties
-    public List<PotionEffect> effects = new ArrayList<>();
+    protected List<PotionEffect> effects = new ArrayList<>();
 
     // Constructors
     public BaseEffects(EventClassification classification, String eventName) {
@@ -58,21 +59,34 @@ public abstract class BaseEffects extends BaseEvent {
     // Executes the event
     @Override
     public void execute() {
+        MsgUtil.log("<green>Executing effect event: " + this.eventName);
         applyPotionEffectsToAllPlayers();
     }
 
-    //  stops the event
+    //  Terminates the event
     @Override
     public void terminate() {
+        MsgUtil.log("<red>Terminating effect event: " + this.eventName);
         removePotionEffectsFromAllPlayers();
     }
 
+    // Applies potion effects to all players
     public void applyPotionEffectsToAllPlayers() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            applyPotionEffectsToPlayer(player);
+        int successCount = 0;
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+
+        for (Player player : players) {
+            try {
+                applyPotionEffectsToPlayer(player);
+                successCount++;
+            } catch (Exception e) {
+                MsgUtil.warning("Failed to apply effects to player " + player.getName() + ": " + e.getMessage());
+            }
         }
+        MsgUtil.log("<green>Applied potion effects to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
     }
 
+    // Applies potion effects to a player
     public void applyPotionEffectsToPlayer(Player player) {
         for (PotionEffect effect : effects) {
             player.addPotionEffect(effect);
@@ -80,12 +94,23 @@ public abstract class BaseEffects extends BaseEvent {
         markEffectPlayer(player);
     }
 
+    // Removes potion effects from all players
     public void removePotionEffectsFromAllPlayers() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            removePotionEffectsFromPlayer(player);
+        int successCount = 0;
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+
+        for (Player player : players) {
+            try {
+                removePotionEffectsFromPlayer(player);
+                successCount++;
+            } catch (Exception e) {
+                MsgUtil.warning("Failed to remove effects from player " + player.getName() + ": " + e.getMessage());
+            }
         }
+        MsgUtil.log("Removed potion effects from " + successCount + "/" + players.size() + " players for event: " + this.eventName);
     }
 
+    // Removes potion effects from a player
     public void removePotionEffectsFromPlayer(Player player) {
         for (PotionEffect effect : effects) {
             PotionEffectType effectType = effect.getType();
@@ -152,7 +177,8 @@ public abstract class BaseEffects extends BaseEvent {
     }
 
     public void removeEffectsFromAllMarkedPlayers() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        for (Player player : players) {
             if (isEffectPlayerMarked(player)) {
                 removePotionEffectsFromPlayer(player);
             }

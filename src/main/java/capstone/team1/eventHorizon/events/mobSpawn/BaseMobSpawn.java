@@ -120,7 +120,7 @@ public abstract class BaseMobSpawn extends BaseEvent {
         }
     }
 
-    //  stops the event
+    //  Terminates the event
     @Override
     public void terminate() {
         boolean stopped = stopContinuousTask();
@@ -170,9 +170,10 @@ public abstract class BaseMobSpawn extends BaseEvent {
     // Calls spawning methods for all online players
     public int spawnForAllPlayers() {
         int totalSpawned = 0;
+        List<Player> players = new ArrayList<>(plugin.getServer().getOnlinePlayers());
 //        log("Attempting to spawn mobs for " + plugin.getServer().getOnlinePlayers().size() + " players");
 
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
+        for (Player player : players) {
             List<Entity> spawnedEntities = spawnForPlayer(player);
             int playerSpawnCount = spawnedEntities.size();
             totalSpawned += playerSpawnCount;
