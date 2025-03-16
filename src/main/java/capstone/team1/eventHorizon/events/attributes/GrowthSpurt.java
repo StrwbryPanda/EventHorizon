@@ -1,40 +1,40 @@
 package capstone.team1.eventHorizon.events.attributes;
 
 import capstone.team1.eventHorizon.events.EventClassification;
-import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 
-public class GrowthSpurt extends AttributesBase {
-
-    public GrowthSpurt(JavaPlugin plugin) {
+/**
+ * Event that modifies the player's attributes to feel like they've grown
+ */
+public class GrowthSpurt extends BaseAttribute {
+    public GrowthSpurt() {
         super(EventClassification.NEUTRAL, "growthSpurt");
-    }
 
-    @Override
-    public void applyEffect(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
-        Location loc = player.getLocation();
-        ArmorStand largeStand = loc.getWorld().spawn(loc, ArmorStand.class);
+        addAttributeModifier(Attribute.SCALE, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.MAX_HEALTH, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.ATTACK_DAMAGE, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.KNOCKBACK_RESISTANCE, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.MOVEMENT_SPEED, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.SNEAKING_SPEED, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.WATER_MOVEMENT_EFFICIENCY, 2, AttributeModifier.Operation.ADD_NUMBER);
 
-        largeStand.setCustomName("Giant " + player.getName());
-        largeStand.setCustomNameVisible(true);
-        largeStand.setGravity(false);
-        largeStand.setInvisible(false);
-        largeStand.setSmall(false);
 
-        largeStand.addPassenger(player); 
+        addAttributeModifier(Attribute.STEP_HEIGHT, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.JUMP_STRENGTH, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.SAFE_FALL_DISTANCE, 2, AttributeModifier.Operation.ADD_NUMBER);
 
-        player.sendMessage("You have grown into a giant!");
+        addAttributeModifier(Attribute.BLOCK_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_NUMBER);
     }
 
     @Override
     public void execute() {
-        super.execute(); 
+        super.execute();
     }
-    public void terminate(){};
 
+    @Override
+    public void terminate() {
+        super.terminate();
+    }
 }

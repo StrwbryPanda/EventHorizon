@@ -37,6 +37,11 @@ public abstract class BaseMobSpawn extends BaseEvent {
     private static final double DEFAULT_HEIGHT_CLEARANCE = 2;
     private static final int DEFAULT_GROUP_SPACING = 3;
     private static final int DEFAULT_SPAWN_INTERVAL = 60; // Seconds
+    private static final boolean DEFAULT_SURFACE_ONLY_SPAWNING = false;
+    private static final boolean DEFAULT_ALLOW_WATER_SPAWNS = false;
+    private static final boolean DEFAULT_ALLOW_LAVA_SPAWNS = false;
+    private static final boolean DEFAULT_USE_GROUP_SPAWNING = false;
+    private static final boolean DEFAULT_USE_CONTINUOUS_SPAWNING = false;
 
     // Entity properties
     public EntityType mobType = EntityType.ZOMBIE;
@@ -52,11 +57,11 @@ public abstract class BaseMobSpawn extends BaseEvent {
     private int lastSpawnCount = 0;
 
     // Flags
-    public boolean surfaceOnlySpawning = false;
-    public boolean allowWaterSpawns = false;
-    public boolean allowLavaSpawns = false;
-    public boolean useGroupSpawning = false;
-    public boolean useContinuousSpawning = false;
+    public boolean surfaceOnlySpawning = DEFAULT_SURFACE_ONLY_SPAWNING;
+    public boolean allowWaterSpawns = DEFAULT_ALLOW_WATER_SPAWNS;
+    public boolean allowLavaSpawns = DEFAULT_ALLOW_LAVA_SPAWNS;
+    public boolean useGroupSpawning = DEFAULT_USE_GROUP_SPAWNING;
+    public boolean useContinuousSpawning = DEFAULT_USE_CONTINUOUS_SPAWNING;
 
     // Task management
     public BukkitTask continuousTask = null;
@@ -115,7 +120,7 @@ public abstract class BaseMobSpawn extends BaseEvent {
         }
     }
 
-    //  stops the event
+    //  Terminates the event
     @Override
     public void terminate() {
         boolean stopped = stopContinuousTask();
@@ -165,9 +170,10 @@ public abstract class BaseMobSpawn extends BaseEvent {
     // Calls spawning methods for all online players
     public int spawnForAllPlayers() {
         int totalSpawned = 0;
+        List<Player> players = new ArrayList<>(plugin.getServer().getOnlinePlayers());
 //        log("Attempting to spawn mobs for " + plugin.getServer().getOnlinePlayers().size() + " players");
 
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
+        for (Player player : players) {
             List<Entity> spawnedEntities = spawnForPlayer(player);
             int playerSpawnCount = spawnedEntities.size();
             totalSpawned += playerSpawnCount;
