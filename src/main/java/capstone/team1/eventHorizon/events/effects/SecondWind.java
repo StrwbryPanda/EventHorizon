@@ -6,9 +6,9 @@ import org.bukkit.potion.PotionEffectType;
 /**
  * Event that gives the player a strength effect for 6000 ticks (5 minutes)
  */
-public class ASecondWind extends BaseEffects {
-    public ASecondWind() {
-        super(EventClassification.POSITIVE, "aSecondWind");
+public class SecondWind extends BaseEffects {
+    public SecondWind() {
+        super(EventClassification.POSITIVE, "SecondWind");
         addEffect(PotionEffectType.STRENGTH, 6000, 1,
                 false, true, true);
     }

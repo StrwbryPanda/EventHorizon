@@ -4,7 +4,6 @@ import capstone.team1.eventHorizon.events.BaseEvent;
 import capstone.team1.eventHorizon.events.EventClassification;
 import capstone.team1.eventHorizon.events.utility.FAWEUtil;
 import capstone.team1.eventHorizon.utility.MsgUtil;
-import com.sk89q.worldedit.regions.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -13,22 +12,22 @@ import java.util.List;
 
 public abstract class BaseBlockModification extends BaseEvent
 {
-    protected String regionShape;
+    protected String regionStyle;
     protected String blockId;
     protected  int radius;
     protected int height;
 
-    public BaseBlockModification(EventClassification classification, String eventName, String regionShape, int radius, int height, String blockId) {
+    public BaseBlockModification(EventClassification classification, String eventName, String regionStyle, int radius, int height, String blockId) {
         super(classification, eventName);
-        this.regionShape = regionShape;
+        this.regionStyle = regionStyle;
         this.radius = radius;
         this.height = height;
         this.blockId = blockId;
     }
 
-    public BaseBlockModification(EventClassification classification, String eventName, String regionShape,int radius, int height) {
+    public BaseBlockModification(EventClassification classification, String eventName, String regionStyle, int radius, int height) {
         super(classification, eventName);
-        this.regionShape = regionShape;
+        this.regionStyle = regionStyle;
         this.radius = radius;
         this.height = height;
     }
@@ -38,7 +37,7 @@ public abstract class BaseBlockModification extends BaseEvent
     }
 
     public void execute(){
-        applyBlockEditToAllPlayers(regionShape,radius, height, blockId);
+        applyBlockEditToAllPlayers(regionStyle,radius, height, blockId);
     }
 
     public void terminate(){
@@ -52,11 +51,17 @@ public abstract class BaseBlockModification extends BaseEvent
         for (Player player : players) {
             try {
                 switch (regionShape){
-                    case "cylinder":
+                    case "cylinderAround":
                         FAWEUtil.replaceBlocksInRegion(FAWEUtil.selectCylindricalRegionAroundPlayer(player, radius, height), blockId);
                         break;
-                    case "cuboid":
+                    case "cuboidAround":
                         FAWEUtil.replaceBlocksInRegion(FAWEUtil.selectCuboidRegionAroundPlayer(player, radius, height), blockId);
+                        break;
+                    case "cylinderAtFeet":
+                        FAWEUtil.replaceBlocksInRegion(FAWEUtil.selectCylindricalRegionAtPlayersFeet(player, radius, height), blockId);
+                        break;
+                    case "cuboidAtFeet":
+                        FAWEUtil.replaceBlocksInRegion(FAWEUtil.selectCuboidRegionAtPlayersFeet(player, radius, height), blockId);
                         break;
                     default:
                         MsgUtil.warning("Invalid region shape: " + regionShape);
