@@ -27,7 +27,7 @@ public class ZombieInvasion extends BaseMobSpawn {
                 .setUseGroupSpawning(false)
                 .setGroupSpacing(2)
                 .setUseContinuousSpawning(true)
-                .setSpawnInterval(60);
+                .setSpawnInterval(20);
 
     }
 
