@@ -1,29 +1,30 @@
 package capstone.team1.eventHorizon.events.mobSpawn;
 
 import capstone.team1.eventHorizon.events.EventClassification;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wolf;
 
 /**
- * Event that spawns a pack of angry wolves near players
+ * Event that spawns a Creeper near players
  */
-public class WolfPack extends BaseMobSpawn {
-    public WolfPack() {
-        super(EntityType.WOLF, EventClassification.NEGATIVE, "wolfPack");
-        setMobCount(5)
-                .setMaxSpawnRadius(30)
+public class DropCreeper extends BaseMobSpawn {
+
+    public DropCreeper() {
+        super(EntityType.CREEPER, EventClassification.NEGATIVE, "dropCreeper");
+        setMobCount(1)
+                .setMaxSpawnRadius(10)
                 .setMinSpawnRadius(3)
-                .setMaxYRadius(20)
+                .setMaxYRadius(30)
                 .setMinYRadius(3)
                 .setMaxSpawnAttempts(20)
-                .setHeightClearance(1)
+                .setHeightClearance(2)
                 .setWidthClearance(1)
                 .setSurfaceOnlySpawning(false)
                 .setAllowWaterSpawns(false)
                 .setAllowLavaSpawns(false)
-                .setUseGroupSpawning(true)
+                .setUseGroupSpawning(false)
                 .setGroupSpacing(2)
                 .setUseContinuousSpawning(false)
                 .setSpawnInterval(60);
@@ -32,9 +33,8 @@ public class WolfPack extends BaseMobSpawn {
 
     @Override
     protected void onMobSpawned(Entity entity, Player player) {
-        if (entity instanceof Wolf wolf) {
-            wolf.setAngry(true);
-            wolf.setTarget(player);
+        if (entity instanceof Creeper creeper) {
+            creeper.setTarget(player);
         }
     }
 

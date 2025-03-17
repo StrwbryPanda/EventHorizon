@@ -77,7 +77,7 @@ public abstract class BaseAttribute extends BaseEvent{
                 MsgUtil.warning("Failed to apply attributes to player " + player.getName() + ": " + e.getMessage());
             }
         }
-        MsgUtil.log("<green>Applied attribute modifiers to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
+        MsgUtil.log("Applied attribute modifiers to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
     }
 
     // Applies attribute modifiers to a player
