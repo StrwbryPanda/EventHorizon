@@ -11,21 +11,21 @@ public class GrowthSpurt extends BaseAttribute {
     public GrowthSpurt() {
         super(EventClassification.NEUTRAL, "growthSpurt");
 
-        addAttributeModifier(Attribute.SCALE, 2, AttributeModifier.Operation.ADD_NUMBER);
-        addAttributeModifier(Attribute.MAX_HEALTH, 2, AttributeModifier.Operation.ADD_NUMBER);
-        addAttributeModifier(Attribute.ATTACK_DAMAGE, 2, AttributeModifier.Operation.ADD_NUMBER);
-        addAttributeModifier(Attribute.KNOCKBACK_RESISTANCE, 2, AttributeModifier.Operation.ADD_NUMBER);
-        addAttributeModifier(Attribute.MOVEMENT_SPEED, 2, AttributeModifier.Operation.ADD_NUMBER);
-        addAttributeModifier(Attribute.SNEAKING_SPEED, 2, AttributeModifier.Operation.ADD_NUMBER);
-        addAttributeModifier(Attribute.WATER_MOVEMENT_EFFICIENCY, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.SCALE, 1, AttributeModifier.Operation.ADD_SCALAR);
+        addAttributeModifier(Attribute.MAX_HEALTH, 4, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.ATTACK_DAMAGE, 1, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.KNOCKBACK_RESISTANCE, 0.5, AttributeModifier.Operation.ADD_SCALAR);
+        addAttributeModifier(Attribute.MOVEMENT_SPEED, 0.5, AttributeModifier.Operation.ADD_SCALAR);
+        addAttributeModifier(Attribute.SNEAKING_SPEED, 0.5, AttributeModifier.Operation.ADD_SCALAR);
+        addAttributeModifier(Attribute.WATER_MOVEMENT_EFFICIENCY, 0.5, AttributeModifier.Operation.ADD_SCALAR);
 
 
-        addAttributeModifier(Attribute.STEP_HEIGHT, 2, AttributeModifier.Operation.ADD_NUMBER);
-        addAttributeModifier(Attribute.JUMP_STRENGTH, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.STEP_HEIGHT, 1, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.JUMP_STRENGTH, 0.5, AttributeModifier.Operation.ADD_SCALAR);
         addAttributeModifier(Attribute.SAFE_FALL_DISTANCE, 2, AttributeModifier.Operation.ADD_NUMBER);
 
-        addAttributeModifier(Attribute.BLOCK_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_NUMBER);
-        addAttributeModifier(Attribute.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.BLOCK_INTERACTION_RANGE, 0.25, AttributeModifier.Operation.ADD_SCALAR);
+        addAttributeModifier(Attribute.ENTITY_INTERACTION_RANGE, 0.25, AttributeModifier.Operation.ADD_SCALAR);
     }
 
     @Override
