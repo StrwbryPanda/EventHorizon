@@ -42,9 +42,11 @@ public abstract class BaseMobSpawn extends BaseEvent {
     private static final boolean DEFAULT_ALLOW_LAVA_SPAWNS = false;
     private static final boolean DEFAULT_USE_GROUP_SPAWNING = false;
     private static final boolean DEFAULT_USE_CONTINUOUS_SPAWNING = false;
+    private static final boolean DEFAULT_USE_RANDOM_MOB_TYPES = false;
 
     // Entity properties
     public EntityType mobType = EntityType.ZOMBIE;
+    public List<EntityType> mobTypes = new ArrayList<>();
     public int mobCount = DEFAULT_MOB_COUNT;
     public int maxSpawnRadius = DEFAULT_MAX_SPAWN_RADIUS;
     public int minSpawnRadius = DEFAULT_MIN_SPAWN_RADIUS;
@@ -62,6 +64,7 @@ public abstract class BaseMobSpawn extends BaseEvent {
     public boolean allowLavaSpawns = DEFAULT_ALLOW_LAVA_SPAWNS;
     public boolean useGroupSpawning = DEFAULT_USE_GROUP_SPAWNING;
     public boolean useContinuousSpawning = DEFAULT_USE_CONTINUOUS_SPAWNING;
+    public boolean useRandomMobTypes = DEFAULT_USE_RANDOM_MOB_TYPES;
 
     // Task management
     public BukkitTask continuousTask = null;
@@ -78,6 +81,7 @@ public abstract class BaseMobSpawn extends BaseEvent {
         super(EventClassification.NEUTRAL, eventName);
         this.plugin = EventHorizon.getPlugin();
         this.mobType = defaultMobType;
+        this.mobTypes.add(defaultMobType);
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
@@ -85,6 +89,23 @@ public abstract class BaseMobSpawn extends BaseEvent {
         super(classification, eventName);
         this.plugin = EventHorizon.getPlugin();
         this.mobType = defaultMobType;
+        this.mobTypes.add(defaultMobType);
+        this.key = new NamespacedKey(plugin, this.eventName);
+    }
+
+    public BaseMobSpawn(List<EntityType> mobTypes, EventClassification classification, String eventName) {
+        super(classification, eventName);
+        this.plugin = EventHorizon.getPlugin();
+        this.mobTypes.addAll(mobTypes);
+
+        // Set default mob type to first in list
+        if (!mobTypes.isEmpty()) {
+            this.mobType = mobTypes.getFirst();
+        } else {
+            this.mobTypes.add(EntityType.ZOMBIE);
+        }
+
+        this.useRandomMobTypes = true;
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
@@ -98,9 +119,15 @@ public abstract class BaseMobSpawn extends BaseEvent {
                 // Start continuous task for ongoing spawning
                 boolean started = startContinuousTask();
                 if (started) {
-                    log("Event " + eventName +
-                            " started continuous spawning of " + mobType.toString() +
-                            " mobs with interval of " + spawnInterval + " seconds");
+                    if (useRandomMobTypes) {
+                        log("Event " + eventName +
+                                " started continuous spawning of random mobs" +
+                                " with interval of " + spawnInterval + " seconds");
+                    } else {
+                        log("Event " + eventName +
+                                " started continuous spawning of " + mobType.toString() +
+                                " mobs with interval of " + spawnInterval + " seconds");
+                    }
                 } else {
                     log("Event " + eventName +
                             " tried to start continuous spawning but it was already running");
@@ -110,10 +137,17 @@ public abstract class BaseMobSpawn extends BaseEvent {
                 int spawned = spawnForAllPlayers();
                 this.lastSpawnCount = spawned;
 
-                log("Event " + eventName +
-                        " spawned " + spawned + " " + mobType.toString() +
-                        " mobs across " + plugin.getServer().getOnlinePlayers().size() +
-                        " players");
+                if (useRandomMobTypes) {
+                    log("Event " + eventName +
+                            " spawned " + spawned + " random mobs across " +
+                            plugin.getServer().getOnlinePlayers().size() +
+                            " players");
+                } else {
+                    log("Event " + eventName +
+                            " spawned " + spawned + " " + mobType.toString() +
+                            " mobs across " + plugin.getServer().getOnlinePlayers().size() +
+                            " players");
+                }
             }
         } catch (Exception e) {
             warning("Error spawning mobs in " + eventName + ": " + e.getMessage());
@@ -126,7 +160,11 @@ public abstract class BaseMobSpawn extends BaseEvent {
         boolean stopped = stopContinuousTask();
 
         if (stopped) {
-            log("Event " + eventName + " stopped continuous spawning of " + mobType.toString() + " mobs");
+            if (useRandomMobTypes) {
+                log("Event " + eventName + " stopped continuous spawning of random mobs");
+            } else {
+                log("Event " + eventName + " stopped continuous spawning of " + mobType.toString() + " mobs");
+            }
         } else {
             warning("Event " + eventName + " tried to stop continuous spawning but it was already stopped");
         }
@@ -171,15 +209,18 @@ public abstract class BaseMobSpawn extends BaseEvent {
     public int spawnForAllPlayers() {
         int totalSpawned = 0;
         List<Player> players = new ArrayList<>(plugin.getServer().getOnlinePlayers());
-//        log("Attempting to spawn mobs for " + plugin.getServer().getOnlinePlayers().size() + " players");
 
         for (Player player : players) {
             List<Entity> spawnedEntities = spawnForPlayer(player);
             int playerSpawnCount = spawnedEntities.size();
             totalSpawned += playerSpawnCount;
 
-            log("Spawned " + playerSpawnCount + " " + mobType.toString() +
-                    " for player " + player.getName());
+            if (useRandomMobTypes) {
+                log("Spawned " + playerSpawnCount + " random mobs for player " + player.getName());
+            } else {
+                log("Spawned " + playerSpawnCount + " " + mobType.toString() +
+                        " for player " + player.getName());
+            }
 
             for (Entity entity : spawnedEntities) {
                 onMobSpawned(entity, player);
@@ -226,7 +267,8 @@ public abstract class BaseMobSpawn extends BaseEvent {
             Location spawnLocation = getSafeLocation(player, initialX, initialY, initialZ);
 
             if (spawnLocation != null) {
-                Entity entity = world.spawnEntity(spawnLocation, mobType);
+                EntityType typeToSpawn = useRandomMobTypes ? getRandomMobType() : mobType;
+                Entity entity = world.spawnEntity(spawnLocation, typeToSpawn);
                 markSpawnedMob(entity);
                 spawnedEntities.add(entity);
                 spawned++;
@@ -297,7 +339,8 @@ public abstract class BaseMobSpawn extends BaseEvent {
             Location spawnLocation = getGroupSafeLocation(player, groupCenter, initialX, initialY, initialZ);
 
             if (spawnLocation != null) {
-                Entity entity = world.spawnEntity(spawnLocation, mobType);
+                EntityType typeToSpawn = useRandomMobTypes ? getRandomMobType() : mobType;
+                Entity entity = world.spawnEntity(spawnLocation, typeToSpawn);
                 markSpawnedMob(entity);
                 spawnedEntities.add(entity);
                 spawned++;
@@ -327,6 +370,71 @@ public abstract class BaseMobSpawn extends BaseEvent {
                 }
             });
         });
+    }
+
+    // Add a mob type to the list
+    public BaseMobSpawn addMobType(EntityType entityType) {
+        if (entityType != null && !this.mobTypes.contains(entityType)) {
+            this.mobTypes.add(entityType);
+        }
+        return this;
+    }
+
+    // Add multiple mob types to the list
+    public BaseMobSpawn addMobTypes(List<EntityType> entityTypes) {
+        if (entityTypes != null) {
+            for (EntityType type : entityTypes) {
+                addMobType(type);
+            }
+        }
+        return this;
+    }
+
+    // Remove a mob type from the list
+    public BaseMobSpawn removeMobType(EntityType entityType) {
+        if (entityType != null && this.mobTypes.remove(entityType)) {
+            if (this.mobType.equals(entityType)) {
+                resetDefaultMobType();
+            }
+        }
+        return this;
+    }
+
+    // Set the list of mob types
+    public BaseMobSpawn setMobTypes(List<EntityType> entityTypes) {
+        this.mobTypes.clear();
+
+        if (entityTypes != null && !entityTypes.isEmpty()) {
+            this.mobTypes.addAll(entityTypes);
+        }
+
+        resetDefaultMobType();
+        return this;
+    }
+
+    public BaseMobSpawn clearMobTypes() {
+        EntityType currentType = this.mobType;
+        this.mobTypes.clear();
+        this.mobTypes.add(currentType);
+        return this;
+    }
+
+    // Reset the default mob type
+    private void resetDefaultMobType() {
+        if (!this.mobTypes.isEmpty()) {
+            this.mobType = this.mobTypes.getFirst();
+        } else {
+            this.mobType = EntityType.ZOMBIE;
+            this.mobTypes.add(EntityType.ZOMBIE);
+        }
+    }
+
+    // Get a random mob type from the list
+    protected EntityType getRandomMobType() {
+        if (useRandomMobTypes && !mobTypes.isEmpty()) {
+            return mobTypes.get(random.nextInt(mobTypes.size()));
+        }
+        return mobType;
     }
 
     // Gets a safe location for a spawned mob
@@ -537,6 +645,10 @@ public abstract class BaseMobSpawn extends BaseEvent {
         return lastSpawnCount;
     }
 
+    public List<EntityType> getMobTypes() {
+        return Collections.unmodifiableList(this.mobTypes);
+    }
+
     // Setters
     public BaseMobSpawn setMobType(EntityType mobType) {
         this.mobType = mobType;
@@ -615,6 +727,11 @@ public abstract class BaseMobSpawn extends BaseEvent {
 
     public BaseMobSpawn setUseContinuousSpawning(boolean continuousSpawn) {
         this.useContinuousSpawning = continuousSpawn;
+        return this;
+    }
+
+    public BaseMobSpawn setRandomMobTypes(boolean useRandom) {
+        this.useRandomMobTypes = useRandom;
         return this;
     }
 }

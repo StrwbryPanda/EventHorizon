@@ -83,7 +83,7 @@ public abstract class BaseEffects extends BaseEvent {
                 MsgUtil.warning("Failed to apply effects to player " + player.getName() + ": " + e.getMessage());
             }
         }
-        MsgUtil.log("<green>Applied potion effects to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
+        MsgUtil.log("Applied potion effects to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
     }
 
     // Applies potion effects to a player
