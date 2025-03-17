@@ -7,13 +7,12 @@ tournament-timer: 3600
 #values relative to each other and do not need to add up to any specific number
 event:
   frequency: 10
-  posWeight: 0
-  negWeight: 2
-  neutralWeight: 0
+  posWeight: 3
+  negWeight: 3
+  neutralWeight: 3
 
 #to disable events, comment out the event name
 enabled-events:
-- "WolfPack" #mobSpawn: negative
 - "Fasting" #attribute: negative
 - "GrowthSpurt" #attribute: neutral
 - "HoneyIShrunkTheKids" #attribute: negative
@@ -21,3 +20,16 @@ enabled-events:
 - "ZeroGravity" #attribute: neutral
 - "IceIsNice" #blockModification: neutral
 - "FoodComa" #effects: neutral
+- "GottaGoFast" #effects: positive
+- "Overmine" #effects: positive
+- "SecondWind" #effects: positive
+- "YoureTooSlow" #effects: negative
+- "ChickenFlock" #mobSpawn: positive
+- "CowHerd" #mobSpawn: positive
+- "DropCreeper" #mobSpawn: negative
+- "RandomMobSpawn" #mobSpawn: neutral
+- "WolfPack" #mobSpawn: negative
+- "ZombieHorde" #mobSpawn: negative
+- "ZombieInvasion" #mobSpawn: negative
+
+

@@ -18,7 +18,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 {
 
     public static Scheduler scheduler;
-    private EventInitializer eventInitializer;
+    private static EventInitializer eventInitializer;
     private static EventManager eventManager;
 
     private static EventHorizon plugin;
@@ -35,7 +35,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     {
         plugin = this;
 
-        this.eventInitializer  = new EventInitializer();
+        eventInitializer  = new EventInitializer();
         eventManager = new EventManager(eventInitializer);
         scheduler = new Scheduler(eventManager);
 
@@ -59,5 +59,9 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 
     public static EventManager getEventManager() {
         return eventManager;
+    }
+
+    public static EventInitializer getEventInitializer() {
+        return eventInitializer;
     }
 }

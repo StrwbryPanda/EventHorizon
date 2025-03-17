@@ -21,4 +21,9 @@ public abstract class BaseEvent
     public EventClassification getEventClassification(BaseEvent event){
         return event.classification;
     }
+
+    public String getName()
+    {
+        return eventName;
+    }
 }
