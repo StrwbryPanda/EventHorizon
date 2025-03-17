@@ -2,37 +2,45 @@ package capstone.team1.eventHorizon.events.attributes;
 
 import capstone.team1.eventHorizon.events.EventClassification;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import java.util.UUID;
 
-public class HoneyIShrunkTheKids extends AttributesBase {
+public class HoneyIShrunkTheKids extends BaseAttribute {
 
     public HoneyIShrunkTheKids() {
         super(EventClassification.NEGATIVE, "honeyIShrunkTheKids");
+
+        addAttributeModifier(Attribute.MAX_HEALTH, -2.0, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.MOVEMENT_SPEED, -2.0, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.ATTACK_DAMAGE, -2.0, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.SCALE, -2.0, AttributeModifier.Operation.ADD_NUMBER);
+
+        addAttributeModifier(Attribute.SNEAKING_SPEED, -2.0, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.WATER_MOVEMENT_EFFICIENCY, -2.0, AttributeModifier.Operation.ADD_NUMBER);
+
+
+        addAttributeModifier(Attribute.STEP_HEIGHT, -2.0, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.JUMP_STRENGTH, -2.0, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.SAFE_FALL_DISTANCE, -2.0, AttributeModifier.Operation.ADD_NUMBER);
+
+        addAttributeModifier(Attribute.BLOCK_INTERACTION_RANGE, -2.0, AttributeModifier.Operation.ADD_NUMBER);
+        addAttributeModifier(Attribute.ENTITY_INTERACTION_RANGE, -2.0, AttributeModifier.Operation.ADD_NUMBER);
+
     }
 
-    @Override
-    public void applyEffect(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
-
-        Location loc = player.getLocation();
-        ArmorStand smallStand = loc.getWorld().spawn(loc, ArmorStand.class);
-
-        smallStand.setSmall(true);
-        smallStand.setInvisible(false);
-        smallStand.setGravity(false);
-
-        smallStand.addPassenger(player);
-
-        player.sendMessage("You have shrunk in size!");
-
-    }
     @Override
     public void execute() {
-        super.execute(); 
+        super.execute();
     }
-    public void terminate(){};
+
+    @Override
+    public void terminate() {
+        super.terminate();
+    }
 
 }
