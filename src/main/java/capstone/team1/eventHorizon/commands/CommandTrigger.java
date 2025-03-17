@@ -2,6 +2,7 @@ package capstone.team1.eventHorizon.commands;
 
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.BaseEvent;
+import capstone.team1.eventHorizon.events.blockModification.IceIsNice;
 import capstone.team1.eventHorizon.events.effects.*;
 import capstone.team1.eventHorizon.events.mobSpawn.BaseMobSpawn;
 import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
@@ -33,7 +34,8 @@ public class CommandTrigger {
         EVENT_MAP.put("overmine", plugin -> new Overmine());
         EVENT_MAP.put("youretooslow", plugin -> new YoureTooSlow());
         EVENT_MAP.put("foodcoma", plugin -> new FoodComa());
-        EVENT_MAP.put("asecondwind", plugin -> new ASecondWind());
+        EVENT_MAP.put("asecondwind", plugin -> new SecondWind());
+        EVENT_MAP.put("iceisnice", plugin -> new IceIsNice());
         // EVENT_MAP.put("zombiehorde", plugin -> new ZombieHorde(plugin));
     }
 
@@ -53,6 +55,7 @@ public class CommandTrigger {
         POSITIVE_EVENTS.add("asecondwind");
         NEGATIVE_EVENTS.add("youretooslow");
         POSITIVE_EVENTS.add("foodcoma");
+        NEUTRAL_EVENTS.add("iceisnice");
     }
 
     // List of all available event names (including special commands)

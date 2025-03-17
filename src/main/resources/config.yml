@@ -13,5 +13,11 @@ event:
 
 #to disable events, comment out the event name
 enabled-events:
-- "WolfPack" #MobSpawn: negative
-- "IceIsNice" #BlockModification: neutral
+- "WolfPack" #mobSpawn: negative
+- "Fasting" #attribute: negative
+- "GrowthSpurt" #attribute: neutral
+- "HoneyIShrunkTheKids" #attribute: negative
+- "LifestealOnly" #attribute: negative
+- "ZeroGravity" #attribute: neutral
+- "IceIsNice" #blockModification: neutral
+- "FoodComa" #effects: neutral
