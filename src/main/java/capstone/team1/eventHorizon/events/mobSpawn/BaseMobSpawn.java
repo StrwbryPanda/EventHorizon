@@ -45,30 +45,30 @@ public abstract class BaseMobSpawn extends BaseEvent {
     private static final boolean DEFAULT_USE_RANDOM_MOB_TYPES = false;
 
     // Entity properties
-    public EntityType mobType = EntityType.ZOMBIE;
-    public List<EntityType> mobTypes = new ArrayList<>();
-    public int mobCount = DEFAULT_MOB_COUNT;
-    public int maxSpawnRadius = DEFAULT_MAX_SPAWN_RADIUS;
-    public int minSpawnRadius = DEFAULT_MIN_SPAWN_RADIUS;
-    public int maxYRadius = DEFAULT_MAX_Y_RADIUS;
-    public int minYRadius = DEFAULT_MIN_Y_RADIUS;
-    public int maxSpawnAttempts = DEFAULT_MAX_SPAWN_ATTEMPTS;
-    public double widthClearance = DEFAULT_WIDTH_CLEARANCE;
-    public double heightClearance = DEFAULT_HEIGHT_CLEARANCE;
-    public int groupSpacing = DEFAULT_GROUP_SPACING;
+    protected EntityType mobType = EntityType.ZOMBIE;
+    protected List<EntityType> mobTypes = new ArrayList<>();
+    protected int mobCount = DEFAULT_MOB_COUNT;
+    protected int maxSpawnRadius = DEFAULT_MAX_SPAWN_RADIUS;
+    protected int minSpawnRadius = DEFAULT_MIN_SPAWN_RADIUS;
+    protected int maxYRadius = DEFAULT_MAX_Y_RADIUS;
+    protected int minYRadius = DEFAULT_MIN_Y_RADIUS;
+    protected int maxSpawnAttempts = DEFAULT_MAX_SPAWN_ATTEMPTS;
+    protected double widthClearance = DEFAULT_WIDTH_CLEARANCE;
+    protected double heightClearance = DEFAULT_HEIGHT_CLEARANCE;
+    protected int groupSpacing = DEFAULT_GROUP_SPACING;
     private int lastSpawnCount = 0;
 
     // Flags
-    public boolean surfaceOnlySpawning = DEFAULT_SURFACE_ONLY_SPAWNING;
-    public boolean allowWaterSpawns = DEFAULT_ALLOW_WATER_SPAWNS;
-    public boolean allowLavaSpawns = DEFAULT_ALLOW_LAVA_SPAWNS;
-    public boolean useGroupSpawning = DEFAULT_USE_GROUP_SPAWNING;
-    public boolean useContinuousSpawning = DEFAULT_USE_CONTINUOUS_SPAWNING;
-    public boolean useRandomMobTypes = DEFAULT_USE_RANDOM_MOB_TYPES;
+    protected boolean surfaceOnlySpawning = DEFAULT_SURFACE_ONLY_SPAWNING;
+    protected boolean allowWaterSpawns = DEFAULT_ALLOW_WATER_SPAWNS;
+    protected boolean allowLavaSpawns = DEFAULT_ALLOW_LAVA_SPAWNS;
+    protected boolean useGroupSpawning = DEFAULT_USE_GROUP_SPAWNING;
+    protected boolean useContinuousSpawning = DEFAULT_USE_CONTINUOUS_SPAWNING;
+    protected boolean useRandomMobTypes = DEFAULT_USE_RANDOM_MOB_TYPES;
 
     // Task management
-    public BukkitTask continuousTask = null;
-    public int spawnInterval = DEFAULT_SPAWN_INTERVAL;
+    protected BukkitTask continuousTask = null;
+    protected int spawnInterval = DEFAULT_SPAWN_INTERVAL;
 
     // Constructors
     public BaseMobSpawn(EventClassification classification, String eventName) {
@@ -97,6 +97,8 @@ public abstract class BaseMobSpawn extends BaseEvent {
         super(classification, eventName);
         this.plugin = EventHorizon.getPlugin();
         this.mobTypes.addAll(mobTypes);
+        this.useRandomMobTypes = true;
+        this.key = new NamespacedKey(plugin, this.eventName);
 
         // Set default mob type to first in list
         if (!mobTypes.isEmpty()) {
@@ -104,9 +106,6 @@ public abstract class BaseMobSpawn extends BaseEvent {
         } else {
             this.mobTypes.add(EntityType.ZOMBIE);
         }
-
-        this.useRandomMobTypes = true;
-        this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     // Executes the event
@@ -170,7 +169,7 @@ public abstract class BaseMobSpawn extends BaseEvent {
         }
     }
 
-    //  Continuous task management
+    // Starts continuous task for ongoing spawning
     public boolean startContinuousTask() {
         // Check if task is already running
         if (continuousTask != null && !continuousTask.isCancelled()) {
@@ -188,6 +187,7 @@ public abstract class BaseMobSpawn extends BaseEvent {
         return true;
     }
 
+    // Stops continuous task
     public boolean stopContinuousTask() {
         // Check if there's a task to stop
         if (continuousTask == null || continuousTask.isCancelled()) {
@@ -222,6 +222,7 @@ public abstract class BaseMobSpawn extends BaseEvent {
                         " for player " + player.getName());
             }
 
+            // Optional hook for child classes to implement additional logic
             for (Entity entity : spawnedEntities) {
                 onMobSpawned(entity, player);
             }
@@ -564,7 +565,6 @@ public abstract class BaseMobSpawn extends BaseEvent {
                     y = groupCenter.getBlockY() + (random.nextInt(3) - 1); // Small y variance in groups
                 }
             }
-
             currentTry++;
         }
 
@@ -609,7 +609,7 @@ public abstract class BaseMobSpawn extends BaseEvent {
             return false;
         }
 
-        for (int y = 0; y <= heightBlocks; y++) {
+        for (int y = 0; y < heightBlocks; y++) {
             int checkY = baseY + y;
 
             int xStart = 0;

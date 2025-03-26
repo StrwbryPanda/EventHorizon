@@ -16,7 +16,7 @@ public class CowHerd extends BaseMobSpawn {
                 .setMaxYRadius(20)
                 .setMinYRadius(3)
                 .setMaxSpawnAttempts(20)
-                .setHeightClearance(1)
+                .setHeightClearance(2)
                 .setWidthClearance(1)
                 .setSurfaceOnlySpawning(false)
                 .setAllowWaterSpawns(false)

@@ -1,31 +1,18 @@
 package capstone.team1.eventHorizon.events;
 
-import capstone.team1.eventHorizon.events.attributes.Fasting;
-import capstone.team1.eventHorizon.events.attributes.GrowthSpurt;
-import capstone.team1.eventHorizon.events.attributes.HoneyIShrunkTheKids;
-import capstone.team1.eventHorizon.events.attributes.LifestealOnly;
-import capstone.team1.eventHorizon.events.attributes.ZeroGravity;
+import capstone.team1.eventHorizon.events.attributes.*;
 import capstone.team1.eventHorizon.events.blockModification.IceIsNice;
-import capstone.team1.eventHorizon.events.effects.FoodComa;
-import capstone.team1.eventHorizon.events.effects.GottaGoFast;
-import capstone.team1.eventHorizon.events.effects.Overmine;
-import capstone.team1.eventHorizon.events.effects.SecondWind;
-import capstone.team1.eventHorizon.events.effects.YoureTooSlow;
-import capstone.team1.eventHorizon.events.mobSpawn.ChickenFlock;
-import capstone.team1.eventHorizon.events.mobSpawn.CowHerd;
-import capstone.team1.eventHorizon.events.mobSpawn.DropCreeper;
-import capstone.team1.eventHorizon.events.mobSpawn.RandomMobSpawn;
-import capstone.team1.eventHorizon.events.mobSpawn.ZombieHorde;
-import capstone.team1.eventHorizon.events.mobSpawn.ZombieInvasion;
+import capstone.team1.eventHorizon.events.effects.*;
+import capstone.team1.eventHorizon.events.itemSpawn.Feast;
+import capstone.team1.eventHorizon.events.itemSpawn.OreDropParty;
+import capstone.team1.eventHorizon.events.mobSpawn.*;
 import capstone.team1.eventHorizon.utility.Config;
 import capstone.team1.eventHorizon.utility.MsgUtil;
-import capstone.team1.eventHorizon.events.mobSpawn.WolfPack;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 //class that handles event loading and registration
 public class EventInitializer
@@ -86,6 +73,10 @@ public class EventInitializer
         registeredEvents.put("overmine", new Overmine());
         registeredEvents.put("secondwind", new SecondWind());
         registeredEvents.put("youretooslow", new YoureTooSlow());
+
+// Item spawn events
+        registeredEvents.put("feast", new Feast());
+        registeredEvents.put("oredropparty", new OreDropParty());
 
 // Mob spawn events
         registeredEvents.put("chickenflock", new ChickenFlock());
