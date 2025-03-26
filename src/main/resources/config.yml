@@ -24,6 +24,8 @@ enabled-events:
 - "Overmine" #effects: positive
 - "SecondWind" #effects: positive
 - "YoureTooSlow" #effects: negative
+- "Feast" #itemSpawn: positive
+- "OreDropParty" #itemSpawn: positive
 - "ChickenFlock" #mobSpawn: positive
 - "CowHerd" #mobSpawn: positive
 - "DropCreeper" #mobSpawn: negative
