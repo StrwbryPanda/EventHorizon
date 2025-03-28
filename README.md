@@ -19,6 +19,6 @@ For guidance on setting up a Paper server, refer to the official documentation:\
 - Use the generated .jar as outlined above.
 
 ## Need Help?
-- Check out the Wiki for usage instructions and event configurations.
+- Check out the [Wiki](https://github.com/StrwbryPanda/EventHorizon/wiki) for usage instructions and event configurations.
 
 
