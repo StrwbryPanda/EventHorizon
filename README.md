@@ -20,6 +20,6 @@ For guidance on setting up a Paper server, refer to the official documentation:\
 
 ## Need Help?
 - Check out the [Wiki](https://github.com/StrwbryPanda/EventHorizon/wiki) for usage instructions and event configurations.
-* For comprehensive details regarding the overall project structure and design, please refer to the [Game Design Document](https://github.com/user-attachments/files/19514260/Team_1_GDD_m1.docx.pdf).
+* For comprehensive details regarding the overall project structure and design, please refer to the [Game Design Document](https://github.com/userattachments/files/19514278/Team.1.Design.Document.docx.pdf).
 
 
