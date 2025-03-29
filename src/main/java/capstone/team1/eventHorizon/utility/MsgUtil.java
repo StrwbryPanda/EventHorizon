@@ -76,4 +76,7 @@ public class MsgUtil
         MiniMessage mm = MiniMessage.miniMessage();
         return mm.deserialize(message);
     }
+
+    //method that takes in a string and sends a message to the title
+    //PaperAPI/Minimessage
 }
