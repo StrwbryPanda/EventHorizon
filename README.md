@@ -18,8 +18,6 @@ For guidance on setting up a Paper server, refer to the official documentation:\
 + Build the project using your preferred Java build tool.
 - Use the generated .jar as outlined above.
 
-## Need Help?
+## Help?
 - Check out the [Wiki](https://github.com/StrwbryPanda/EventHorizon/wiki) for usage instructions and event configurations.
 * For comprehensive details regarding the overall project structure and design, please refer to the [Game Design Document](https://github.com/userattachments/files/19514278/Team.1.Design.Document.docx.pdf).
-
-
