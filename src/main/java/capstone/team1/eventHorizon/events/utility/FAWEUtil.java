@@ -123,25 +123,8 @@ public class FAWEUtil {
             Pattern pattern = blockType.getDefaultState();
 
             // Create a mask that excludes air blocks and GUI blocks
-            Mask existingMask = new ExistingBlockMask(editSession);
-            Mask blockMask = new BlockTypeMask(editSession,
-                    BlockTypes.CHEST,
-                    BlockTypes.TRAPPED_CHEST,
-                    BlockTypes.FURNACE,
-                    BlockTypes.BLAST_FURNACE,
-                    BlockTypes.SMOKER,
-                    BlockTypes.BARREL,
-                    BlockTypes.DISPENSER,
-                    BlockTypes.DROPPER,
-                    BlockTypes.HOPPER,
-                    BlockTypes.BREWING_STAND,
-                    BlockTypes.CRAFTING_TABLE,
-                    BlockTypes.ENCHANTING_TABLE,
-                    BlockTypes.ANVIL
-            ).inverse();
 
-            Mask combinedMask = new MaskUnion(existingMask, blockMask);
-            editSession.replaceBlocks(region, combinedMask, pattern);
+            editSession.replaceBlocks(region, insertmaskhere, pattern);
             Operations.complete(editSession.commit());
             editSession.flushQueue();
             activeEditSessions.add(editSession);
