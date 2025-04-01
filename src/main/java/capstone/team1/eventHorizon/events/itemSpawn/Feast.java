@@ -9,6 +9,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
+/**
+ * Event that spawns a random weighted food item near players
+ */
 public class Feast extends BaseItemSpawn {
     public Feast() {
         super(EventClassification.POSITIVE, "feast");

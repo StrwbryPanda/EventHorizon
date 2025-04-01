@@ -3,6 +3,7 @@ package capstone.team1.eventHorizon.events;
 import capstone.team1.eventHorizon.events.attributes.*;
 import capstone.team1.eventHorizon.events.blockModification.IceIsNice;
 import capstone.team1.eventHorizon.events.effects.*;
+import capstone.team1.eventHorizon.events.inventoryAdjustments.FlightSchool;
 import capstone.team1.eventHorizon.events.itemSpawn.Feast;
 import capstone.team1.eventHorizon.events.itemSpawn.OreDropParty;
 import capstone.team1.eventHorizon.events.mobSpawn.*;
@@ -73,6 +74,9 @@ public class EventInitializer
         registeredEvents.put("overmine", new Overmine());
         registeredEvents.put("secondwind", new SecondWind());
         registeredEvents.put("youretooslow", new YoureTooSlow());
+
+// Inventory adjustment events
+        registeredEvents.put("flightschool", new FlightSchool());
 
 // Item spawn events
         registeredEvents.put("feast", new Feast());
