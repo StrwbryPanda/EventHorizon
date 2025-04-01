@@ -371,31 +371,28 @@ public abstract class BaseItemSpawn extends BaseEvent {
 
     // Method to add multiple weighted items at once
     public BaseItemSpawn addWeightedItems(List<Pair<ItemStack, Double>> items) {
-        weightedItems.addAll(items);
-        return this;
-    }
-
-    // Adds a weighted item for random item spawning (item stack and weight)
-    public BaseItemSpawn addWeightedItem(ItemStack item, double weight) {
-        weightedItems.add(Pair.of(item, weight));
+        if (items != null) {
+            weightedItems.addAll(items);
+        }
         return this;
     }
 
     // Removes a weighted item for random item spawning
     public BaseItemSpawn removeWeightedItem(ItemStack itemToRemove) {
-        weightedItems.removeIf(pair -> pair.getLeft().equals(itemToRemove));
+        if (itemToRemove != null) {
+            weightedItems.removeIf(pair -> pair.getLeft().isSimilar(itemToRemove));
+        }
         return this;
     }
 
     // Method to set the entire list of weighted items
     public BaseItemSpawn setWeightedItems(List<Pair<ItemStack, Double>> items) {
-        // Clear existing items and add new ones
+        // Clear existing items
         weightedItems.clear();
-        weightedItems.addAll(items);
 
-        // Update item type if list is not empty
-        if (!items.isEmpty()) {
-            this.itemType = items.getFirst().getLeft();
+        // Add new ones if not null
+        if (items != null) {
+            weightedItems.addAll(items);
         }
 
         return this;
@@ -416,7 +413,7 @@ public abstract class BaseItemSpawn extends BaseEvent {
 
         for (Pair<ItemStack, Double> item : weightedItems) {
             cumulativeWeight += item.getRight();
-            if (randomValue < cumulativeWeight) {
+            if (randomValue <= cumulativeWeight) {
                 return item.getLeft();
             }
         }

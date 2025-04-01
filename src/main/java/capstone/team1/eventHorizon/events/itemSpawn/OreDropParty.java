@@ -9,6 +9,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
+/**
+ * Event that spawns random weighted ore drops near players
+ */
 public class OreDropParty extends BaseItemSpawn {
     public OreDropParty() {
         super(EventClassification.POSITIVE, "oreDropParty");
