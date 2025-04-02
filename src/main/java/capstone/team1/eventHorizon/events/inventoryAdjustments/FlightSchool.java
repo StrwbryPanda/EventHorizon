@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class FlightSchool extends BaseInventoryAdjustment {
 
     public FlightSchool() {
-        super(EventClassification.NEUTRAL, "flightSchool");
+        super(EventClassification.POSITIVE, "flightSchool");
         // Configure the event parameters
         this.useContinuousOperation = false;
 
@@ -59,8 +59,8 @@ public class FlightSchool extends BaseInventoryAdjustment {
     @Override
     public void terminate() {
         super.terminate();
-        // When the event ends, we don't want to remove the cursed elytras (that's part of the chaos)
-        // but we could clean up any extra fireworks we might have dropped
+
+        // Delete all marked items
         deleteMarkedItems();
     }
 }

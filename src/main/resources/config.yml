@@ -24,7 +24,8 @@ enabled-events:
 - "Overmine" #effects: positive
 - "SecondWind" #effects: positive
 - "YoureTooSlow" #effects: negative
-- "FlightSchool" #inventoryAdjustment: neutral
+- "FlightSchool" #inventoryAdjustment: positive
+- "SpoiledFood" #inventoryAdjustment: negative
 - "Feast" #itemSpawn: positive
 - "OreDropParty" #itemSpawn: positive
 - "ChickenFlock" #mobSpawn: positive
