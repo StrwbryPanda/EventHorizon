@@ -4,6 +4,7 @@ import capstone.team1.eventHorizon.events.attributes.*;
 import capstone.team1.eventHorizon.events.blockModification.IceIsNice;
 import capstone.team1.eventHorizon.events.effects.*;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.FlightSchool;
+import capstone.team1.eventHorizon.events.inventoryAdjustments.SpoiledFood;
 import capstone.team1.eventHorizon.events.itemSpawn.Feast;
 import capstone.team1.eventHorizon.events.itemSpawn.OreDropParty;
 import capstone.team1.eventHorizon.events.mobSpawn.*;
@@ -77,6 +78,7 @@ public class EventInitializer
 
 // Inventory adjustment events
         registeredEvents.put("flightschool", new FlightSchool());
+        registeredEvents.put("spoiledfood", new SpoiledFood());
 
 // Item spawn events
         registeredEvents.put("feast", new Feast());
