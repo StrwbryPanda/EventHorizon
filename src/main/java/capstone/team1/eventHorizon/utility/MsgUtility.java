@@ -7,7 +7,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 
-public class MsgUtil
+public class MsgUtility
 {
     public static void log(String message)
     {

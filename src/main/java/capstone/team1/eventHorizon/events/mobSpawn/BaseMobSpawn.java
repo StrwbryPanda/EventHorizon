@@ -18,8 +18,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static capstone.team1.eventHorizon.utility.MsgUtil.log;
-import static capstone.team1.eventHorizon.utility.MsgUtil.warning;
+import static capstone.team1.eventHorizon.utility.MsgUtility.log;
+import static capstone.team1.eventHorizon.utility.MsgUtility.warning;
 
 public abstract class BaseMobSpawn extends BaseEvent {
     protected final Plugin plugin;

@@ -3,7 +3,7 @@ package capstone.team1.eventHorizon.events.itemSpawn;
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.BaseEvent;
 import capstone.team1.eventHorizon.events.EventClassification;
-import capstone.team1.eventHorizon.utility.MsgUtil;
+import capstone.team1.eventHorizon.utility.MsgUtility;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -114,16 +114,16 @@ public abstract class BaseItemSpawn extends BaseEvent {
                 boolean started = startContinuousTask();
                 if (started) {
                     if (useRandomItemTypes) {
-                        MsgUtil.log("Event " + eventName +
+                        MsgUtility.log("Event " + eventName +
                                 " started continuous spawning of random items" +
                                 " with interval of " + spawnInterval + " seconds");
                     } else {
-                        MsgUtil.log("Event " + eventName +
+                        MsgUtility.log("Event " + eventName +
                                 " started continuous spawning of " + itemType.toString() +
                                 " items with interval of " + spawnInterval + " seconds");
                     }
                 } else {
-                    MsgUtil.log("Event " + eventName +
+                    MsgUtility.log("Event " + eventName +
                             " tried to start continuous spawning but it was already running");
                 }
             } else {
@@ -132,19 +132,19 @@ public abstract class BaseItemSpawn extends BaseEvent {
                 this.lastSpawnCount = spawned;
 
                 if (useRandomItemTypes) {
-                    MsgUtil.log("Event " + eventName +
+                    MsgUtility.log("Event " + eventName +
                             " spawned " + spawned + " random items across " +
                             plugin.getServer().getOnlinePlayers().size() +
                             " players");
                 } else {
-                    MsgUtil.log("Event " + eventName +
+                    MsgUtility.log("Event " + eventName +
                             " spawned " + spawned + " " + itemType.toString() +
                             " items across " + plugin.getServer().getOnlinePlayers().size() +
                             " players");
                 }
             }
         } catch (Exception e) {
-            MsgUtil.warning("Error spawning items in " + eventName + ": " + e.getMessage());
+            MsgUtility.warning("Error spawning items in " + eventName + ": " + e.getMessage());
         }
     }
 
@@ -155,12 +155,12 @@ public abstract class BaseItemSpawn extends BaseEvent {
 
         if (stopped) {
             if (useRandomItemTypes) {
-                MsgUtil.log("Event " + eventName + " stopped continuous spawning of random items");
+                MsgUtility.log("Event " + eventName + " stopped continuous spawning of random items");
             } else {
-                MsgUtil.log("Event " + eventName + " stopped continuous spawning of " + itemType.toString() + " items");
+                MsgUtility.log("Event " + eventName + " stopped continuous spawning of " + itemType.toString() + " items");
             }
         } else {
-            MsgUtil.warning("Event " + eventName + " tried to stop continuous spawning but it was already stopped");
+            MsgUtility.warning("Event " + eventName + " tried to stop continuous spawning but it was already stopped");
         }
     }
 
@@ -211,9 +211,9 @@ public abstract class BaseItemSpawn extends BaseEvent {
             totalSpawned += playerSpawnCount;
 
             if (useRandomItemTypes) {
-                MsgUtil.log("Spawned " + playerSpawnCount + " random items for player " + player.getName());
+                MsgUtility.log("Spawned " + playerSpawnCount + " random items for player " + player.getName());
             } else {
-                MsgUtil.log("Spawned " + playerSpawnCount + " " + itemType.toString() +
+                MsgUtility.log("Spawned " + playerSpawnCount + " " + itemType.toString() +
                         " items for player " + player.getName());
             }
 

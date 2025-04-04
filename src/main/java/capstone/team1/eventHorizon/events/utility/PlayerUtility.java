@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import capstone.team1.eventHorizon.utility.MsgUtil;
+import capstone.team1.eventHorizon.utility.MsgUtility;
 import static org.bukkit.Bukkit.getServer;
 
 public class PlayerUtility {
@@ -28,13 +28,13 @@ public class PlayerUtility {
                 Player player2 = onlinePlayers.get(i + 1);
 
                 playerPairs.add(Pair.of(player1, player2));
-                MsgUtil.warning(player1.getName() + " is paired with " + player2.getName());
+                MsgUtility.warning(player1.getName() + " is paired with " + player2.getName());
             }
         }
 
         if (onlinePlayers.size() % 2 != 0) {
             Player unpairedPlayer = onlinePlayers.getLast();
-            MsgUtil.warning("Unpaired player: " + unpairedPlayer.getName());
+            MsgUtility.warning("Unpaired player: " + unpairedPlayer.getName());
         }
 
         return playerPairs;

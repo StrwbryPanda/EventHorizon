@@ -3,8 +3,8 @@ package capstone.team1.eventHorizon.events.inventoryAdjustments;
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.BaseEvent;
 import capstone.team1.eventHorizon.events.EventClassification;
-import capstone.team1.eventHorizon.events.utility.PlayerInvListener;
-import capstone.team1.eventHorizon.utility.MsgUtil;
+import capstone.team1.eventHorizon.events.utility.PlayerInventoryListener;
+import capstone.team1.eventHorizon.utility.MsgUtility;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -83,11 +83,11 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
                 // Start continuous task for ongoing operations
                 boolean started = startContinuousTask();
                 if (started) {
-                    MsgUtil.log("Event " + eventName +
+                    MsgUtility.log("Event " + eventName +
                             " started continuous inventory operations with interval of " +
                             operationInterval + " seconds");
                 } else {
-                    MsgUtil.log("Event " + eventName +
+                    MsgUtility.log("Event " + eventName +
                             " tried to start continuous operations but it was already running");
                 }
             } else {
@@ -95,12 +95,12 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
                 int affected = applyToAllPlayers();
                 this.lastOperationCount = affected;
 
-                MsgUtil.log("Event " + eventName +
+                MsgUtility.log("Event " + eventName +
                         " applied inventory operations to " + affected +
                         " players out of " + plugin.getServer().getOnlinePlayers().size());
             }
         } catch (Exception e) {
-            MsgUtil.warning("Error applying inventory operations in " + eventName + ": " + e.getMessage());
+            MsgUtility.warning("Error applying inventory operations in " + eventName + ": " + e.getMessage());
         }
     }
 
@@ -110,9 +110,9 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         boolean stopped = stopContinuousTask();
 
         if (stopped) {
-            MsgUtil.log("Event " + eventName + " stopped continuous inventory operations");
+            MsgUtility.log("Event " + eventName + " stopped continuous inventory operations");
         } else {
-            MsgUtil.warning("Event " + eventName + " tried to stop continuous operations but it was already stopped");
+            MsgUtility.warning("Event " + eventName + " tried to stop continuous operations but it was already stopped");
         }
     }
 
@@ -161,7 +161,7 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
             boolean success = applyToPlayer(player);
             if (success) {
                 affectedPlayers++;
-                MsgUtil.log("Applied inventory operation for player " + player.getName());
+                MsgUtility.log("Applied inventory operation for player " + player.getName());
 
                 // Optional hook for child classes to implement additional logic
                 onOperationPerformed(player);
@@ -512,7 +512,7 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
     // Method to delete all marked items inside the player's inventory
     protected void deleteMarkedItemStacks() {
         EventHorizon.entityKeysToDelete.add(key);
-        plugin.getServer().getOnlinePlayers().forEach(PlayerInvListener::removeMarkedItems);
+        plugin.getServer().getOnlinePlayers().forEach(PlayerInventoryListener::removeMarkedItems);
     }
 
     // Getters

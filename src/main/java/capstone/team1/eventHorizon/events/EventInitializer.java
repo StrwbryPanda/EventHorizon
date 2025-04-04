@@ -9,7 +9,7 @@ import capstone.team1.eventHorizon.events.itemSpawn.Feast;
 import capstone.team1.eventHorizon.events.itemSpawn.OreDropParty;
 import capstone.team1.eventHorizon.events.mobSpawn.*;
 import capstone.team1.eventHorizon.utility.Config;
-import capstone.team1.eventHorizon.utility.MsgUtil;
+import capstone.team1.eventHorizon.utility.MsgUtility;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class EventInitializer
             BaseEvent event = registeredEvents.get(eventName.toLowerCase());
 
             Bukkit.getLogger().warning("event class: " + event);
-            MsgUtil.broadcast("event name: " + eventName);
+            MsgUtility.broadcast("event name: " + eventName);
 
             if (event != null) {
                 enableEvent(event);
