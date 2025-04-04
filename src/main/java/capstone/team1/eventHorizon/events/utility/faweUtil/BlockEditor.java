@@ -3,6 +3,8 @@ package capstone.team1.eventHorizon.events.utility.faweUtil;
 import capstone.team1.eventHorizon.utility.MsgUtil;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.function.mask.BlockMask;
+import com.sk89q.worldedit.function.mask.BlockTypeMask;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.regions.Region;
@@ -33,9 +35,10 @@ public class BlockEditor
             Pattern pattern = blockType.getDefaultState();
 
             // Create a mask that excludes air blocks and GUI blocks
+            BlockTypeMask mask = new BlockTypeMask(editSession, BlockMasks.groundBlocks);
 
 
-            editSession.replaceBlocks(region, insertmaskhere, pattern);
+            editSession.replaceBlocks(region, mask, pattern);
             Operations.complete(editSession.commit());
             editSession.flushQueue();
             activeEditSessions.add(editSession);

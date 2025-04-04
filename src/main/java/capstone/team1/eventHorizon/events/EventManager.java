@@ -16,6 +16,8 @@ public class EventManager
     private double negWeight;
     private double neutralWeight;
     private final Random random = new Random();
+    BaseEvent currentEvent;
+
 
     public EventManager(EventInitializer eventInitializer)
     {
@@ -25,6 +27,12 @@ public class EventManager
         this.neutralWeight = Config.getNeutralWeight();
         loadWeightsFromConfig();
 
+    }
+    public BaseEvent getCurrentEvent(){
+        return currentEvent;
+    }
+    public void setCurrentEvent(BaseEvent event){
+        currentEvent = event;
     }
 
     //trigger random events based on the weights set in the config
@@ -53,7 +61,7 @@ public class EventManager
 //                MsgUtil.broadcast("Selected events: " + selectedEvents);
                 BaseEvent selectedEvent = selectedEvents.get(random.nextInt(selectedEvents.size()));
                 MsgUtil.broadcast("Selected event: " + selectedEvent.getName());
-                Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> selectedEvent.execute()); //uses a lamba function to run the event on the main thread on the next available tick
+                Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> selectedEvent.run()); //uses a lamba function to run the event on the main thread on the next available tick
                 return;
             }
         }
@@ -63,7 +71,7 @@ public class EventManager
     public void triggerEventByName(String eventName) {
         BaseEvent event = eventInitializer.getRegisteredEvents().get(eventName.toLowerCase());
         if (event != null) {
-            event.execute();
+            Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> event.run()); //uses a lamba function to run the event on the main thread on the next available tick
         }
     }
 
@@ -74,7 +82,7 @@ public class EventManager
             allEvents.addAll(events);
         }
         BaseEvent randomEvent = allEvents.get(random.nextInt(allEvents.size()));
-        randomEvent.execute();
+        Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> randomEvent.run()); //uses a lamba function to run the event on the main thread on the next available tick
     }
 
 
@@ -87,4 +95,6 @@ public class EventManager
                 ", Neg: " + this.negWeight +
                 ", Neutral: " + this.neutralWeight);
     }
+
+
 }

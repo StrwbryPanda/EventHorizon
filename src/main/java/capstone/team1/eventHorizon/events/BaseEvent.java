@@ -1,5 +1,7 @@
 package capstone.team1.eventHorizon.events;
 
+import capstone.team1.eventHorizon.EventHorizon;
+
 public abstract class BaseEvent
 {
     public final String eventName;
@@ -13,6 +15,11 @@ public abstract class BaseEvent
 
     public abstract void execute();
     public abstract void terminate();
+    public void run(){
+        EventHorizon.getEventManager().getCurrentEvent().terminate();
+        EventHorizon.getEventManager().setCurrentEvent(this);
+        this.execute();
+    }
 
     public EventClassification getClassification()
     {
