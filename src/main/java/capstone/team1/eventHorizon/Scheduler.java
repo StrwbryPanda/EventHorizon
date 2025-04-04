@@ -1,7 +1,7 @@
 package capstone.team1.eventHorizon;
 
 import capstone.team1.eventHorizon.utility.Config;
-import capstone.team1.eventHorizon.utility.MsgUtil;
+import capstone.team1.eventHorizon.utility.MsgUtility;
 import capstone.team1.eventHorizon.events.EventManager;
 
 /**
@@ -87,7 +87,7 @@ public class Scheduler {
         gameTimer.endTimer();
         hasStarted = false;
         isPaused = false;
-        MsgUtil.broadcast("<red>Tournament has ended");
+        MsgUtility.broadcast("<red>Tournament has ended");
         return true;
     }
 

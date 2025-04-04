@@ -2,78 +2,55 @@ package capstone.team1.eventHorizon.events.blockModification;
 
 import capstone.team1.eventHorizon.events.BaseEvent;
 import capstone.team1.eventHorizon.events.EventClassification;
-import capstone.team1.eventHorizon.events.utility.faweUtil.BlockEditor;
-import capstone.team1.eventHorizon.events.utility.faweUtil.RegionSelector;
-import capstone.team1.eventHorizon.utility.MsgUtil;
+import capstone.team1.eventHorizon.events.utility.fawe.BlockEditor;
+import capstone.team1.eventHorizon.events.utility.fawe.region.GenericRegion;
+import capstone.team1.eventHorizon.utility.MsgUtility;
+import com.sk89q.worldedit.world.block.BlockType;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class BaseBlockModification extends BaseEvent
 {
-    protected String regionStyle;
-    protected String blockId;
-    protected  int radius;
-    protected int height;
+    protected GenericRegion region;
+    protected  Material replacementBlock;
+    protected  boolean isMaskInverted;
+    protected Collection<BlockType> blockTypesToReplace;
 
-    public BaseBlockModification(EventClassification classification, String eventName, String regionStyle, int radius, int height, String blockId) {
-        super(classification, eventName);
-        this.regionStyle = regionStyle;
-        this.radius = radius;
-        this.height = height;
-        this.blockId = blockId;
-    }
 
-    public BaseBlockModification(EventClassification classification, String eventName, String regionStyle, int radius, int height) {
+    public BaseBlockModification(EventClassification classification, String eventName, GenericRegion region, Material replacementBlock, Collection<BlockType> blockTypesToReplace, boolean isMaskInverted) {
         super(classification, eventName);
-        this.regionStyle = regionStyle;
-        this.radius = radius;
-        this.height = height;
-    }
-
-    public BaseBlockModification(EventClassification classification, String eventName) {
-        super(classification, eventName);
+        this.region = region;
+        this.replacementBlock = replacementBlock;
+        this.blockTypesToReplace = blockTypesToReplace;
+        this.isMaskInverted = isMaskInverted;
     }
 
     public void execute(){
-        applyBlockEditToAllPlayers(regionStyle,radius, height, blockId);
+        applyBlockEditToAllPlayers(replacementBlock, blockTypesToReplace, isMaskInverted);
     }
 
     public void terminate(){
         BlockEditor.undoAllBlockModifications();
     }
 
-    public void applyBlockEditToAllPlayers(String regionShape, int radius, int height, String blockId) {
+    public void applyBlockEditToAllPlayers(Material replacementBlock, Collection<BlockType> blockTypesToReplace, boolean isMaskInverted) {
         int successCount = 0;
         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
 
         for (Player player : players) {
             try {
-                switch (regionShape){
-                    case "cylinderAround":
-                        BlockEditor.replaceBlocksInRegion(RegionSelector.selectCylindricalRegionAroundPlayer(player, radius, height), blockId);
-                        break;
-                    case "cuboidAround":
-                        BlockEditor.replaceBlocksInRegion(RegionSelector.selectCuboidRegionAroundPlayer(player, radius, height), blockId);
-                        break;
-                    case "cylinderAtFeet":
-                        BlockEditor.replaceBlocksInRegion(RegionSelector.selectCylindricalRegionAtPlayersFeet(player, radius, height), blockId);
-                        break;
-                    case "cuboidAtFeet":
-                        BlockEditor.replaceBlocksInRegion(RegionSelector.selectCuboidRegionAtPlayersFeet(player, radius, height), blockId);
-                        break;
-                    default:
-                        MsgUtil.warning("Invalid region shape: " + regionShape);
-                        return;
-                }
+                BlockEditor.replaceBlocksInRegion(this.region.getRegion(player), replacementBlock, blockTypesToReplace, isMaskInverted);
                 successCount++;
             } catch (Exception e) {
-                MsgUtil.warning("Failed to apply block edit to player " + player.getName() + ": " + e.getMessage());
+                MsgUtility.warning("Failed to apply block edit to player " + player.getName() + ": " + e.getMessage());
             }
         }
-        MsgUtil.log("<green>Applied block edit to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
+        MsgUtility.log("<green>Applied block edit to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
     }
 
 }

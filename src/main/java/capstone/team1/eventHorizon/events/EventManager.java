@@ -2,8 +2,7 @@ package capstone.team1.eventHorizon.events;
 
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.utility.Config;
-import capstone.team1.eventHorizon.utility.MsgUtil;
-import me.clip.placeholderapi.util.Msg;
+import capstone.team1.eventHorizon.utility.MsgUtility;
 import org.bukkit.Bukkit;
 
 import java.util.*;
@@ -60,7 +59,7 @@ public class EventManager
 //                MsgUtil.broadcast("Selected event classification: " + eventClassification);
 //                MsgUtil.broadcast("Selected events: " + selectedEvents);
                 BaseEvent selectedEvent = selectedEvents.get(random.nextInt(selectedEvents.size()));
-                MsgUtil.broadcast("Selected event: " + selectedEvent.getName());
+                MsgUtility.broadcast("Selected event: " + selectedEvent.getName());
                 Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> selectedEvent.run()); //uses a lamba function to run the event on the main thread on the next available tick
                 return;
             }

@@ -3,7 +3,7 @@ package capstone.team1.eventHorizon.events.attributes;
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.BaseEvent;
 import capstone.team1.eventHorizon.events.EventClassification;
-import capstone.team1.eventHorizon.utility.MsgUtil;
+import capstone.team1.eventHorizon.utility.MsgUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -53,14 +53,14 @@ public abstract class BaseAttribute extends BaseEvent{
     // Executes the event
     @Override
     public void execute() {
-        MsgUtil.log("<green>Executing attribute event: " + this.eventName);
+        MsgUtility.log("<green>Executing attribute event: " + this.eventName);
         applyAttributeModifiersToAllPlayers();
     }
 
     // Terminates the event
     @Override
     public void terminate() {
-        MsgUtil.log("<red>Terminating attribute event: " + this.eventName);
+        MsgUtility.log("<red>Terminating attribute event: " + this.eventName);
         removeAttributeModifiersFromAllPlayers();
     }
 
@@ -74,10 +74,10 @@ public abstract class BaseAttribute extends BaseEvent{
                 applyAttributeModifiersToPlayer(player);
                 successCount++;
             } catch (Exception e) {
-                MsgUtil.warning("Failed to apply attributes to player " + player.getName() + ": " + e.getMessage());
+                MsgUtility.warning("Failed to apply attributes to player " + player.getName() + ": " + e.getMessage());
             }
         }
-        MsgUtil.log("Applied attribute modifiers to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
+        MsgUtility.log("Applied attribute modifiers to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
     }
 
     // Applies attribute modifiers to a player
@@ -111,10 +111,10 @@ public abstract class BaseAttribute extends BaseEvent{
                 removeAttributeModifiersFromPlayer(player);
                 successCount++;
             } catch (Exception e) {
-                MsgUtil.warning("Failed to remove attributes from player " + player.getName() + ": " + e.getMessage());
+                MsgUtility.warning("Failed to remove attributes from player " + player.getName() + ": " + e.getMessage());
             }
         }
-        MsgUtil.log("Removed attribute modifiers from " + successCount + "/" + players.size() + " players for event: " + this.eventName);
+        MsgUtility.log("Removed attribute modifiers from " + successCount + "/" + players.size() + " players for event: " + this.eventName);
     }
 
     // Removes attribute modifiers from a player

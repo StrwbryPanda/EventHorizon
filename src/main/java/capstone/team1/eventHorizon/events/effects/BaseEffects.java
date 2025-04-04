@@ -3,7 +3,7 @@ package capstone.team1.eventHorizon.events.effects;
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.BaseEvent;
 import capstone.team1.eventHorizon.events.EventClassification;
-import capstone.team1.eventHorizon.utility.MsgUtil;
+import capstone.team1.eventHorizon.utility.MsgUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -59,14 +59,14 @@ public abstract class BaseEffects extends BaseEvent {
     // Executes the event
     @Override
     public void execute() {
-        MsgUtil.log("<green>Executing effect event: " + this.eventName);
+        MsgUtility.log("<green>Executing effect event: " + this.eventName);
         applyPotionEffectsToAllPlayers();
     }
 
     //  Terminates the event
     @Override
     public void terminate() {
-        MsgUtil.log("<red>Terminating effect event: " + this.eventName);
+        MsgUtility.log("<red>Terminating effect event: " + this.eventName);
         removePotionEffectsFromAllPlayers();
     }
 
@@ -80,10 +80,10 @@ public abstract class BaseEffects extends BaseEvent {
                 applyPotionEffectsToPlayer(player);
                 successCount++;
             } catch (Exception e) {
-                MsgUtil.warning("Failed to apply effects to player " + player.getName() + ": " + e.getMessage());
+                MsgUtility.warning("Failed to apply effects to player " + player.getName() + ": " + e.getMessage());
             }
         }
-        MsgUtil.log("Applied potion effects to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
+        MsgUtility.log("Applied potion effects to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
     }
 
     // Applies potion effects to a player
@@ -104,10 +104,10 @@ public abstract class BaseEffects extends BaseEvent {
                 removePotionEffectsFromPlayer(player);
                 successCount++;
             } catch (Exception e) {
-                MsgUtil.warning("Failed to remove effects from player " + player.getName() + ": " + e.getMessage());
+                MsgUtility.warning("Failed to remove effects from player " + player.getName() + ": " + e.getMessage());
             }
         }
-        MsgUtil.log("Removed potion effects from " + successCount + "/" + players.size() + " players for event: " + this.eventName);
+        MsgUtility.log("Removed potion effects from " + successCount + "/" + players.size() + " players for event: " + this.eventName);
     }
 
     // Removes potion effects from a player

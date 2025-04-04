@@ -1,6 +1,6 @@
 package capstone.team1.eventHorizon;
 
-import capstone.team1.eventHorizon.utility.Config;
+import capstone.team1.eventHorizon.events.utility.fawe.BlockMasks;
 import capstone.team1.eventHorizon.commands.CommandsManager;
 import capstone.team1.eventHorizon.events.EventInitializer;
 import capstone.team1.eventHorizon.events.EventManager;
@@ -22,6 +22,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     private static EventManager eventManager;
 
     private static EventHorizon plugin;
+    private static BlockMasks blockMasks;
 
     public static Collection<NamespacedKey> entityKeysToDelete = new ArrayList<>();
 
@@ -35,9 +36,11 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     {
         plugin = this;
 
+        blockMasks = new BlockMasks();
         eventInitializer  = new EventInitializer();
         eventManager = new EventManager(eventInitializer);
         scheduler = new Scheduler(eventManager);
+
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) { //
             new PlaceholderEventHorizon().register();
@@ -63,5 +66,8 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 
     public static EventInitializer getEventInitializer() {
         return eventInitializer;
+    }
+    public static BlockMasks getBlockMasks() {
+        return blockMasks;
     }
 }
