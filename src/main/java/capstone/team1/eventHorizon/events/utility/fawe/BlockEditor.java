@@ -21,32 +21,26 @@ public class BlockEditor
     private static List<EditSession> activeEditSessions = new ArrayList<>();
 
     public static void replaceBlocksInRegion(Region region, Material blockId, Collection<BlockType> blockTypesToReplace, boolean isMaskInverted) {
-        try {
-            com.sk89q.worldedit.world.World world = region.getWorld();
-            EditSession editSession = WorldEdit.getInstance()
-                    .newEditSessionBuilder()
-                    .world(world)
-                    .maxBlocks(-1)
-                    .build();
 
-            BlockType blockType = BukkitAdapter.asBlockType(blockId);
-            if (blockType == null) {
-                throw new IllegalArgumentException("Invalid block ID: " + blockId);
-            }
+        com.sk89q.worldedit.world.World world = region.getWorld();
+        EditSession editSession = WorldEdit.getInstance()
+                .newEditSessionBuilder()
+                .world(world)
+                .maxBlocks(-1)
+                .build();
 
-            Pattern pattern = blockType.getDefaultState();
-
-            // Create a mask that excludes air blocks and GUI blocks
-            BlockTypeMask mask = new BlockTypeMask(editSession, blockTypesToReplace);
-
-            editSession.replaceBlocks(region, isMaskInverted ? mask.inverse() : mask, pattern);
-//            editSession.setBlocks(region, pattern);
-            Operations.complete(editSession.commit());
-            editSession.flushQueue();
-            activeEditSessions.add(editSession);
-        } catch (Exception e) {
-            MsgUtility.warning("Failed to replace blocks: " + e.getMessage());
+        BlockType blockType = BukkitAdapter.asBlockType(blockId);
+        if (blockType == null) {
+            MsgUtility.warning("Block type Null");
         }
+
+        Pattern pattern = blockType.getDefaultState();
+        BlockTypeMask mask = new BlockTypeMask(editSession, blockTypesToReplace);
+
+        editSession.replaceBlocks(region, isMaskInverted ? mask.inverse() : mask, pattern);
+        Operations.complete(editSession.commit());
+        editSession.flushQueue();
+        activeEditSessions.add(editSession);
     }
 
     public static void undoAllBlockModifications() {
