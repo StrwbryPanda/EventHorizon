@@ -11,14 +11,14 @@ event:
   negWeight: 3
   neutralWeight: 3
 
-#to disable events, comment out the event name
+#to disable events, comment out the event name by putting "#" in front of it
 enabled-events:
 - "Fasting" #attribute: negative
 - "GrowthSpurt" #attribute: neutral
 - "HoneyIShrunkTheKids" #attribute: negative
 - "LifestealOnly" #attribute: negative
 - "ZeroGravity" #attribute: neutral
-- "IceIsNice" #blockModification: neutral
+# - "IceIsNice" #blockModification: neutral
 - "FoodComa" #effects: neutral
 - "GottaGoFast" #effects: positive
 - "Overmine" #effects: positive

@@ -35,10 +35,11 @@ public class BlockEditor
             Pattern pattern = blockType.getDefaultState();
 
             // Create a mask that excludes air blocks and GUI blocks
-            BlockTypeMask mask = new BlockTypeMask(editSession, BlockMasks.groundBlocks);
+            //BlockTypeMask mask = new BlockTypeMask(editSession, BlockMasks.groundBlocks);
 
 
-            editSession.replaceBlocks(region, mask, pattern);
+//            editSession.replaceBlocks(region, mask, pattern);
+            editSession.setBlocks(region, pattern);
             Operations.complete(editSession.commit());
             editSession.flushQueue();
             activeEditSessions.add(editSession);

@@ -4,6 +4,10 @@ import capstone.team1.eventHorizon.utility.Config;
 import capstone.team1.eventHorizon.utility.MsgUtil;
 import capstone.team1.eventHorizon.events.EventManager;
 
+/**
+ * The Scheduler class manages the timing and execution of events in the EventHorizon plugin.
+ * It handles starting, pausing, resuming, and ending game sessions, as well as managing the event frequency.
+ */
 public class Scheduler {
     private final int eventFrequency;
     private final EventManager eventManager;
@@ -14,25 +18,39 @@ public class Scheduler {
     public boolean isPaused = false;
     public int pausedTime = -1;
 
-
-
+    /**
+     * Constructor for the Scheduler class.
+     *
+     * @param eventManager The EventManager instance to manage events
+     */
     public Scheduler(EventManager eventManager) {
         this.plugin = EventHorizon.getPlugin();
         this.eventFrequency = Config.getEventFrequency();
         this.eventManager = eventManager;
     }
 
+    /**
+     * Starts a new game session with the specified duration.
+     *
+     * @param duration The duration of the game session in seconds
+     * @return true if the session was successfully started, false if a session is already running
+     */
     public boolean start(int duration) {
         if (hasStarted && !isPaused) {
             return false;
         }
         gameTimer = new GameTimer(duration, eventFrequency);
-        gameTimer.runTaskTimerAsynchronously(plugin, 0, 20); //runs an async timer that triggers events every eventFrequency seconds
+        gameTimer.runTaskTimerAsynchronously(plugin, 0, 20);
         hasStarted = true;
         return true;
     }
 
-    public boolean pause(){
+    /**
+     * Pauses the current game session.
+     *
+     * @return true if the session was successfully paused, false if no session is running or already paused
+     */
+    public boolean pause() {
         if (!hasStarted || isPaused) {
             return false;
         }
@@ -41,18 +59,28 @@ public class Scheduler {
         return true;
     }
 
-    public boolean resume(){
-        if(pausedTime == -1 || !hasStarted){
+    /**
+     * Resumes a paused game session.
+     *
+     * @return true if the session was successfully resumed, false if no session exists or couldn't be started
+     */
+    public boolean resume() {
+        if (pausedTime == -1 || !hasStarted) {
             return false;
         }
         boolean hasStarted = this.start(pausedTime);
-        if(hasStarted){
+        if (hasStarted) {
             isPaused = false;
         }
         return hasStarted;
     }
 
-    public boolean end(){
+    /**
+     * Ends the current game session.
+     *
+     * @return true if the session was successfully ended, false if no session was running
+     */
+    public boolean end() {
         if (!hasStarted) {
             return false;
         }
@@ -63,9 +91,12 @@ public class Scheduler {
         return true;
     }
 
-    public int getRemainingTime(){
+    /**
+     * Gets the remaining time in the current game session.
+     *
+     * @return the remaining time in seconds, or -1 if no session is active
+     */
+    public int getRemainingTime() {
         return gameTimer.getRemainingTime();
     }
-
-
 }

@@ -16,7 +16,10 @@ public abstract class BaseEvent
     public abstract void execute();
     public abstract void terminate();
     public void run(){
-        EventHorizon.getEventManager().getCurrentEvent().terminate();
+        BaseEvent currentEvent = EventHorizon.getEventManager().getCurrentEvent();
+        if(currentEvent != null){
+            currentEvent.terminate();
+        }
         EventHorizon.getEventManager().setCurrentEvent(this);
         this.execute();
     }
