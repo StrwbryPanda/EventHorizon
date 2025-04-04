@@ -5,7 +5,12 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import net.md_5.bungee.api.chat.TextComponent;
+
 
 public class MsgUtil
 {
@@ -42,6 +47,16 @@ public class MsgUtil
     }
 
 
+    public static void title(String titleMessage)
+    {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            String fullmessage = titleMessage;
+            TextComponent actionBarMessage = new TextComponent(fullmessage);
+            actionBarMessage.setColor(ChatColor.AQUA);
+            player.spigot().sendMessage(actionBarMessage);
+        }
+
+    }
 
     /**
      * Sends a sound to an audience

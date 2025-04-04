@@ -4,7 +4,10 @@ import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.utility.Config;
 import capstone.team1.eventHorizon.utility.MsgUtil;
 import me.clip.placeholderapi.util.Msg;
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -54,6 +57,11 @@ public class EventManager
                 BaseEvent selectedEvent = selectedEvents.get(random.nextInt(selectedEvents.size()));
                 MsgUtil.broadcast("Selected event: " + selectedEvent.getName());
                 Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> selectedEvent.execute()); //uses a lamba function to run the event on the main thread on the next available tick
+
+
+                playSound();
+                String eventName = selectedEvent.getName();
+                MsgUtil.title("Event triggered: " + eventName);
                 return;
             }
         }
@@ -64,6 +72,7 @@ public class EventManager
         BaseEvent event = eventInitializer.getRegisteredEvents().get(eventName.toLowerCase());
         if (event != null) {
             event.execute();
+
         }
     }
 
@@ -77,6 +86,12 @@ public class EventManager
         randomEvent.execute();
     }
 
+    private void playSound()
+    {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+           player.playSound(player.getLocation(), Sound.BLOCK_BELL_USE, 1, 1);
+        }
+    }
 
     private void loadWeightsFromConfig() {
         this.posWeight = Config.getPosWeight();
