@@ -2,7 +2,8 @@ package capstone.team1.eventHorizon.events.blockModification;
 
 import capstone.team1.eventHorizon.events.BaseEvent;
 import capstone.team1.eventHorizon.events.EventClassification;
-import capstone.team1.eventHorizon.events.utility.FAWEUtil;
+import capstone.team1.eventHorizon.events.utility.faweUtil.BlockEditor;
+import capstone.team1.eventHorizon.events.utility.faweUtil.RegionSelector;
 import capstone.team1.eventHorizon.utility.MsgUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -41,7 +42,7 @@ public abstract class BaseBlockModification extends BaseEvent
     }
 
     public void terminate(){
-        FAWEUtil.undoAllBlockModifications();
+        BlockEditor.undoAllBlockModifications();
     }
 
     public void applyBlockEditToAllPlayers(String regionShape, int radius, int height, String blockId) {
@@ -52,16 +53,16 @@ public abstract class BaseBlockModification extends BaseEvent
             try {
                 switch (regionShape){
                     case "cylinderAround":
-                        FAWEUtil.replaceBlocksInRegion(FAWEUtil.selectCylindricalRegionAroundPlayer(player, radius, height), blockId);
+                        BlockEditor.replaceBlocksInRegion(RegionSelector.selectCylindricalRegionAroundPlayer(player, radius, height), blockId);
                         break;
                     case "cuboidAround":
-                        FAWEUtil.replaceBlocksInRegion(FAWEUtil.selectCuboidRegionAroundPlayer(player, radius, height), blockId);
+                        BlockEditor.replaceBlocksInRegion(RegionSelector.selectCuboidRegionAroundPlayer(player, radius, height), blockId);
                         break;
                     case "cylinderAtFeet":
-                        FAWEUtil.replaceBlocksInRegion(FAWEUtil.selectCylindricalRegionAtPlayersFeet(player, radius, height), blockId);
+                        BlockEditor.replaceBlocksInRegion(RegionSelector.selectCylindricalRegionAtPlayersFeet(player, radius, height), blockId);
                         break;
                     case "cuboidAtFeet":
-                        FAWEUtil.replaceBlocksInRegion(FAWEUtil.selectCuboidRegionAtPlayersFeet(player, radius, height), blockId);
+                        BlockEditor.replaceBlocksInRegion(RegionSelector.selectCuboidRegionAtPlayersFeet(player, radius, height), blockId);
                         break;
                     default:
                         MsgUtil.warning("Invalid region shape: " + regionShape);
