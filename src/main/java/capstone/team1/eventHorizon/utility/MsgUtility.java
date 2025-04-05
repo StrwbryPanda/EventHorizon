@@ -4,8 +4,12 @@ import capstone.team1.eventHorizon.EventHorizon;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
+
+import java.time.Duration;
 
 public class MsgUtility
 {
@@ -38,7 +42,7 @@ public class MsgUtility
         {
             return;
         }
-        audience.sendActionBar(parse(message));
+        audience.sendActionBar(Component.text("Selected Event: ", NamedTextColor.AQUA).append(parse(message).color(NamedTextColor.DARK_AQUA)));
     }
 
 
@@ -54,6 +58,7 @@ public class MsgUtility
         audience.playSound(sound);
     }
 
+
     /**
      * Broadcast a message to all online players including the console
      *
@@ -64,6 +69,14 @@ public class MsgUtility
         Bukkit.getServer().sendRichMessage(message);
     }
 
+    public static void showTitleWithDurations(Audience target, String titleText) {
+        final Title.Times times = Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(3000), Duration.ofMillis(1000));
+        // Using the times object this title will use 500ms to fade in, stay on screen for 3000ms and then fade out for 1000ms
+        final Title title = Title.title(Component.text("Starting Event:", NamedTextColor.AQUA),Component.text(titleText, NamedTextColor.DARK_AQUA), times);
+
+        // Send the title, you can also use Audience#clearTitle() to remove the title at any time
+        target.showTitle(title);
+    }
 
     /**
      * Deserializes the message into an adventure {@link Component} and parses any MiniMessage placeholders including the plugin <prefix>
@@ -77,6 +90,4 @@ public class MsgUtility
         return mm.deserialize(message);
     }
 
-    //method that takes in a string and sends a message to the title
-    //PaperAPI/Minimessage
 }

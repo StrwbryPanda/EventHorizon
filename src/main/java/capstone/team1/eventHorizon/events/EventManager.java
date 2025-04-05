@@ -3,7 +3,10 @@ package capstone.team1.eventHorizon.events;
 import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.utility.Config;
 import capstone.team1.eventHorizon.utility.MsgUtility;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 
 import java.util.*;
 
@@ -59,8 +62,13 @@ public class EventManager
 //                MsgUtil.broadcast("Selected event classification: " + eventClassification);
 //                MsgUtil.broadcast("Selected events: " + selectedEvents);
                 BaseEvent selectedEvent = selectedEvents.get(random.nextInt(selectedEvents.size()));
+
                 MsgUtility.broadcast("Selected event: " + selectedEvent.getName());
-                Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> selectedEvent.run()); //uses a lamba function to run the event on the main thread on the next available tick
+                MsgUtility.showTitleWithDurations(Bukkit.getServer(), selectedEvent.getName());
+                MsgUtility.actionBar(Bukkit.getServer(), selectedEvent.getName());
+                Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), () -> {
+                    MsgUtility.sound(Bukkit.getServer(), Sound.sound(Key.key("minecraft:block.note_block.bell"), Sound.Source.BLOCK, 1.0f, 1.0f));
+                });                Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> selectedEvent.run()); //uses a lamba function to run the event on the main thread on the next available tick
                 return;
             }
         }
