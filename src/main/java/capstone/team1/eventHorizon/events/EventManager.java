@@ -68,7 +68,8 @@ public class EventManager
                 MsgUtility.actionBar(Bukkit.getServer(), selectedEvent.getName());
                 Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), () -> {
                     MsgUtility.sound(Bukkit.getServer(), Sound.sound(Key.key("minecraft:block.note_block.bell"), Sound.Source.BLOCK, 1.0f, 1.0f));
-                });                Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> selectedEvent.run()); //uses a lamba function to run the event on the main thread on the next available tick
+                });
+                Bukkit.getScheduler().runTask(EventHorizon.getPlugin(), task -> selectedEvent.run()); //uses a lamba function to run the event on the main thread on the next available tick
                 return;
             }
         }
