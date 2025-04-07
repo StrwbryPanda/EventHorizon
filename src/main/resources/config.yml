@@ -18,7 +18,7 @@ enabled-events:
 - "HoneyIShrunkTheKids" #attribute: negative
 - "LifestealOnly" #attribute: negative
 - "ZeroGravity" #attribute: neutral
-# - "IceIsNice" #blockModification: neutral
+#- "IceIsNice" #blockModification: neutral
 - "FoodComa" #effects: neutral
 - "GottaGoFast" #effects: positive
 - "Overmine" #effects: positive
