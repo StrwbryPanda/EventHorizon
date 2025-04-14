@@ -10,7 +10,7 @@ public class SecondWind extends BaseEffects {
     public SecondWind() {
         super(EventClassification.POSITIVE, "SecondWind");
         addEffect(PotionEffectType.STRENGTH, 6000, 1,
-                false, true, true);
+                false, false, true);
     }
 
     @Override

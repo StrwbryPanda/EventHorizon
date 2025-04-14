@@ -28,13 +28,6 @@ public class ChickenFlock extends BaseMobSpawn {
 
     }
 
-//    @Override
-//    protected void onMobSpawned(Entity entity, Player player) {
-//        if (entity instanceof Chicken chicken) {
-//
-//        }
-//    }
-
     @Override
     public void execute() {
         super.execute();
@@ -43,6 +36,5 @@ public class ChickenFlock extends BaseMobSpawn {
     @Override
     public void terminate() {
         super.terminate();
-        killAllSpawnedMob();
     }
 }

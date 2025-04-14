@@ -9,8 +9,8 @@ import org.bukkit.potion.PotionEffectType;
 public class GottaGoFast extends BaseEffects {
     public GottaGoFast() {
         super(EventClassification.POSITIVE, "gottaGoFast");
-        addEffect(PotionEffectType.SPEED, 6000, 1,
-                false, true, true);
+        addEffect(PotionEffectType.SPEED, 6000, 2,
+                false, false, true);
     }
 
     @Override

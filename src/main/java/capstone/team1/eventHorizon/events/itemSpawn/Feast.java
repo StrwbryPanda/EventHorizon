@@ -3,8 +3,6 @@ package capstone.team1.eventHorizon.events.itemSpawn;
 import capstone.team1.eventHorizon.events.EventClassification;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -59,11 +57,6 @@ public class Feast extends BaseItemSpawn {
     }
 
     @Override
-    public void onItemSpawned(Item item, Player player) {
-        item.setGlowing(true);
-    }
-
-    @Override
     public void execute() {
         super.execute();
     }
@@ -71,6 +64,5 @@ public class Feast extends BaseItemSpawn {
     @Override
     public void terminate() {
         super.terminate();
-        deleteSpawnedItems();
     }
 }

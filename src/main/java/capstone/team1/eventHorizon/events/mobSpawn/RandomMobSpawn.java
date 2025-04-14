@@ -35,6 +35,7 @@ public class RandomMobSpawn extends BaseMobSpawn {
                         && !type.equals(EntityType.ENDER_DRAGON))
                     .collect(Collectors.toList()));
     }
+
     @Override
     public void execute() {
         super.execute();
@@ -43,6 +44,5 @@ public class RandomMobSpawn extends BaseMobSpawn {
     @Override
     public void terminate() {
         super.terminate();
-        killAllSpawnedMob();
     }
 }

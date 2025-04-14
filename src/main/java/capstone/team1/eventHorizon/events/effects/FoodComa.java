@@ -9,10 +9,10 @@ import org.bukkit.potion.PotionEffectType;
 public class FoodComa extends BaseEffects {
     public FoodComa() {
         super(EventClassification.NEUTRAL, "foodComa");
-        addEffect(PotionEffectType.SATURATION, 6000, 1,
-                false, true, true);
+        addEffect(PotionEffectType.SATURATION, 6000, 0,
+                false, false, true);
         addEffect(PotionEffectType.SLOWNESS, 6000, 0,
-                false, true, true);
+                false, false, true);
     }
 
     @Override

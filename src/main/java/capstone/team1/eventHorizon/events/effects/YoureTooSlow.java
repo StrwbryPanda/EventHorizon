@@ -10,7 +10,7 @@ public class YoureTooSlow extends BaseEffects {
     public YoureTooSlow() {
         super(EventClassification.NEGATIVE, "youreTooSlow");
         addEffect(PotionEffectType.SLOWNESS, 6000, 1,
-                false, true, true);
+                false, false, true);
     }
 
     @Override

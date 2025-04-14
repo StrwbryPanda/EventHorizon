@@ -10,7 +10,7 @@ public class Overmine extends BaseEffects {
     public Overmine() {
         super(EventClassification.POSITIVE, "overmine");
         addEffect(PotionEffectType.HASTE, 6000, 1,
-                false, true, true);
+                false, false, true);
     }
 
     @Override

@@ -19,6 +19,7 @@ enabled-events:
 - "LifestealOnly" #attribute: negative
 - "ZeroGravity" #attribute: neutral
 - "IceIsNice" #blockModification: neutral
+- "BlockDropShuffle" #dropModification: neutral
 - "FoodComa" #effects: neutral
 - "GottaGoFast" #effects: positive
 - "Overmine" #effects: positive

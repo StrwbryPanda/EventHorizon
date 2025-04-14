@@ -46,6 +46,5 @@ public class ZombieHorde extends BaseMobSpawn {
     @Override
     public void terminate() {
         super.terminate();
-        killAllSpawnedMob();
     }
 }

@@ -1,7 +1,6 @@
 package capstone.team1.eventHorizon.events.attributes;
 
 import capstone.team1.eventHorizon.events.EventClassification;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
 public class Fasting extends BaseAttribute {
@@ -19,13 +18,11 @@ public class Fasting extends BaseAttribute {
     @Override
     public void execute() {
         super.execute();
-        applyAttributeModifiersToAllPlayers();
     }
 
     @Override
     public void terminate() {
         super.terminate();
-        removeAttributeModifiersFromAllPlayers();
     }
 }
 
