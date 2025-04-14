@@ -33,7 +33,7 @@ public class CommandEnd
         CommandSender sender = ctx.getSource().getSender(); // Retrieve the command sender
 
         //Execute command logic here
-        MsgUtility.message(sender, EventHorizon.scheduler.end() ? "Tournament has ended" : "<red>ERROR: No active tournament");
+        MsgUtility.message(sender, EventHorizon.getScheduler().end() ? "Tournament has ended" : "<red>ERROR: No active tournament");
         return Command.SINGLE_SUCCESS;
     }
 }

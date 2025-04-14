@@ -10,7 +10,6 @@ import capstone.team1.eventHorizon.events.EventManager;
  */
 public class Scheduler {
     private final int eventFrequency;
-    private final EventManager eventManager;
     private final EventHorizon plugin;
     private GameTimer gameTimer;
 
@@ -24,7 +23,6 @@ public class Scheduler {
     public Scheduler() {
         this.plugin = EventHorizon.getPlugin();
         this.eventFrequency = Config.getEventFrequency();
-        this.eventManager = eventManager;
     }
 
     /**

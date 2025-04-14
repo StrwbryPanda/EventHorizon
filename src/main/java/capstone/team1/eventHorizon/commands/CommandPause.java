@@ -26,7 +26,7 @@ public class CommandPause
         CommandSender sender = ctx.getSource().getSender(); // Retrieve the command sender
 
         //Execute command logic here
-        MsgUtility.message(sender, EventHorizon.scheduler.pause() ? "Tournament has been paused" : "<red>ERROR: Cannot pause tournament");
+        MsgUtility.message(sender, EventHorizon.getScheduler().pause() ? "Tournament has been paused" : "<red>ERROR: Cannot pause tournament");
         return Command.SINGLE_SUCCESS;
     }
 }

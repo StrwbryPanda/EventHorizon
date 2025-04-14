@@ -25,7 +25,7 @@ public class CommandBegin
     private static int executeCommandLogic(CommandContext<CommandSourceStack> ctx){
         CommandSender sender = ctx.getSource().getSender(); // Retrieve the command sender
         //Execute command logic here
-        MsgUtility.message(sender, EventHorizon.scheduler.start(Config.getTournamentTimer()) ? "The tournament has started" : "<red>ERROR: Tournament already started");
+        MsgUtility.message(sender, EventHorizon.getScheduler().start(Config.getTournamentTimer()) ? "The tournament has started" : "<red>ERROR: Tournament already started");
         return Command.SINGLE_SUCCESS;
     }
 }

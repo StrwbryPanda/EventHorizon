@@ -36,7 +36,6 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     public void onEnable()
     {
         plugin = this;
-
         blockMasks = new BlockMasks();
         eventInitializer  = new EventInitializer();
         eventManager = new EventManager();

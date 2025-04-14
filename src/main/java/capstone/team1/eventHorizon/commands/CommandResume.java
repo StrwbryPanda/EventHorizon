@@ -25,7 +25,7 @@ public class CommandResume
         CommandSender sender = ctx.getSource().getSender(); // Retrieve the command sender
 
         //Execute command logic here
-        MsgUtility.message(sender, EventHorizon.scheduler.resume() ? "Tournament has resumed" : "<red>ERROR: Cannot resume tournament");
+        MsgUtility.message(sender, EventHorizon.getScheduler().resume() ? "Tournament has resumed" : "<red>ERROR: Cannot resume tournament");
         return Command.SINGLE_SUCCESS;
     }
 }
