@@ -1,11 +1,8 @@
 package capstone.team1.eventHorizon;
 
 import capstone.team1.eventHorizon.commands.CommandRootEventHorizon;
-import capstone.team1.eventHorizon.events.utility.fawe.BlockMasks;
-import capstone.team1.eventHorizon.commands.CommandsManager;
 import capstone.team1.eventHorizon.events.EventInitializer;
 import capstone.team1.eventHorizon.events.EventManager;
-import com.sk89q.minecraft.util.commands.CommandsManager;
 import capstone.team1.eventHorizon.events.utility.EntityAddToWorldListener;
 import capstone.team1.eventHorizon.events.utility.PlayerInventoryListener;
 import capstone.team1.eventHorizon.events.utility.fawe.BlockMasks;
