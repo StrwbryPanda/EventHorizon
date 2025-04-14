@@ -31,9 +31,6 @@ public class EventManager {
      * Constructs a new EventManager and initializes event weights from config.
      */
     public EventManager() {
-        this.posWeight = Config.getPosWeight();
-        this.negWeight = Config.getNegWeight();
-        this.neutralWeight = Config.getNeutralWeight();
         loadWeightsFromConfig();
     }
 
@@ -121,7 +118,7 @@ public class EventManager {
     /**
      * Loads event weights from the configuration file and logs the new values.
      */
-    private void loadWeightsFromConfig() {
+    public void loadWeightsFromConfig() {
         this.posWeight = Config.getPosWeight();
         this.negWeight = Config.getNegWeight();
         this.neutralWeight = Config.getNeutralWeight();
