@@ -1,9 +1,10 @@
 package capstone.team1.eventHorizon;
 
+import capstone.team1.eventHorizon.commands.CommandRootEventHorizon;
 import capstone.team1.eventHorizon.events.utility.fawe.BlockMasks;
-import capstone.team1.eventHorizon.commands.CommandsManager;
 import capstone.team1.eventHorizon.events.EventInitializer;
 import capstone.team1.eventHorizon.events.EventManager;
+import com.sk89q.minecraft.util.commands.CommandsManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -48,8 +49,9 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
         saveResource("config.yml", /* replace */ false);
 
         //initializes eventhorizon base command
-        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
-                event -> event.registrar().register("eventhorizon", new CommandsManager()));
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
+            commands.registrar().register(CommandRootEventHorizon.buildCommand());
+        });
     }
 
 

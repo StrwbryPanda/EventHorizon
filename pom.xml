@@ -74,7 +74,7 @@
                 <configuration>
 
                     <!--                    Kylie's test server output-->
-<!--                                            <outputDirectory>C:\Users\kylie\Minecraft Server\1.21.4\plugins\update</outputDirectory>-->
+                                            <outputDirectory>C:\Users\kylie\Minecraft Server\1.21.4\plugins\update</outputDirectory>
                     <!--                    Nishik Server-->
 <!--                                        <outputDirectory>C:\Users\Nishik\Desktop\Minecraft Server\Paper 1.21.4\plugins\update</outputDirectory>-->
                 </configuration>
