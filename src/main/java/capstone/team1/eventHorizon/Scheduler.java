@@ -21,7 +21,7 @@ public class Scheduler {
     /**
      * Constructor for the Scheduler class.
      *
-     * @param eventManager The EventManager instance to manage events
+     * @param eventManager The EventManager provides utility to the game timer object
      */
     public Scheduler(EventManager eventManager) {
         this.plugin = EventHorizon.getPlugin();
@@ -30,9 +30,9 @@ public class Scheduler {
     }
 
     /**
-     * Starts a new game session with the specified duration.
+     * Starts a new game timer with the specified duration.
      *
-     * @param duration The duration of the game session in seconds
+     * @param duration The duration of the game timer in seconds
      * @return true if the session was successfully started, false if a session is already running
      */
     public boolean start(int duration) {

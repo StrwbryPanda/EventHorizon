@@ -1,6 +1,7 @@
 package capstone.team1.eventHorizon.commands;
 
 import capstone.team1.eventHorizon.EventHorizon;
+import capstone.team1.eventHorizon.utility.Config;
 import capstone.team1.eventHorizon.utility.MsgUtility;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
@@ -9,15 +10,14 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
 
-//command that resumes a paused tournament timer
-public class CommandResume
+public class CommandReloadConfig
 {
     //builds the command
     //allows setting of permissions, subcommands, etc.
     public static LiteralCommandNode<CommandSourceStack> buildCommand(final String commandName) {
         return Commands.literal(commandName)
                 .requires(sender -> sender.getSender().isOp())
-                .executes(CommandResume::executeCommandLogic)
+                .executes(CommandReloadConfig::executeCommandLogic)
                 .build();
     }
 
@@ -25,7 +25,7 @@ public class CommandResume
         CommandSender sender = ctx.getSource().getSender(); // Retrieve the command sender
 
         //Execute command logic here
-        MsgUtility.message(sender, EventHorizon.scheduler.resume() ? "Tournament has resumed" : "<red>ERROR: Cannot resume tournament");
+        Config.reloadConfig();
         return Command.SINGLE_SUCCESS;
     }
 }
