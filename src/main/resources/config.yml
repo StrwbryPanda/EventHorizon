@@ -1,17 +1,17 @@
-#Configurations for the EventHorizon plugin
+# Configurations for the EventHorizon plugin
 
-#default integer value for tournament timer (in seconds)
+# default integer value for tournament timer (in seconds)
 tournament-timer: 3600
 
-#default weights for event frequency
-#values relative to each other and do not need to add up to any specific number
+# default weights for event frequency
+# values relative to each other and do not need to add up to any specific number
 event:
   frequency: 10
   posWeight: 3
   negWeight: 3
   neutralWeight: 3
 
-#to disable events, comment out the event name by putting "#" in front of it
+# to disable events, comment out the event name by putting "#" in front of it
 enabled-events:
 - "Fasting" #attribute: negative
 - "GrowthSpurt" #attribute: neutral

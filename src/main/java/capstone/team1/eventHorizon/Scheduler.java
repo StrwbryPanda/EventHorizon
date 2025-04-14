@@ -6,30 +6,34 @@ import capstone.team1.eventHorizon.events.EventManager;
 
 /**
  * The Scheduler class manages the timing and execution of events in the EventHorizon plugin.
- * It handles starting, pausing, resuming, and ending the tournament game timer, as well as managing the event frequency.
+ * It handles starting, pausing, resuming, and ending game sessions, as well as managing the event frequency.
  */
 public class Scheduler {
     private final int eventFrequency;
+    private final EventManager eventManager;
     private final EventHorizon plugin;
     private GameTimer gameTimer;
 
-    private boolean hasStarted = false;
-    private boolean isPaused = false;
-    private int pausedTime = -1;
-
+    public boolean hasStarted = false;
+    public boolean isPaused = false;
+    public int pausedTime = -1;
 
     /**
-     * Constructs a new Scheduler with the specified event manager.
+     * Constructor for the Scheduler class.
+     *
+     * @param eventManager The EventManager provides utility to the game timer object
      */
-    public Scheduler() {
+    public Scheduler(EventManager eventManager) {
         this.plugin = EventHorizon.getPlugin();
         this.eventFrequency = Config.getEventFrequency();
+        this.eventManager = eventManager;
     }
 
     /**
-     * Starts the tournament timer with the specified duration.
-     * @param duration The duration of the tournament in seconds
-     * @return true if the timer was successfully started, false if the tournament is already running
+     * Starts a new game timer with the specified duration.
+     *
+     * @param duration The duration of the game timer in seconds
+     * @return true if the session was successfully started, false if a session is already running
      */
     public boolean start(int duration) {
         if (hasStarted && !isPaused) {
@@ -42,8 +46,9 @@ public class Scheduler {
     }
 
     /**
-     * Pauses the currently running tournament timer.
-     * @return true if the timer was successfully paused, false if the tournament hasn't started or is already paused
+     * Pauses the current game session.
+     *
+     * @return true if the session was successfully paused, false if no session is running or already paused
      */
     public boolean pause() {
         if (!hasStarted || isPaused) {
@@ -55,8 +60,9 @@ public class Scheduler {
     }
 
     /**
-     * Resumes a paused tournament timer.
-     * @return true if the timer was successfully resumed, false if there's no paused tournament or the tournament hasn't started
+     * Resumes a paused game session.
+     *
+     * @return true if the session was successfully resumed, false if no session exists or couldn't be started
      */
     public boolean resume() {
         if (pausedTime == -1 || !hasStarted) {
@@ -70,8 +76,9 @@ public class Scheduler {
     }
 
     /**
-     * Ends the current tournament timer.
-     * @return true if the tournament was successfully ended, false if no tournament was running
+     * Ends the current game session.
+     *
+     * @return true if the session was successfully ended, false if no session was running
      */
     public boolean end() {
         if (!hasStarted) {
@@ -85,8 +92,9 @@ public class Scheduler {
     }
 
     /**
-     * Gets the remaining time in the current tournament.
-     * @return the remaining time in seconds, or -1 if no tournament is running
+     * Gets the remaining time in the current game session.
+     *
+     * @return the remaining time in seconds, or -1 if no session is active
      */
     public int getRemainingTime() {
         return gameTimer.getRemainingTime();
