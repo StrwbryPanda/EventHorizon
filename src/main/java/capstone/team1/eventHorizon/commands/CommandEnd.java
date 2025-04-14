@@ -10,6 +10,6 @@ public class CommandEnd
 public static boolean isEnded;
 
     public static void run(CommandSender sender) {
-        MsgUtility.message(sender, EventHorizon.scheduler.end() ? "Tournament has ended" : "<red>ERROR: No active tournament");
+        MsgUtility.message(sender, EventHorizon.getScheduler().end() ? "Tournament has ended" : "<red>ERROR: No active tournament");
     }
 }

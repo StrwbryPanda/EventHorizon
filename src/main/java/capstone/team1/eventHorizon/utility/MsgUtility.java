@@ -11,18 +11,39 @@ import org.bukkit.Bukkit;
 
 import java.time.Duration;
 
+/**
+ * Utility class providing message handling and display functionality for the EventHorizon plugin.
+ * This class includes methods for logging, broadcasting, sending messages, displaying titles,
+ * and handling various forms of player communication using Adventure components.
+ */
 public class MsgUtility
 {
+    /**
+     * Logs an info message to the plugin's component logger.
+     *
+     * @param message the message to log supporting MiniMessage formatting
+     */
     public static void log(String message)
     {
         EventHorizon.getPlugin().getComponentLogger().info(parse(message));
     }
 
+    /**
+     * Logs a warning message to the plugin's component logger.
+     *
+     * @param message the message to warn supporting MiniMessage formatting
+     */
     public static void warning(String message)
     {
         EventHorizon.getPlugin().getComponentLogger().warn(parse(message));
     }
 
+    /**
+     * Sends a message to the specified audience.
+     *
+     * @param audience the audience to send the message to
+     * @param message the message to send supporting MiniMessage formatting
+     */
     public static void message(Audience audience, String message)
     {
         if (message.isEmpty())
@@ -69,6 +90,13 @@ public class MsgUtility
         Bukkit.getServer().sendRichMessage(message);
     }
 
+    /**
+     * Shows a title to the specified audience with custom durations.
+     * The title consists of a main title "Starting Event:" and the provided subtitle text.
+     *
+     * @param target the audience to show the title to
+     * @param titleText the subtitle text to display supporting MiniMessage formatting
+     */
     public static void showTitleWithDurations(Audience target, String titleText) {
         final Title.Times times = Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(3000), Duration.ofMillis(1000));
         // Using the times object this title will use 500ms to fade in, stay on screen for 3000ms and then fade out for 1000ms

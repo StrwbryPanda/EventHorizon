@@ -9,6 +9,6 @@ public class CommandResume
 {
 
     public static void run(CommandSender sender) {
-        MsgUtility.message(sender, EventHorizon.scheduler.resume() ? "Tournament has resumed" : "<red>ERROR: Cannot resume tournament");
+        MsgUtility.message(sender, EventHorizon.getScheduler().resume() ? "Tournament has resumed" : "<red>ERROR: Cannot resume tournament");
     }
 }

@@ -11,6 +11,6 @@ public class CommandPause
     public static int timeReamining;
 
     public static void run(CommandSender sender) {
-        MsgUtility.message(sender, EventHorizon.scheduler.pause() ? "Tournament has been paused" : "<red>ERROR: Cannot pause tournament");
+        MsgUtility.message(sender, EventHorizon.getScheduler().pause() ? "Tournament has been paused" : "<red>ERROR: Cannot pause tournament");
     }
 }
