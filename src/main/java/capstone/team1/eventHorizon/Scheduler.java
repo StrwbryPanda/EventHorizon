@@ -20,10 +20,8 @@ public class Scheduler {
 
     /**
      * Constructor for the Scheduler class.
-     *
-     * @param eventManager The EventManager provides utility to the game timer object
      */
-    public Scheduler(EventManager eventManager) {
+    public Scheduler() {
         this.plugin = EventHorizon.getPlugin();
         this.eventFrequency = Config.getEventFrequency();
         this.eventManager = eventManager;

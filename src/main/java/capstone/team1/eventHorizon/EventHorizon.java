@@ -18,7 +18,7 @@ import java.util.Collection;
 public final class EventHorizon extends JavaPlugin implements CommandExecutor
 {
 
-    public static Scheduler scheduler;
+    private static Scheduler scheduler;
     private static EventInitializer eventInitializer;
     private static EventManager eventManager;
 
@@ -39,8 +39,8 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 
         blockMasks = new BlockMasks();
         eventInitializer  = new EventInitializer();
-        eventManager = new EventManager(eventInitializer);
-        scheduler = new Scheduler(eventManager);
+        eventManager = new EventManager();
+        scheduler = new Scheduler();
 
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) { //
@@ -71,5 +71,8 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     }
     public static BlockMasks getBlockMasks() {
         return blockMasks;
+    }
+    public static Scheduler getScheduler() {
+        return scheduler;
     }
 }
