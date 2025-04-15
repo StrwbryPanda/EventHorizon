@@ -89,6 +89,10 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
             return false;
         }
 
+        if (event.getItems().isEmpty()) {
+            return false;
+        }
+
         Material blockType = event.getBlockState().getType();
         List<ItemStack> customDrops = getBlockDrops(blockType);
 
@@ -99,19 +103,19 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
                 totalQuantity += item.getItemStack().getAmount();
             }
 
-            // Cancel original drops
-            event.setCancelled(true);
-
-            // Select a random drop and apply quantity
-            ItemStack customDrop = selectRandomDrop(customDrops);
             if (totalQuantity > 0) {
+                // Cancel original drops
+                event.setCancelled(true);
+
+                // Select a random drop and apply quantity
+                ItemStack customDrop = selectRandomDrop(customDrops);
                 customDrop.setAmount(totalQuantity);
+
+                // Drop the item
+                dropItem(customDrop, event.getBlock().getLocation());
+
+                return true;
             }
-
-            // Drop the item
-            dropItem(customDrop, event.getBlock().getLocation());
-
-            return true;
         }
         return false;
     }
