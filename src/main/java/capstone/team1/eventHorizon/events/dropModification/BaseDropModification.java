@@ -4,12 +4,19 @@ import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.BaseEvent;
 import capstone.team1.eventHorizon.events.EventClassification;
 import capstone.team1.eventHorizon.utility.MsgUtility;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDropItemEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -55,7 +62,90 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
         }
     }
 
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (!isActive || event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+
+        // Make sure drops are enabled to trigger BlockDropItemEvent
+        event.setDropItems(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockDropItem(BlockDropItemEvent event) {
+        handleBlockDrops(event);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onEntityDeath(EntityDeathEvent event) {
+        handleEntityDrops(event);
+    }
+
     protected abstract void setupDropModifications();
+
+    protected boolean handleBlockDrops(BlockDropItemEvent event) {
+        if (!isActive || event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+            return false;
+        }
+
+        Material blockType = event.getBlockState().getType();
+        List<ItemStack> customDrops = getBlockDrops(blockType);
+
+        if (customDrops != null && !customDrops.isEmpty()) {
+            // Calculate total quantity - respects Fortune
+            int totalQuantity = 0;
+            for (Item item : event.getItems()) {
+                totalQuantity += item.getItemStack().getAmount();
+            }
+
+            // Cancel original drops
+            event.setCancelled(true);
+
+            // Select a random drop and apply quantity
+            ItemStack customDrop = selectRandomDrop(customDrops);
+            if (totalQuantity > 0) {
+                customDrop.setAmount(totalQuantity);
+            }
+
+            // Drop the item
+            dropItem(customDrop, event.getBlock().getLocation());
+
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean handleEntityDrops(EntityDeathEvent event) {
+        if (!isActive) {
+            return false;
+        }
+
+        EntityType entityType = event.getEntityType();
+        List<ItemStack> customDrops = getMobDrops(entityType);
+
+        if (customDrops != null && !customDrops.isEmpty()) {
+            // Calculate total quantity - respects Looting
+            int totalQuantity = 0;
+            List<ItemStack> originalDrops = event.getDrops();
+            for (ItemStack item : originalDrops) {
+                totalQuantity += item.getAmount();
+            }
+
+            // Select a random drop and apply quantity
+            ItemStack customDrop = selectRandomDrop(customDrops);
+            if (totalQuantity > 0) {
+                customDrop.setAmount(totalQuantity);
+            }
+
+            // Replace drops
+            originalDrops.clear();
+            originalDrops.add(customDrop);
+
+            return true;
+        }
+        return false;
+    }
 
     public void setFixedBlockDrop(Material blockType, List<ItemStack> possibleDrops) {
         if (possibleDrops == null || possibleDrops.isEmpty()) {
@@ -88,10 +178,21 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
         return drops;
     }
 
+    protected ItemStack selectRandomDrop(List<ItemStack> drops) {
+        if (drops == null || drops.isEmpty()) {
+            return null;
+        }
+        return drops.get(random.nextInt(drops.size())).clone();
+    }
+
     protected void dropItem(ItemStack item, Location location) {
         if (item == null || location == null || location.getWorld() == null) return;
+
+        // Center the location
+        Location centerLoc = location.clone().add(0.5, 0.5, 0.5);
+
         ItemStack toDrop = item.clone();
-        location.getWorld().dropItemNaturally(location, toDrop);
+        location.getWorld().dropItemNaturally(centerLoc, toDrop);
     }
 
     protected void dropItems(List<ItemStack> items, Location location) {
@@ -150,11 +251,13 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
     }
 
     public List<ItemStack> getBlockDrops(Material blockType) {
-        return blockDrops.get(blockType);
+        List<ItemStack> drops = blockDrops.get(blockType);
+        return drops != null ? drops : Collections.emptyList();
     }
 
     public List<ItemStack> getMobDrops(EntityType mobType) {
-        return mobDrops.get(mobType);
+        List<ItemStack> drops = mobDrops.get(mobType);
+        return drops != null ? drops : Collections.emptyList();
     }
 
     public boolean isActive() {
