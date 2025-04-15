@@ -36,9 +36,10 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
     @Override
     public void execute() {
         try {
+            setupDropModifications();
             plugin.getServer().getPluginManager().registerEvents(this, plugin);
             isActive = true;
-            MsgUtility.log("Event " + eventName + " started drop modifications");
+            MsgUtility.log("<green>Executing drop modification event: " + this.eventName);
         } catch (Exception e) {
             MsgUtility.warning("Error starting drop modifications in " + eventName + ": " + e.getMessage());
         }
@@ -50,7 +51,7 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
             HandlerList.unregisterAll(this);
             disableDropModifications();
             isActive = false;
-            MsgUtility.log("Event " + eventName + " terminated");
+            MsgUtility.log("<red>Terminating drop modification event: " + this.eventName);
         }
     }
 

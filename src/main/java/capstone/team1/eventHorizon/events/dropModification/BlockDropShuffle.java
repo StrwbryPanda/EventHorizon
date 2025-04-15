@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Event that shuffles block drops to random fixed items
  */
-public class BlockDropShuffle extends BaseDropModification {
+public class BlockDropShuffle extends BaseDropModification implements Listener {
     public BlockDropShuffle() {
         super(EventClassification.NEUTRAL, "blockDropShuffle");
     }
@@ -41,11 +42,9 @@ public class BlockDropShuffle extends BaseDropModification {
     protected void setupDropModifications() {
         List<ItemStack> survivalDropPool = generateSurvivalDropsList();
 
-        int count = 0;
         for (Material material : Material.values()) {
-            if (material.isBlock() && material != Material.AIR && material.isOccluding()) {
+            if (material.isBlock() && material != Material.AIR) {
                 setFixedBlockDrop(material, survivalDropPool);
-                count++;
             }
         }
     }
