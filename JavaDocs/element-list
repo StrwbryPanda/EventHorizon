@@ -1,0 +1,13 @@
+capstone.team1.eventHorizon
+capstone.team1.eventHorizon.commands
+capstone.team1.eventHorizon.events
+capstone.team1.eventHorizon.events.attributes
+capstone.team1.eventHorizon.events.blockModification
+capstone.team1.eventHorizon.events.effects
+capstone.team1.eventHorizon.events.inventoryAdjustments
+capstone.team1.eventHorizon.events.itemSpawn
+capstone.team1.eventHorizon.events.mobSpawn
+capstone.team1.eventHorizon.events.utility
+capstone.team1.eventHorizon.events.utility.fawe
+capstone.team1.eventHorizon.events.utility.fawe.region
+capstone.team1.eventHorizon.utility

@@ -1,9 +1,10 @@
 package capstone.team1.eventHorizon;
 
+import capstone.team1.eventHorizon.commands.CommandRootEventHorizon;
 import capstone.team1.eventHorizon.events.utility.fawe.BlockMasks;
-import capstone.team1.eventHorizon.commands.CommandsManager;
 import capstone.team1.eventHorizon.events.EventInitializer;
 import capstone.team1.eventHorizon.events.EventManager;
+import com.sk89q.minecraft.util.commands.CommandsManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -17,7 +18,7 @@ import java.util.Collection;
 public class EventHorizon extends JavaPlugin implements CommandExecutor
 {
 
-    public static Scheduler scheduler;
+    private static Scheduler scheduler;
     private static EventInitializer eventInitializer;
     private static EventManager eventManager;
 
@@ -40,11 +41,10 @@ public class EventHorizon extends JavaPlugin implements CommandExecutor
     public void onEnable()
     {
         plugin = this;
-
         blockMasks = new BlockMasks();
         eventInitializer  = new EventInitializer();
-        eventManager = new EventManager(eventInitializer);
-        scheduler = new Scheduler(eventManager);
+        eventManager = new EventManager();
+        scheduler = new Scheduler();
 
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) { //
@@ -53,8 +53,9 @@ public class EventHorizon extends JavaPlugin implements CommandExecutor
         saveResource("config.yml", /* replace */ false);
 
         //initializes eventhorizon base command
-        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
-                event -> event.registrar().register("eventhorizon", new CommandsManager()));
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
+            commands.registrar().register(CommandRootEventHorizon.buildCommand());
+        });
     }
 
 
@@ -74,5 +75,8 @@ public class EventHorizon extends JavaPlugin implements CommandExecutor
     }
     public static BlockMasks getBlockMasks() {
         return blockMasks;
+    }
+    public static Scheduler getScheduler() {
+        return scheduler;
     }
 }

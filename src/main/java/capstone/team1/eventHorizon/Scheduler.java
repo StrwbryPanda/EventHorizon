@@ -9,8 +9,7 @@ import capstone.team1.eventHorizon.events.EventManager;
  * It handles starting, pausing, resuming, and ending game sessions, as well as managing the event frequency.
  */
 public class Scheduler {
-    private final int eventFrequency;
-    private final EventManager eventManager;
+    private int eventFrequency;
     private final EventHorizon plugin;
     private GameTimer gameTimer;
 
@@ -20,19 +19,16 @@ public class Scheduler {
 
     /**
      * Constructor for the Scheduler class.
-     *
-     * @param eventManager The EventManager instance to manage events
      */
-    public Scheduler(EventManager eventManager) {
+    public Scheduler() {
         this.plugin = EventHorizon.getPlugin();
         this.eventFrequency = Config.getEventFrequency();
-        this.eventManager = eventManager;
     }
 
     /**
-     * Starts a new game session with the specified duration.
+     * Starts a new game timer with the specified duration.
      *
-     * @param duration The duration of the game session in seconds
+     * @param duration The duration of the game timer in seconds
      * @return true if the session was successfully started, false if a session is already running
      */
     public boolean start(int duration) {
@@ -98,5 +94,8 @@ public class Scheduler {
      */
     public int getRemainingTime() {
         return gameTimer.getRemainingTime();
+    }
+    public void reloadEventFrequency() {
+        this.eventFrequency = Config.getEventFrequency();
     }
 }
