@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @SuppressWarnings("UnstableApiUsage")
-public final class EventHorizon extends JavaPlugin implements CommandExecutor
+public class EventHorizon extends JavaPlugin implements CommandExecutor
 {
 
     public static Scheduler scheduler;
@@ -29,6 +29,11 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     public static EventHorizon getPlugin()
     {
         return plugin;
+    }
+
+    //added for testing purposes
+    public static void setPlugin(EventHorizon instance) {
+        plugin = instance;
     }
 
     @Override
