@@ -24,4 +24,19 @@ class GameTimerTest {
         timer.run();  // simulate one tick
         assertEquals(9, timer.getRemainingTime(), "Timer should decrement by 1");
     }
+    @Test
+    void testEndTimerWhenAlreadyEnded() {
+        GameTimer timer = new GameTimer(-1, 5) {
+            @Override
+            public void cancel() {
+                // Should still be called
+            }
+        };
+
+        int result = timer.endTimer();
+
+        assertEquals(-1, result, "endTimer should return -1 even if already ended");
+        assertEquals(-1, timer.getRemainingTime(), "Remaining time should stay -1");
+    }
+
 }

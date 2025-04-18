@@ -75,7 +75,7 @@ package capstone.team1.eventHorizon;
          * @param seconds The number of seconds to format
          * @return A formatted string in the format "HH:MM:SS"
          */
-        public String formatTime(int seconds){
+        public static String formatTime(int seconds){
             int hours = seconds / 3600;
             int minutes = (seconds % 3600) / 60;
             int sec = seconds % 60;

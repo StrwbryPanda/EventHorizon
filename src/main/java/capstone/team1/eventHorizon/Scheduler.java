@@ -3,6 +3,7 @@ package capstone.team1.eventHorizon;
 import capstone.team1.eventHorizon.utility.Config;
 import capstone.team1.eventHorizon.utility.MsgUtility;
 import capstone.team1.eventHorizon.events.EventManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * The Scheduler class manages the timing and execution of events in the EventHorizon plugin.
@@ -16,6 +17,7 @@ public class Scheduler {
     public boolean hasStarted = false;
     public boolean isPaused = false;
     public int pausedTime = -1;
+    private GameTimer timer;
 
     /**
      * Constructor for the Scheduler class.
@@ -24,6 +26,18 @@ public class Scheduler {
         this.plugin = EventHorizon.getPlugin();
         this.eventFrequency = Config.getEventFrequency();
     }
+
+    public Scheduler(EventHorizon plugin, int eventFrequency) { //for testing purposes only
+        this.plugin = plugin;
+        this.eventFrequency = eventFrequency;
+    }
+
+    public void setGameTimer(GameTimer timer) {
+        this.timer = timer;
+    }
+
+
+
 
     /**
      * Starts a new game timer with the specified duration.
@@ -36,8 +50,9 @@ public class Scheduler {
             return false;
         }
         gameTimer = new GameTimer(duration, eventFrequency);
-        gameTimer.runTaskTimerAsynchronously(plugin, 0, 20);
-        hasStarted = true;
+        if (plugin != null) {
+            gameTimer.runTaskTimerAsynchronously(plugin, 0, 20);
+        }        hasStarted = true;
         return true;
     }
 

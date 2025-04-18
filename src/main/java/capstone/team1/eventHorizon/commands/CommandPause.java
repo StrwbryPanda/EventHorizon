@@ -29,4 +29,8 @@ public class CommandPause
         MsgUtility.message(sender, EventHorizon.getScheduler().pause() ? "Tournament has been paused" : "<red>ERROR: Cannot pause tournament");
         return Command.SINGLE_SUCCESS;
     }
+
+    public static String getPauseMessage(boolean pauseResult) { //for testing
+        return pauseResult ? "Tournament has been paused" : "<red>ERROR: Cannot pause tournament";
+    }
 }
