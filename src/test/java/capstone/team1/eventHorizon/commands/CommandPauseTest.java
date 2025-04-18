@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CommandPauseTest {
     @Test
-    public void testPauseMessage_whenTrue() {
+    public void testPauseMessageWhenTrue() {
         String result = CommandPause.getPauseMessage(true);
         assertEquals("Tournament has been paused", result);
     }
 
     @Test
-    public void testPauseMessage_whenFalse() {
+    public void testPauseMessageWhenFalse() {
         String result = CommandPause.getPauseMessage(false);
         assertEquals("<red>ERROR: Cannot pause tournament", result);
     }
