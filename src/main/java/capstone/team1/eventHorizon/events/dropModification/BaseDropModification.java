@@ -128,27 +128,50 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
         EntityType entityType = event.getEntityType();
         List<ItemStack> customDrops = getMobDrops(entityType);
 
-        if (customDrops != null && !customDrops.isEmpty()) {
-            // Calculate total quantity - respects Looting
-            int totalQuantity = 0;
-            List<ItemStack> originalDrops = event.getDrops();
-            for (ItemStack item : originalDrops) {
-                totalQuantity += item.getAmount();
-            }
-
-            // Select a random drop and apply quantity
-            ItemStack customDrop = selectRandomDrop(customDrops);
-            if (totalQuantity > 0) {
-                customDrop.setAmount(totalQuantity);
-            }
-
-            // Replace drops
-            originalDrops.clear();
-            originalDrops.add(customDrop);
-
-            return true;
+        if (customDrops == null || customDrops.isEmpty()) {
+            return false;
         }
-        return false;
+
+        // Get the original drops
+        List<ItemStack> originalDrops = event.getDrops();
+
+        // If there are no original drops, nothing to modify
+        if (originalDrops.isEmpty()) {
+            return false;
+        }
+
+        // Create a new list to store the modified drops
+        List<ItemStack> modifiedDrops = new ArrayList<>();
+
+        // Process each original drop individually
+        for (ItemStack originalItem : originalDrops) {
+            // Skip empty items
+            if (originalItem == null || originalItem.getType() == Material.AIR) {
+                continue;
+            }
+
+            // Get quantity of the original item (respects Looting)
+            int quantity = originalItem.getAmount();
+
+            // Select a random custom drop for this item
+            ItemStack customDrop = selectRandomDrop(customDrops);
+            if (customDrop != null) {
+                // Apply the original quantity to preserve Looting effects
+                customDrop = customDrop.clone();
+                customDrop.setAmount(quantity);
+                modifiedDrops.add(customDrop);
+
+                MsgUtility.log("<green>Entity " + entityType + ": " +
+                        originalItem.getType() + " x" + quantity + " → " +
+                        customDrop.getType() + " x" + customDrop.getAmount());
+            }
+        }
+
+        // Clear original drops and add our modified ones
+        originalDrops.clear();
+        originalDrops.addAll(modifiedDrops);
+
+        return true;
     }
 
     public void setFixedBlockDrop(Material blockType, List<ItemStack> possibleDrops) {
