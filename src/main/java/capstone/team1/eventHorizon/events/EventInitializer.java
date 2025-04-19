@@ -2,6 +2,9 @@ package capstone.team1.eventHorizon.events;
 
 import capstone.team1.eventHorizon.events.attributes.*;
 import capstone.team1.eventHorizon.events.blockModification.IceIsNice;
+import capstone.team1.eventHorizon.events.dropModification.BlockDropShuffle;
+//import capstone.team1.eventHorizon.events.dropModification.DoubleOrNothing;
+import capstone.team1.eventHorizon.events.dropModification.MobDropShuffle;
 import capstone.team1.eventHorizon.events.effects.*;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.FlightSchool;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.SpoiledFood;
@@ -86,6 +89,11 @@ public class EventInitializer {
 
         // Block modification events
         registeredEvents.put("iceisnice", new IceIsNice());
+
+        // Drop modification events
+        registeredEvents.put("blockdropshuffle", new BlockDropShuffle());
+//        registeredEvents.put("doubleornothing", new DoubleOrNothing());
+        registeredEvents.put("mobdropshuffle", new MobDropShuffle());
 
         // Effect events
         registeredEvents.put("foodcoma", new FoodComa());

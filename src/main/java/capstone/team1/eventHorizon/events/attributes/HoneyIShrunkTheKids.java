@@ -31,5 +31,4 @@ public class HoneyIShrunkTheKids extends BaseAttribute {
     public void terminate() {
         super.terminate();
     }
-
 }

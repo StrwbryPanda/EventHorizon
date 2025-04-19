@@ -46,6 +46,5 @@ public class DropCreeper extends BaseMobSpawn {
     @Override
     public void terminate() {
         super.terminate();
-        killAllSpawnedMob();
     }
 }
