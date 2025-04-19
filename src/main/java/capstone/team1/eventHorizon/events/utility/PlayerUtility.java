@@ -11,8 +11,21 @@ import java.util.List;
 import capstone.team1.eventHorizon.utility.MsgUtility;
 import static org.bukkit.Bukkit.getServer;
 
+/**
+ * Utility class for handling player-related operations in the EventHorizon plugin.
+ * Provides methods for managing and organizing players for various events.
+ */
 public class PlayerUtility {
-    // Generates random player pairs from the online players
+
+    /**
+     * Generates random pairs of online players for pair-based events.
+     * Players are randomly shuffled before being paired together.
+     * If there's an odd number of players, the last player will remain unpaired
+     * and a warning message will be logged.
+     *
+     * @return A collection of player pairs, where each pair contains two randomly matched players.
+     *         If there's an odd number of players, the last player will not be included in any pair.
+     */
     public static Collection<Pair<Player, Player>> generateRandomPlayerPairs() {
         // Get a list of all online players and shuffle it
         List<Player> onlinePlayers = new ArrayList<>(getServer().getOnlinePlayers());

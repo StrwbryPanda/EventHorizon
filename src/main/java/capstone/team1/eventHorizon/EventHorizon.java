@@ -1,8 +1,11 @@
 package capstone.team1.eventHorizon;
 
+import capstone.team1.eventHorizon.commands.CommandRootEventHorizon;
 import capstone.team1.eventHorizon.events.EventInitializer;
 import capstone.team1.eventHorizon.events.EventManager;
 import capstone.team1.eventHorizon.events.utility.fawe.BlockMasks;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -55,8 +58,22 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
      */
     @Override
     public void onEnable() {
-        // ... existing implementation
-    }
+        plugin = this;
+        blockMasks = new BlockMasks();
+        eventInitializer  = new EventInitializer();
+        eventManager = new EventManager();
+        scheduler = new Scheduler();
+
+
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) { //
+            new PlaceholderEventHorizon().register();
+        }
+        saveResource("config.yml", /* replace */ false);
+
+        //initializes eventhorizon base command
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
+            commands.registrar().register(CommandRootEventHorizon.buildCommand());
+        });    }
 
     /**
      * Called when the plugin is disabled.
@@ -64,7 +81,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
      */
     @Override
     public void onDisable() {
-        // ... existing implementation
+        getLogger().info("EventHorizon has been disabled.");
     }
 
     /**
