@@ -3,7 +3,7 @@ package capstone.team1.eventHorizon.events;
 import capstone.team1.eventHorizon.events.attributes.*;
 import capstone.team1.eventHorizon.events.blockModification.IceIsNice;
 import capstone.team1.eventHorizon.events.dropModification.BlockDropShuffle;
-//import capstone.team1.eventHorizon.events.dropModification.DoubleOrNothing;
+import capstone.team1.eventHorizon.events.dropModification.DoubleOrNothing;
 import capstone.team1.eventHorizon.events.dropModification.MobDropShuffle;
 import capstone.team1.eventHorizon.events.effects.*;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.FlightSchool;
@@ -92,7 +92,7 @@ public class EventInitializer {
 
         // Drop modification events
         registeredEvents.put("blockdropshuffle", new BlockDropShuffle());
-//        registeredEvents.put("doubleornothing", new DoubleOrNothing());
+        registeredEvents.put("doubleornothing", new DoubleOrNothing());
         registeredEvents.put("mobdropshuffle", new MobDropShuffle());
 
         // Effect events
