@@ -140,11 +140,14 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
             return false;
         }
 
-        // Create a new list to store the modified drops
-        List<ItemStack> modifiedDrops = new ArrayList<>();
+        // Create a copy of the original drops to iterate through
+        List<ItemStack> originalDropsCopy = new ArrayList<>(originalDrops);
+
+        // Clear original drops list so we can add modified ones
+        originalDrops.clear();
 
         // Process each original drop individually
-        for (ItemStack originalItem : originalDrops) {
+        for (ItemStack originalItem : originalDropsCopy) {
             // Skip empty items
             if (originalItem == null || originalItem.getType() == Material.AIR) {
                 continue;
@@ -153,24 +156,15 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
             // Get quantity of the original item (respects Looting)
             int quantity = originalItem.getAmount();
 
-            // Select a random custom drop for this item
-            ItemStack customDrop = selectRandomDrop(customDrops);
-            if (customDrop != null) {
-                // Apply the original quantity to preserve Looting effects
-                customDrop = customDrop.clone();
-                customDrop.setAmount(quantity);
-                modifiedDrops.add(customDrop);
+            // Generate a deterministic index based on the material type
+            // This ensures the same original material always maps to the same replacement
+            int deterministicIndex = Math.abs(originalItem.getType().name().hashCode()) % customDrops.size();
 
-                MsgUtility.log("<green>Entity " + entityType + ": " +
-                        originalItem.getType() + " x" + quantity + " → " +
-                        customDrop.getType() + " x" + customDrop.getAmount());
-            }
+            // Use the deterministic index to select the replacement
+            ItemStack customDrop = customDrops.get(deterministicIndex).clone();
+            customDrop.setAmount(quantity);
+            originalDrops.add(customDrop);
         }
-
-        // Clear original drops and add our modified ones
-        originalDrops.clear();
-        originalDrops.addAll(modifiedDrops);
-
         return true;
     }
 
@@ -189,9 +183,9 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
             MsgUtility.warning("No possible drops provided for mob type: " + mobType);
             return;
         }
-        mobDrops.put(mobType, Collections.singletonList(
-                possibleDrops.get(random.nextInt(possibleDrops.size())).clone()
-        ));
+
+        List<ItemStack> allPossibleDrops = new ArrayList<>(possibleDrops);
+        mobDrops.put(mobType, allPossibleDrops);
     }
 
     public List<ItemStack> generateSurvivalDropsList() {
