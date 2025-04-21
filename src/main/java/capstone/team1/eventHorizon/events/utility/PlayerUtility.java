@@ -33,7 +33,6 @@ public class PlayerUtility {
 
         Collection<Pair<Player, Player>> playerPairs = new ArrayList<>();
 
-        ///  TODO: Should I use a while loop with iterators instead?
         // Loop through the shuffled list and pair players
         for (int i = 0; i < onlinePlayers.size(); i += 2) {
             if (i + 1 < onlinePlayers.size()) {
