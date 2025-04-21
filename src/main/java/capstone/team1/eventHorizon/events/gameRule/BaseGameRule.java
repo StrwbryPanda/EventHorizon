@@ -14,8 +14,7 @@ import java.util.Map;
 
 public class BaseGameRule<T> extends BaseEvent
 {
-    T initialValue;
-    private Collection<Triple<World, GameRule<T>, Boolean>> originalGameRuleStates;
+
     public BaseGameRule(EventClassification classification, String eventName)
     {
         super(classification, eventName);
