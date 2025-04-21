@@ -8,9 +8,21 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
- * Event that spawns random mobs near players
+ * Event that spawns random mobs near players.
+ * This event is classified as neutral and spawns various types of mobs
+ * excluding players and ender dragons. Spawns mobs individually at random
+ * locations rather than in groups.
  */
 public class RandomMobSpawn extends BaseMobSpawn {
+    /**
+     * Constructs a new RandomMobSpawn event with specific spawn settings.
+     * Initializes the event with:
+     * - 10 random mobs per spawn
+     * - Spawn radius between 3 and 30 blocks horizontally
+     * - Vertical spawn range between 3 and 20 blocks
+     * - Individual spawning with 2-block spacing
+     * - Random mob type selection from all available living entities
+     */
     public RandomMobSpawn() {
         super(EntityType.ZOMBIE, EventClassification.NEUTRAL, "randomMobSpawn");
         setMobCount(10)
@@ -36,11 +48,19 @@ public class RandomMobSpawn extends BaseMobSpawn {
                     .collect(Collectors.toList()));
     }
 
+    /**
+     * Executes the random mob spawn event.
+     * Delegates to the parent class implementation.
+     */
     @Override
     public void execute() {
         super.execute();
     }
 
+    /**
+     * Terminates the random mob spawn event.
+     * Delegates to the parent class implementation.
+     */
     @Override
     public void terminate() {
         super.terminate();
