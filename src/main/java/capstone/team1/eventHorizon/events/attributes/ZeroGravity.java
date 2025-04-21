@@ -1,5 +1,6 @@
 package capstone.team1.eventHorizon.events.attributes;
 
+import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.EventClassification;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -16,7 +17,7 @@ public class ZeroGravity extends BaseAttribute {
     }
     
     public void applyZeroGravityToEntities() {
-        for (Entity entity : plugin.getServer().getWorlds().get(0).getEntities()) {
+        for (Entity entity : EventHorizon.getPlugin().getServer().getWorlds().get(0).getEntities()) {
             if (!(entity instanceof Player)) {
                 entity.setGravity(false);
             }

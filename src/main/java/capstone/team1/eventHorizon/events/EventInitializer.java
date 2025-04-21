@@ -1,5 +1,6 @@
 package capstone.team1.eventHorizon.events;
 
+import capstone.team1.eventHorizon.events.gameRule.LifestealOnly;
 import capstone.team1.eventHorizon.events.attributes.*;
 import capstone.team1.eventHorizon.events.blockModification.IceIsNice;
 import capstone.team1.eventHorizon.events.dropModification.BlockDropShuffle;
