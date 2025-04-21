@@ -9,12 +9,33 @@ import org.bukkit.Tag;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Constructs a new BlockMasks instance and initializes all block collections.
+ * This includes ground blocks, non-replaceable blocks, and air blocks.
+ */
 public class BlockMasks
 {
+    /**
+     * Collection of block types that are considered as ground blocks.
+     * These are blocks that can be replaced by other blocks.
+     */
     private Collection<BlockType> groundBlocks;
+    /**
+     * Collection of block types that cannot be replaced.
+     * These blocks include various categories such containers,
+     * GUI blocks, and special blocks that should be preserved.
+     */
     private Collection<BlockType> cannotBeReplaced;
+    /**
+     * Collection of block types that are considered as air blocks.
+     * These blocks are typically transparent and do not obstruct movement.
+     */
     private Collection<BlockType> air;
 
+    /**
+     * Constructs a new BlockMasks instance and initializes all block collections.
+     * This includes ground blocks, non-replaceable blocks, and air blocks.
+     */
     public BlockMasks() {
         initializeGroundBlocks();
         initializeCannotBeReplaced();
@@ -22,6 +43,13 @@ public class BlockMasks
         air.addAll(getBlocksFromTag(MaterialSetTag.AIR)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#air
 
     }
+
+    /**
+     * Converts a Bukkit Material Tag into a collection of WorldEdit BlockTypes.
+     *
+     * @param tag The Bukkit Material Tag to convert
+     * @return A collection of WorldEdit BlockTypes corresponding to the input tag
+     */
     public Collection<BlockType> getBlocksFromTag(Tag<Material> tag) {
         Collection<BlockType> blocks = new ArrayList<>();
         tag.getValues().forEach((material) -> {
@@ -30,6 +58,10 @@ public class BlockMasks
         return blocks;
     }
 
+    /**
+     * Initializes the collection of ground blocks.
+     * Includes sculk replaceable blocks, snow blocks, and powder snow.
+     */
     public void initializeGroundBlocks()
     {
         groundBlocks = new ArrayList<>();
@@ -38,9 +70,14 @@ public class BlockMasks
         groundBlocks.add(BukkitAdapter.asBlockType(Material.POWDER_SNOW));
     }
 
+    /**
+     * Initializes the collection of blocks that cannot be replaced.
+     * This includes various block categories such as wither-immune blocks,
+     * containers, GUI blocks, and special blocks that should be preserved.
+     */
     public void initializeCannotBeReplaced(){
         cannotBeReplaced = new ArrayList<>();
-        //
+        //blocks categorized into block tags from https://minecraft.wiki/w/Block_tag_(Java_Edition)
         cannotBeReplaced.addAll(getBlocksFromTag(MaterialSetTag.FEATURES_CANNOT_REPLACE)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#features_cannot_replace
         cannotBeReplaced.addAll(getBlocksFromTag(MaterialSetTag.WITHER_IMMUNE)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#wither_immune
         cannotBeReplaced.addAll(getBlocksFromTag(MaterialSetTag.SHULKER_BOXES)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#shulker_boxes
@@ -95,16 +132,31 @@ public class BlockMasks
 
     }
 
+    /**
+     * Gets the collection of blocks considered as ground blocks.
+     *
+     * @return Collection of ground block types
+     */
     public Collection<BlockType> getGroundBlocks()
     {
         return groundBlocks;
     }
 
+    /**
+     * Gets the collection of blocks that cannot be replaced.
+     *
+     * @return Collection of non-replaceable block types
+     */
     public Collection<BlockType> getCannotBeReplaced()
     {
         return cannotBeReplaced;
     }
 
+    /**
+     * Gets the collection of blocks considered as air blocks.
+     *
+     * @return Collection of air block types
+     */
     public Collection<BlockType> getAir()
     {
         return air;

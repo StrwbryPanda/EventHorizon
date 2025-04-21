@@ -16,10 +16,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Utility class for manipulating blocks in WorldEdit regions.
+ * This class provides functionality to replace blocks and undo modifications.
+ */
 public class BlockEditor
 {
+    /** List to track active WorldEdit edit sessions */
     private static List<EditSession> activeEditSessions = new ArrayList<>();
 
+    /**
+     * Replaces blocks in a specified region with a given block type based on a mask of block types.
+     *
+     * @param region The WorldEdit region where blocks will be replaced
+     * @param blockId The Bukkit Material type to replace blocks with
+     * @param blockTypesToReplace Collection of BlockTypes that should be replaced
+     * @param isMaskInverted If true, replaces blocks that don't match the mask instead of those that do
+     */
     public static void replaceBlocksInRegion(Region region, Material blockId, Collection<BlockType> blockTypesToReplace, boolean isMaskInverted) {
 
         com.sk89q.worldedit.world.World world = region.getWorld();
@@ -43,6 +56,11 @@ public class BlockEditor
         activeEditSessions.add(editSession);
     }
 
+    /**
+     * Undoes all block modifications made through active edit sessions.
+     * Clears the list of active sessions after undoing all changes.
+     * If an error occurs during the undo process, it will be logged as a warning.
+     */
     public static void undoAllBlockModifications() {
         try {
             for (EditSession session : activeEditSessions) {

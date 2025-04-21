@@ -1,32 +1,26 @@
-package capstone.team1.eventHorizon.events.attributes;
+package capstone.team1.eventHorizon.events.gameRule;
 
+import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.EventClassification;
+import capstone.team1.eventHorizon.events.attributes.BaseAttribute;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.plugin.Plugin;
 
-import java.util.UUID;
-
-public class LifestealOnly extends BaseAttribute implements Listener {
-
-    private final Plugin plugin;
+public class LifestealOnly<Boolean> extends BaseGameRule<Boolean> implements Listener {
 
     public LifestealOnly() {
         super(EventClassification.NEGATIVE, "lifeStealOnly");
-        this.plugin = super.plugin;
-        addAttributeModifier(Attribute.MAX_HEALTH, -4.0, AttributeModifier.Operation.ADD_NUMBER);
     }
 
     @Override
     public void execute() {
         super.execute();
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        EventHorizon.getPlugin().getServer().getPluginManager().registerEvents(this, EventHorizon.getPlugin());
     }
 
     @Override
