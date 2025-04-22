@@ -11,15 +11,17 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class BaseItemSpawn extends BaseEvent {
-    protected final Plugin plugin;
+    EventHorizon plugin = EventHorizon.getPlugin();
     protected final Random random = new Random();
     protected final NamespacedKey key;
 
@@ -70,27 +72,23 @@ public abstract class BaseItemSpawn extends BaseEvent {
     // Constructors
     public BaseItemSpawn(EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     public BaseItemSpawn(ItemStack defaultItemType, String eventName) {
         super(EventClassification.NEUTRAL, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.itemType = defaultItemType;
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     public BaseItemSpawn(ItemStack defaultItemType, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.itemType = defaultItemType;
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     public BaseItemSpawn(List<Pair<ItemStack, Double>> weightedItems, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.weightedItems.addAll(weightedItems);
         this.useRandomItemTypes = true;
         this.key = new NamespacedKey(plugin, this.eventName);

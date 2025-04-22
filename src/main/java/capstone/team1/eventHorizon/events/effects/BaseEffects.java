@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -17,7 +16,7 @@ import java.util.List;
 import java.util.Random;
 
 public abstract class BaseEffects extends BaseEvent {
-    protected final Plugin plugin;
+    EventHorizon plugin = EventHorizon.getPlugin();
     protected final Random random = new Random();
     protected final NamespacedKey key;
 
@@ -34,13 +33,11 @@ public abstract class BaseEffects extends BaseEvent {
     // Constructors
     public BaseEffects(EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     public BaseEffects(PotionEffectType effectType, String eventName) {
         super(EventClassification.NEUTRAL, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
 
         addEffect(effectType, DEFAULT_DURATION, DEFAULT_AMPLIFIER, DEFAULT_AMBIENT,
@@ -49,7 +46,6 @@ public abstract class BaseEffects extends BaseEvent {
 
     public BaseEffects(PotionEffectType effectType, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
 
         addEffect(effectType, DEFAULT_DURATION, DEFAULT_AMPLIFIER, DEFAULT_AMBIENT,

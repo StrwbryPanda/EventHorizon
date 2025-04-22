@@ -11,11 +11,11 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 
-public abstract class BaseAttribute extends BaseEvent{
+public abstract class BaseAttribute extends BaseEvent {
+    EventHorizon plugin = EventHorizon.getPlugin();
     protected final Random random = new Random();
     protected final NamespacedKey key;
 
@@ -29,19 +29,19 @@ public abstract class BaseAttribute extends BaseEvent{
     // Constructors
     public BaseAttribute(EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.key = new NamespacedKey(EventHorizon.getPlugin(), this.eventName);
+        this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     public BaseAttribute(Attribute attribute, String eventName) {
         super(EventClassification.NEUTRAL, eventName);
-        this.key = new NamespacedKey(EventHorizon.getPlugin(), this.eventName);
+        this.key = new NamespacedKey(plugin, this.eventName);
 
         addAttributeModifier(attribute, DEFAULT_AMOUNT, DEFAULT_OPERATION);
     }
 
     public BaseAttribute(Attribute attribute, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.key = new NamespacedKey(EventHorizon.getPlugin(), this.eventName);
+        this.key = new NamespacedKey(plugin, this.eventName);
 
         addAttributeModifier(attribute, DEFAULT_AMOUNT, DEFAULT_OPERATION);
     }
@@ -133,7 +133,7 @@ public abstract class BaseAttribute extends BaseEvent{
 
     // Methods to add and remove attribute modifiers
     public BaseAttribute addAttributeModifier(Attribute attribute, double amount, AttributeModifier.Operation operation) {
-        NamespacedKey modifierKey = new NamespacedKey(EventHorizon.getPlugin(), this.eventName + "_" + attribute.toString());
+        NamespacedKey modifierKey = new NamespacedKey(plugin, this.eventName + "_" + attribute.toString());
         AttributeModifier modifier = new AttributeModifier(modifierKey, amount, operation);
 
         if (!attributeModifiers.containsKey(attribute)) {
