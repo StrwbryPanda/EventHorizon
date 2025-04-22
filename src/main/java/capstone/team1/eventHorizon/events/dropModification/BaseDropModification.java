@@ -18,12 +18,11 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 
 public abstract class BaseDropModification extends BaseEvent implements Listener {
-    protected final Plugin plugin;
+    EventHorizon plugin = EventHorizon.getPlugin();
     protected final Random random = new Random();
     protected final NamespacedKey key;
 
@@ -36,7 +35,6 @@ public abstract class BaseDropModification extends BaseEvent implements Listener
 
     public BaseDropModification(EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 

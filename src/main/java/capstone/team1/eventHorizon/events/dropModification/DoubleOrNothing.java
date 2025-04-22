@@ -1,5 +1,6 @@
 package capstone.team1.eventHorizon.events.dropModification;
 
+import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.EventClassification;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -48,7 +49,7 @@ public class DoubleOrNothing extends BaseDropModification {
         boolean doubleDrop = random.nextBoolean();
 
         // Store the outcome as metadata on the block
-        event.getBlock().setMetadata(METADATA_KEY, new FixedMetadataValue(plugin, doubleDrop));
+        event.getBlock().setMetadata(METADATA_KEY, new FixedMetadataValue(EventHorizon.getPlugin(), doubleDrop));
 
         // Store the original XP to use in BlockDropItemEvent
         int originalXp = event.getExpToDrop();
@@ -74,14 +75,14 @@ public class DoubleOrNothing extends BaseDropModification {
 
         if (event.getBlock().hasMetadata(METADATA_KEY)) {
             for (MetadataValue value : event.getBlock().getMetadata(METADATA_KEY)) {
-                if (value.getOwningPlugin() == plugin) {
+                if (value.getOwningPlugin() == EventHorizon.getPlugin()) {
                     doubleDrop = value.asBoolean();
-                    event.getBlock().removeMetadata(METADATA_KEY, plugin);
+                    event.getBlock().removeMetadata(METADATA_KEY, EventHorizon.getPlugin());
                     metadataFound = true;
                     break;
                 }
             }
-            event.getBlock().removeMetadata(METADATA_KEY, plugin);
+            event.getBlock().removeMetadata(METADATA_KEY, EventHorizon.getPlugin());
         }
 
         if (!doubleDrop) {

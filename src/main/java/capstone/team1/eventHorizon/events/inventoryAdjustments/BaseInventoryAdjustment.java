@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -24,7 +23,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class BaseInventoryAdjustment extends BaseEvent {
-    protected final Plugin plugin;
+    EventHorizon plugin = EventHorizon.getPlugin();
     protected final Random random = new Random();
     protected final NamespacedKey key;
 
@@ -48,27 +47,23 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
     // Constructors
     public BaseInventoryAdjustment(EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     public BaseInventoryAdjustment(ItemStack defaultItemType, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.itemType = defaultItemType;
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
     public BaseInventoryAdjustment(List<Pair<ItemStack, Double>> weightedItems, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
         this.weightedItems.addAll(weightedItems);
     }
 
     public BaseInventoryAdjustment(Map<EquipmentSlot, ItemStack> equipmentItems, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
         this.equipmentItems.putAll(equipmentItems);
     }

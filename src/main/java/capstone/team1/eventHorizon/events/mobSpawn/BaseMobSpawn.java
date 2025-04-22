@@ -9,7 +9,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -37,7 +36,7 @@ import static capstone.team1.eventHorizon.utility.MsgUtility.warning;
  * @see EventClassification
  */
 public abstract class BaseMobSpawn extends BaseEvent {
-    protected final Plugin plugin;
+    EventHorizon plugin = EventHorizon.getPlugin();
     protected final Random random = new Random();
     protected final NamespacedKey key;
 
@@ -130,7 +129,6 @@ public abstract class BaseMobSpawn extends BaseEvent {
      */
     public BaseMobSpawn(EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.key = new NamespacedKey(plugin, this.eventName);
     }
     /**
@@ -142,7 +140,6 @@ public abstract class BaseMobSpawn extends BaseEvent {
      */
     public BaseMobSpawn(EntityType defaultMobType, String eventName) {
         super(EventClassification.NEUTRAL, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.mobType = defaultMobType;
         this.mobTypes.add(defaultMobType);
         this.key = new NamespacedKey(plugin, this.eventName);
@@ -156,7 +153,6 @@ public abstract class BaseMobSpawn extends BaseEvent {
      */
     public BaseMobSpawn(EntityType defaultMobType, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.mobType = defaultMobType;
         this.mobTypes.add(defaultMobType);
         this.key = new NamespacedKey(plugin, this.eventName);
@@ -171,7 +167,6 @@ public abstract class BaseMobSpawn extends BaseEvent {
      */
     public BaseMobSpawn(List<EntityType> mobTypes, EventClassification classification, String eventName) {
         super(classification, eventName);
-        this.plugin = EventHorizon.getPlugin();
         this.mobTypes.addAll(mobTypes);
         this.useRandomMobTypes = true;
         this.key = new NamespacedKey(plugin, this.eventName);
