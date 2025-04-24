@@ -27,6 +27,7 @@ enabled-events:
 - "Overmine" #effects: positive
 - "SecondWind" #effects: positive
 - "YoureTooSlow" #effects: negative
+- "ButterFingers" #inventoryAdjustment: negative
 - "FlightSchool" #inventoryAdjustment: positive
 - "SpoiledFood" #inventoryAdjustment: negative
 - "Feast" #itemSpawn: positive
