@@ -1,9 +1,6 @@
 package capstone.team1.eventHorizon.events;
 
-import capstone.team1.eventHorizon.events.attributes.Fasting;
-import capstone.team1.eventHorizon.events.attributes.GrowthSpurt;
-import capstone.team1.eventHorizon.events.attributes.HoneyIShrunkTheKids;
-import capstone.team1.eventHorizon.events.attributes.ZeroGravity;
+import capstone.team1.eventHorizon.events.attributes.*;
 import capstone.team1.eventHorizon.events.blockModification.IceIsNice;
 import capstone.team1.eventHorizon.events.dropModification.BlockDropShuffle;
 import capstone.team1.eventHorizon.events.dropModification.DoubleOrNothing;
@@ -88,6 +85,7 @@ public class EventInitializer {
         // Attribute events
         registeredEvents.put("fasting", new Fasting());
         registeredEvents.put("growthspurt", new GrowthSpurt());
+        registeredEvents.put("halfaheart", new HalfAHeart());
         registeredEvents.put("honeyishrunkthekids", new HoneyIShrunkTheKids());
         registeredEvents.put("lifestealonly", new LifestealOnly());
         registeredEvents.put("zerogravity", new ZeroGravity());

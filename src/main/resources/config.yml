@@ -15,6 +15,7 @@ event:
 enabled-events:
 - "Fasting" #attribute: negative
 - "GrowthSpurt" #attribute: neutral
+- "HalfAHeart" #attribute: negative
 - "HoneyIShrunkTheKids" #attribute: negative
 - "LifestealOnly" #attribute: negative
 - "ZeroGravity" #attribute: neutral
