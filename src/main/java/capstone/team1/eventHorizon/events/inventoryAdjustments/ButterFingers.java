@@ -8,9 +8,15 @@ import org.bukkit.inventory.ItemStack;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Event that causes the player to randomly drop the item in their main hand at random intervals
+ * Event that causes players to randomly drop items from their hands at random intervals.
+ * This negative event continuously checks players' hands and forces them to drop held items.
  */
 public class ButterFingers extends BaseInventoryAdjustment {
+    /**
+     * Constructs a new ButterFingers event.
+     * Initializes the event as NEGATIVE classification with continuous operation enabled.
+     * Sets a random initial operation interval between 5 and 60 seconds.
+     */
     public ButterFingers() {
         super(EventClassification.NEGATIVE, "butterFingers");
         // Configure the event parameters
@@ -18,6 +24,13 @@ public class ButterFingers extends BaseInventoryAdjustment {
         this.setOperationInterval(ThreadLocalRandom.current().nextInt(5, 61));
     }
 
+    /**
+     * Applies the butter fingers effect to a specific player.
+     * Checks both main hand and off hand for items and forces the player to drop them.
+     *
+     * @param player the target player
+     * @return true if an item was dropped, false if both hands were empty
+     */
     @Override
     protected boolean applyToPlayer(Player player) {
         ItemStack handItem;
@@ -42,6 +55,10 @@ public class ButterFingers extends BaseInventoryAdjustment {
         return true;
     }
 
+    /**
+     * Executes the ButterFingers event.
+     * Sets an initial random interval and starts the continuous operation.
+     */
     @Override
     public void execute() {
         // Set a random interval before starting continuous operation
@@ -49,6 +66,10 @@ public class ButterFingers extends BaseInventoryAdjustment {
         super.execute();
     }
 
+    /**
+     * Terminates the ButterFingers event.
+     * Stops the continuous operation task.
+     */
     @Override
     public void terminate() {
         super.terminate();
