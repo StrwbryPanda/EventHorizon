@@ -1,12 +1,16 @@
 package capstone.team1.eventHorizon.events;
 
-import capstone.team1.eventHorizon.events.gameRule.LifestealOnly;
-import capstone.team1.eventHorizon.events.attributes.*;
+import capstone.team1.eventHorizon.events.attributes.Fasting;
+import capstone.team1.eventHorizon.events.attributes.GrowthSpurt;
+import capstone.team1.eventHorizon.events.attributes.HoneyIShrunkTheKids;
+import capstone.team1.eventHorizon.events.attributes.ZeroGravity;
 import capstone.team1.eventHorizon.events.blockModification.IceIsNice;
 import capstone.team1.eventHorizon.events.dropModification.BlockDropShuffle;
 import capstone.team1.eventHorizon.events.dropModification.DoubleOrNothing;
 import capstone.team1.eventHorizon.events.dropModification.MobDropShuffle;
 import capstone.team1.eventHorizon.events.effects.*;
+import capstone.team1.eventHorizon.events.gameRule.LifestealOnly;
+import capstone.team1.eventHorizon.events.inventoryAdjustments.ButterFingers;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.FlightSchool;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.SpoiledFood;
 import capstone.team1.eventHorizon.events.itemSpawn.Feast;
@@ -104,6 +108,7 @@ public class EventInitializer {
         registeredEvents.put("youretooslow", new YoureTooSlow());
 
         // Inventory adjustment events
+        registeredEvents.put("butterfingers", new ButterFingers());
         registeredEvents.put("flightschool", new FlightSchool());
         registeredEvents.put("spoiledfood", new SpoiledFood());
 
