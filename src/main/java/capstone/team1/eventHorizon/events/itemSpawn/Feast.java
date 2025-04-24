@@ -8,9 +8,20 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 
 /**
- * Event that spawns a random weighted food item near players
+ * A positive event that spawns random weighted food items near players.
+ * Food items have different spawn weights, with rarer items having lower weights.
+ * The items are spawned within configured radius limits and following specific spawn rules.
  */
 public class Feast extends BaseItemSpawn {
+    /**
+     * Constructs a new Feast event with predefined spawn configurations and weighted food items.
+     * The event is classified as POSITIVE and named "feast".
+     * Initializes spawn parameters including:
+     * - 32 items per spawn
+     * - Spawn radius between 1-20 blocks
+     * - Vertical spawn range between 1-10 blocks
+     * - Various food items with weights from 0.5 (rarest) to 5.0 (most common)
+     */
     public Feast() {
         super(EventClassification.POSITIVE, "feast");
         setItemCount(32)
@@ -56,11 +67,19 @@ public class Feast extends BaseItemSpawn {
                 ));
     }
 
+    /**
+     * Executes the Feast event, spawning configured food items near players.
+     * Calls the parent class's execute method to handle the actual spawning logic.
+     */
     @Override
     public void execute() {
         super.execute();
     }
 
+    /**
+     * Terminates the Feast event, cleaning up any ongoing processes.
+     * Calls the parent class's terminate method to handle the cleanup.
+     */
     @Override
     public void terminate() {
         super.terminate();
