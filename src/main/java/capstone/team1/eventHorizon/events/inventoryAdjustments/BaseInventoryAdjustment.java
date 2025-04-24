@@ -22,53 +22,92 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Base class for inventory adjustment events that manipulate player inventories.
+ * Provides common functionality for managing items, equipment, and continuous operations.
+ */
 public abstract class BaseInventoryAdjustment extends BaseEvent {
+    /** Plugin instance for accessing Bukkit/Spigot functionality. */
     EventHorizon plugin = EventHorizon.getPlugin();
+    /** Random number generator for various randomization needs */
     protected final Random random = new Random();
+    /** Unique identifier for marking items */
     protected final NamespacedKey key;
 
-    // Default configuration values
+    /** Default time in seconds between operations */
     private static final int DEFAULT_OPERATION_INTERVAL = 60; // Seconds
+    /** Default flag for continuous operation mode */
     private static final boolean DEFAULT_USE_CONTINUOUS_OPERATION = false;
 
-    // Item properties
+    /** List of items with their spawn weights */
     protected List<Pair<ItemStack, Double>> weightedItems = new ArrayList<>();
+    /** Map of equipment slots to items */
     protected Map<EquipmentSlot, ItemStack> equipmentItems = new HashMap<>();
+    /** Default item type to use */
     protected ItemStack itemType = new ItemStack(Material.STONE);
 
-    // Flags
+    //Flags
+    /** Flag indicating if continuous operation is enabled */
     protected boolean useContinuousOperation = DEFAULT_USE_CONTINUOUS_OPERATION;
 
     // Task management
+    /** Task for continuous operation */
     protected BukkitTask continuousTask = null;
+    /** Interval between operations in seconds */
     protected int operationInterval = DEFAULT_OPERATION_INTERVAL;
+    /** Count of affected items/players in last operation */
     private int lastOperationCount = 0;
 
     // Constructors
+    /**
+     * Constructs a new inventory adjustment with classification and name
+     * @param classification event classification type
+     * @param eventName unique identifier for the event
+     */
     public BaseInventoryAdjustment(EventClassification classification, String eventName) {
         super(classification, eventName);
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
+    /**
+     * Constructs a new inventory adjustment with default item type
+     * @param defaultItemType item to use by default
+     * @param classification event classification type
+     * @param eventName unique identifier for the event
+     */
     public BaseInventoryAdjustment(ItemStack defaultItemType, EventClassification classification, String eventName) {
         super(classification, eventName);
         this.itemType = defaultItemType;
         this.key = new NamespacedKey(plugin, this.eventName);
     }
 
+    /**
+     * Constructs a new inventory adjustment with weighted items
+     * @param weightedItems list of items and their weights
+     * @param classification event classification type
+     * @param eventName unique identifier for the event
+     */
     public BaseInventoryAdjustment(List<Pair<ItemStack, Double>> weightedItems, EventClassification classification, String eventName) {
         super(classification, eventName);
         this.key = new NamespacedKey(plugin, this.eventName);
         this.weightedItems.addAll(weightedItems);
     }
 
+    /**
+     * Constructs a new inventory adjustment with equipment items
+     * @param equipmentItems map of equipment slots to items
+     * @param classification event classification type
+     * @param eventName unique identifier for the event
+     */
     public BaseInventoryAdjustment(Map<EquipmentSlot, ItemStack> equipmentItems, EventClassification classification, String eventName) {
         super(classification, eventName);
         this.key = new NamespacedKey(plugin, this.eventName);
         this.equipmentItems.putAll(equipmentItems);
     }
 
-    // Executes the event
+    /**
+     * Executes the inventory adjustment event
+     */
     @Override
     public void execute() {
         try {
@@ -99,7 +138,9 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         }
     }
 
-    // Terminates the event
+    /**
+     * Terminates the inventory adjustment event
+     */
     @Override
     public void terminate() {
         boolean stopped = stopContinuousTask();
@@ -111,7 +152,10 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         }
     }
 
-    // Starts continuous task for ongoing operations
+    /**
+     * Starts the continuous operation task
+     * @return true if task started successfully
+     */
     public boolean startContinuousTask() {
         // Check if task is already running
         if (continuousTask != null && !continuousTask.isCancelled()) {
@@ -129,7 +173,10 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return true;
     }
 
-    // Stops continuous task
+    /**
+     * Stops the continuous operation task
+     * @return true if task stopped successfully
+     */
     public boolean stopContinuousTask() {
         // Check if there's a task to stop
         if (continuousTask == null || continuousTask.isCancelled()) {
@@ -143,11 +190,17 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return true;
     }
 
-    // Called when an operation is performed (optional override for child classes)
+    /**
+     * Hook method called after successful operation
+     * @param player affected player
+     */
     protected void onOperationPerformed(Player player) {
     }
 
-    // Applies operations to all online players
+    /**
+     * Applies operations to all online players
+     * @return number of affected players
+     */
     public int applyToAllPlayers() {
         int affectedPlayers = 0;
         List<Player> players = new ArrayList<>(plugin.getServer().getOnlinePlayers());
@@ -165,10 +218,19 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return affectedPlayers;
     }
 
-    // Apply operations to a specific player (to be implemented by child classes)
+    /**
+     * Applies operation to specific player
+     * @param player target player
+     * @return true if operation successful
+     */
     protected abstract boolean applyToPlayer(Player player);
 
-    // Method to remove equipped item
+    /**
+     * Removes equipped item from player
+     * @param player target player
+     * @param slot equipment slot
+     * @return removed item
+     */
     protected ItemStack unequipPlayerItem(Player player, EquipmentSlot slot) {
         PlayerInventory inventory = player.getInventory();
 
@@ -213,7 +275,13 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return removedItem;
     }
 
-    // Method to equip an item
+    /**
+     * Equips item to player
+     * @param player target player
+     * @param slot equipment slot
+     * @param itemToEquip item to equip
+     * @return true if equipped successfully
+     */
     protected boolean equipPlayerItem(Player player, EquipmentSlot slot, ItemStack itemToEquip) {
         if (itemToEquip == null || itemToEquip.getType() == Material.AIR) {
             return false;
@@ -256,7 +324,12 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         };
     }
 
-    // Method to add items to a player's inventory
+    /**
+     * Adds items to player inventory
+     * @param player target player
+     * @param items items to add
+     * @return list of dropped items if inventory full
+     */
     protected List<Item> addPlayerInvItems(Player player, List<ItemStack> items) {
         List<Item> droppedItems = new ArrayList<>();
         PlayerInventory inventory = player.getInventory();
@@ -280,7 +353,12 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return droppedItems;
     }
 
-    // Method to add random items to a player's inventory
+    /**
+     * Adds random items to player inventory
+     * @param player target player
+     * @param count number of items
+     * @return list of dropped items if inventory full
+     */
     protected List<Item> addRandomPlayerInvItems(Player player, int count) {
         List<ItemStack> itemsToAdd = new ArrayList<>();
 
@@ -298,7 +376,13 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return addPlayerInvItems(player, itemsToAdd);
     }
 
-    // Method to replace an item in the player's inventory
+    /**
+     * Replaces items in player inventory
+     * @param player target player
+     * @param itemToReplace item to replace
+     * @param itemReplacement replacement item
+     * @return true if replaced successfully
+     */
     public boolean replacePlayerInvItems(Player player, ItemStack itemToReplace, ItemStack itemReplacement) {
         // Get player inventory
         PlayerInventory inventory = player.getInventory();
@@ -339,7 +423,11 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return true;
     }
 
-    // Method to delete items from player's inventory
+    /**
+     * Removes items from player inventory
+     * @param inventory player inventory
+     * @param itemToRemove item to remove
+     */
     private void deletePlayerInvItems(PlayerInventory inventory, ItemStack itemToRemove) {
         int remaining = itemToRemove.getAmount();
         ItemStack[] contents = inventory.getContents();
@@ -358,7 +446,12 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         }
     }
 
-    // Method to drop a specified item from the player's inventory
+    /**
+     * Drops items from player inventory
+     * @param player target player
+     * @param itemToDrop item to drop
+     * @return number of items dropped
+     */
     public int dropPlayerInvItems(Player player, ItemStack itemToDrop) {
         PlayerInventory inventory = player.getInventory();
 
@@ -392,7 +485,12 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return actualDropAmount;
     }
 
-    // Method to drop an items at the player's location
+    /**
+     * Drops item at player location
+     * @param itemToDrop item to drop
+     * @param player target player
+     * @return dropped item entity
+     */
     public Item dropItem(ItemStack itemToDrop, Player player) {
         if (player == null || itemToDrop == null || itemToDrop.getType() == Material.AIR) {
             return null;
@@ -401,7 +499,12 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return player.getWorld().dropItemNaturally(player.getLocation(), itemToDrop);
     }
 
-    // Method to count an item in the player's inventory
+    /**
+     * Counts specific item in inventory
+     * @param inventory player inventory
+     * @param itemToCount item to count
+     * @return total count of matching items
+     */
     private int countItem(PlayerInventory inventory, ItemStack itemToCount) {
         int count = 0;
         ItemStack[] contents = inventory.getContents();
@@ -415,7 +518,10 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return count;
     }
 
-    // Method to get a random weighted item
+    /**
+     * Gets random item based on weights
+     * @return selected item
+     */
     protected ItemStack getRandomWeightedItem() {
         if (weightedItems.isEmpty()) {
             return null;
@@ -438,7 +544,11 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return weightedItems.getLast().getLeft();
     }
 
-    // Method to add multiple weighted items at once
+    /**
+     * Adds multiple weighted items
+     * @param items list of items with weights
+     * @return this instance
+     */
     public BaseInventoryAdjustment addWeightedItems(List<Pair<ItemStack, Double>> items) {
         if (items != null) {
             weightedItems.addAll(items);
@@ -446,7 +556,11 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return this;
     }
 
-    // Removes a weighted item
+    /**
+     * Removes weighted item
+     * @param itemToRemove item to remove
+     * @return this instance
+     */
     public BaseInventoryAdjustment removeWeightedItem(ItemStack itemToRemove) {
         if (itemToRemove != null) {
             weightedItems.removeIf(pair -> pair.getLeft().isSimilar(itemToRemove));
@@ -454,7 +568,11 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return this;
     }
 
-    // Method to set the entire list of weighted items
+    /**
+     * Sets all weighted items
+     * @param items new list of weighted items
+     * @return this instance
+     */
     public BaseInventoryAdjustment setWeightedItems(List<Pair<ItemStack, Double>> items) {
         // Clear existing items
         weightedItems.clear();
@@ -467,12 +585,18 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         return this;
     }
 
-    // Method to mark a dropped item entity
+    /**
+     * Marks dropped item entity
+     * @param item item to mark
+     */
     public void markItem(Item item) {
         item.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
     }
 
-    // Method to mark an ItemStack
+    /**
+     * Marks item stack
+     * @param item item to mark
+     */
     public void markItemStack(ItemStack item) {
         if (item == null || item.getType() == Material.AIR) return;
 
@@ -481,18 +605,28 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         item.setItemMeta(meta);
     }
 
-    // Method to check if an item is marked
+    /**
+     * Checks if dropped item is marked
+     * @param item item to check
+     * @return true if marked
+     */
     protected boolean isItemMarked(Item item) {
         return item.getPersistentDataContainer().has(key, PersistentDataType.BYTE);
     }
 
-    // Method to check if an ItemStack is marked
+    /**
+     * Checks if item stack is marked
+     * @param item item to check
+     * @return true if marked
+     */
     protected boolean isItemStackMarked(ItemStack item) {
         if (item == null || !item.hasItemMeta()) return false;
         return item.getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.BYTE);
     }
 
-    // Method to delete all marked dropped items
+    /**
+     * Deletes all marked dropped items
+     */
     protected void deleteMarkedItems() {
         EventHorizon.entityKeysToDelete.add(key);
         Bukkit.getWorlds().forEach(world -> {
@@ -504,28 +638,49 @@ public abstract class BaseInventoryAdjustment extends BaseEvent {
         });
     }
 
-    // Method to delete all marked items inside the player's inventory
+    /**
+     * Deletes all marked inventory items
+     */
     protected void deleteMarkedItemStacks() {
         EventHorizon.entityKeysToDelete.add(key);
         plugin.getServer().getOnlinePlayers().forEach(PlayerInventoryListener::removeMarkedItems);
     }
 
     // Getters
+    /**
+     * Gets count of last operation
+     * @return number of affected items/players
+     */
     public int getLastOperationCount() {
         return lastOperationCount;
     }
 
     // Setters
+    /**
+     * Sets default item type
+     * @param itemType new default item
+     * @return this instance
+     */
     public BaseInventoryAdjustment setItemType(ItemStack itemType) {
         this.itemType = itemType;
         return this;
     }
 
+    /**
+     * Sets continuous operation mode
+     * @param continuousOperation true to enable
+     * @return this instance
+     */
     public BaseInventoryAdjustment setUseContinuousOperation(boolean continuousOperation) {
         this.useContinuousOperation = continuousOperation;
         return this;
     }
 
+    /**
+     * Sets operation interval
+     * @param seconds interval in seconds
+     * @return this instance
+     */
     public BaseInventoryAdjustment setOperationInterval(int seconds) {
         this.operationInterval = seconds;
         return this;

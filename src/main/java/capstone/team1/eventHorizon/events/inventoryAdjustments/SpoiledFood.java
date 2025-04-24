@@ -7,9 +7,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 /**
- * Event that replaces the player's food with rotten flesh
+ * Event that replaces the player's food with rotten flesh.
+ * This negative event transforms all edible items in players' inventories into rotten flesh.
  */
 public class SpoiledFood extends BaseInventoryAdjustment {
+    /**
+     * Constructs a new SpoiledFood event.
+     * Initializes the event as NEGATIVE classification and configures:
+     * - Continuous operation disabled
+     * - Rotten flesh as default item type for replacements
+     */
     public SpoiledFood() {
         super(EventClassification.NEGATIVE, "spoiledFood");
         // Configure the event parameters
@@ -19,6 +26,13 @@ public class SpoiledFood extends BaseInventoryAdjustment {
         this.itemType = new ItemStack(Material.ROTTEN_FLESH);
     }
 
+    /**
+     * Applies the spoiled food effect to a specific player.
+     * Replaces all edible items in the player's inventory with rotten flesh.
+     *
+     * @param player the target player
+     * @return true if any food items were replaced
+     */
     @Override
     protected boolean applyToPlayer(Player player) {
         PlayerInventory inventory = player.getInventory();
@@ -39,11 +53,19 @@ public class SpoiledFood extends BaseInventoryAdjustment {
         return applied;
     }
 
+    /**
+     * Executes the SpoiledFood event.
+     * Calls parent class execution logic.
+     */
     @Override
     public void execute() {
         super.execute();
     }
 
+    /**
+     * Terminates the SpoiledFood event.
+     * Calls parent class termination logic.
+     */
     @Override
     public void terminate() {
         super.terminate();

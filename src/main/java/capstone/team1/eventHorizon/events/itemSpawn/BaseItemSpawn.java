@@ -20,73 +20,149 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Abstract base class for item spawning events that handles item distribution around players.
+ * This class provides configurable spawning behavior for items in the Minecraft world,
+ * including options for:
+ * <ul>
+ *   <li>Single or continuous spawning</li>
+ *   <li>Group or spread distribution</li>
+ *   <li>Random or fixed item types</li>
+ *   <li>Surface-only or 3D space spawning</li>
+ *   <li>Liquid (water/lava) spawning permissions</li>
+ * </ul>
+ * Each spawned item is marked with a unique identifier for tracking and later cleanup.
+ * The class supports weighted random selection of items and various safety checks
+ * to ensure valid spawn locations.
+ *
+ * @see BaseEvent
+ * @see EventClassification
+ */
 public abstract class BaseItemSpawn extends BaseEvent {
+    /** Plugin instance for server access */
     EventHorizon plugin = EventHorizon.getPlugin();
+    /** Random number generator for various random selections */
     protected final Random random = new Random();
+    /** Unique identifier for marking spawned items */
     protected final NamespacedKey key;
 
-    // Default configuration values
+    /** Default number of items to spawn per event */
     private static final int DEFAULT_ITEM_COUNT = 5;
+    /** Default maximum radius from player for item spawning */
     private static final int DEFAULT_MAX_SPAWN_RADIUS = 20;
+    /** Default minimum radius from player for item spawning */
     private static final int DEFAULT_MIN_SPAWN_RADIUS = 3;
+    /** Default maximum vertical radius for item spawning */
     private static final int DEFAULT_MAX_Y_RADIUS = 20;
+    /** Default minimum vertical radius for item spawning */
     private static final int DEFAULT_MIN_Y_RADIUS = 3;
+    /** Default maximum attempts to find a valid spawn location */
     private static final int DEFAULT_MAX_SPAWN_ATTEMPTS = 20;
-    private static final int DEFAULT_SPAWN_INTERVAL = 60; // Seconds
+    /** Default interval between continuous spawns in seconds */
+    private static final int DEFAULT_SPAWN_INTERVAL = 60;
+    /** Default horizontal clearance required for spawn location */
     private static final double DEFAULT_WIDTH_CLEARANCE = 1;
+    /** Default vertical clearance required for spawn location */
     private static final double DEFAULT_HEIGHT_CLEARANCE = 1;
+    /** Default spacing between items when group spawning */
     private static final int DEFAULT_GROUP_SPACING = 3;
+    /** Default setting for surface-only spawning */
     private static final boolean DEFAULT_SURFACE_ONLY_SPAWNING = false;
+    /** Default setting for allowing spawns in water */
     private static final boolean DEFAULT_ALLOW_WATER_SPAWNS = false;
+    /** Default setting for allowing spawns in lava */
     private static final boolean DEFAULT_ALLOW_LAVA_SPAWNS = false;
+    /** Default setting for group spawning mode */
     private static final boolean DEFAULT_USE_GROUP_SPAWNING = false;
+    /** Default setting for continuous spawning mode */
     private static final boolean DEFAULT_USE_CONTINUOUS_SPAWNING = false;
+    /** Default setting for random item type selection */
     private static final boolean DEFAULT_USE_RANDOM_ITEM_TYPES = false;
 
-    // Item properties
+    /** The default item type to spawn */
     protected ItemStack itemType = new ItemStack(Material.STONE);
+    /** List of items with their spawn weights for random selection */
     protected List<Pair<ItemStack, Double>> weightedItems = new ArrayList<>();
+    /** Number of items to spawn per event */
     protected int itemCount = DEFAULT_ITEM_COUNT;
+    /** Maximum radius from player for item spawning */
     protected int maxSpawnRadius = DEFAULT_MAX_SPAWN_RADIUS;
+    /** Minimum radius from player for item spawning */
     protected int minSpawnRadius = DEFAULT_MIN_SPAWN_RADIUS;
+    /** Maximum vertical radius for item spawning */
     protected int maxYRadius = DEFAULT_MAX_Y_RADIUS;
+    /** Minimum vertical radius for item spawning */
     protected int minYRadius = DEFAULT_MIN_Y_RADIUS;
+    /** Maximum attempts to find a valid spawn location */
     protected int maxSpawnAttempts = DEFAULT_MAX_SPAWN_ATTEMPTS;
+    /** Required horizontal clearance for spawn location */
     protected double widthClearance = DEFAULT_WIDTH_CLEARANCE;
+    /** Required vertical clearance for spawn location */
     protected double heightClearance = DEFAULT_HEIGHT_CLEARANCE;
+    /** Spacing between items when group spawning */
     protected int groupSpacing = DEFAULT_GROUP_SPACING;
+    /** Count of items spawned in the last execution */
     private int lastSpawnCount = 0;
 
-    // Flags
+    /** Whether items should only spawn on surface blocks */
     protected boolean surfaceOnlySpawning = DEFAULT_SURFACE_ONLY_SPAWNING;
+    /** Whether items can spawn in water */
     protected boolean allowWaterSpawns = DEFAULT_ALLOW_WATER_SPAWNS;
+    /** Whether items can spawn in lava */
     protected boolean allowLavaSpawns = DEFAULT_ALLOW_LAVA_SPAWNS;
+    /** Whether items should spawn in groups */
     protected boolean useGroupSpawning = DEFAULT_USE_GROUP_SPAWNING;
+    /** Whether spawning should occur continuously */
     protected boolean useContinuousSpawning = DEFAULT_USE_CONTINUOUS_SPAWNING;
+    /** Whether to randomly select item types from weightedItems */
     protected boolean useRandomItemTypes = DEFAULT_USE_RANDOM_ITEM_TYPES;
 
-    // Task management
+    /** Task for continuous spawning mode */
     protected BukkitTask continuousTask = null;
+    /** Interval between continuous spawns in seconds */
     protected int spawnInterval = DEFAULT_SPAWN_INTERVAL;
 
     // Constructors
+    /**
+     * Constructs a basic item spawn event with default item type.
+     *
+     * @param classification the event classification (NEUTRAL, HOSTILE, etc.)
+     * @param eventName unique identifier for this event
+     */
     public BaseItemSpawn(EventClassification classification, String eventName) {
         super(classification, eventName);
         this.key = new NamespacedKey(plugin, this.eventName);
     }
-
+    /**
+     * Constructs an item spawn event with a specified default item type.
+     *
+     * @param defaultItemType the ItemStack to be spawned
+     * @param eventName unique identifier for this event
+     */
     public BaseItemSpawn(ItemStack defaultItemType, String eventName) {
         super(EventClassification.NEUTRAL, eventName);
         this.itemType = defaultItemType;
         this.key = new NamespacedKey(plugin, this.eventName);
     }
-
+    /**
+     * Constructs an item spawn event with specified item type and classification.
+     *
+     * @param defaultItemType the ItemStack to be spawned
+     * @param classification the event classification (NEUTRAL, HOSTILE, etc.)
+     * @param eventName unique identifier for this event
+     */
     public BaseItemSpawn(ItemStack defaultItemType, EventClassification classification, String eventName) {
         super(classification, eventName);
         this.itemType = defaultItemType;
         this.key = new NamespacedKey(plugin, this.eventName);
     }
-
+    /**
+     * Constructs an item spawn event with weighted random item selection.
+     *
+     * @param weightedItems list of item-weight pairs for random selection
+     * @param classification the event classification (NEUTRAL, HOSTILE, etc.)
+     * @param eventName unique identifier for this event
+     */
     public BaseItemSpawn(List<Pair<ItemStack, Double>> weightedItems, EventClassification classification, String eventName) {
         super(classification, eventName);
         this.weightedItems.addAll(weightedItems);
@@ -101,7 +177,10 @@ public abstract class BaseItemSpawn extends BaseEvent {
         }
     }
 
-    // Executes the event
+    /**
+     * Executes the item spawn event.
+     * Either starts continuous spawning or performs a one-time spawn for all players.
+     */
     @Override
     public void execute() {
         try {
@@ -146,7 +225,9 @@ public abstract class BaseItemSpawn extends BaseEvent {
         }
     }
 
-    // Terminates the event
+    /**
+     * Terminates the event by stopping any continuous spawning tasks.
+     */
     @Override
     public void terminate() {
         boolean stopped = stopContinuousTask();
@@ -162,7 +243,11 @@ public abstract class BaseItemSpawn extends BaseEvent {
         }
     }
 
-    // Starts continuous task for ongoing spawning
+    /**
+     * Starts a continuous spawning task if one is not already running.
+     *
+     * @return true if task was started, false if already running
+     */
     public boolean startContinuousTask() {
         // Check if task is already running
         if (continuousTask != null && !continuousTask.isCancelled()) {
@@ -180,7 +265,11 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return true;
     }
 
-    // Stops continuous task
+    /**
+     * Stops the current continuous spawning task if one is running.
+     *
+     * @return true if task was stopped, false if no task was running
+     */
     public boolean stopContinuousTask() {
         // Check if there's a task to stop
         if (continuousTask == null || continuousTask.isCancelled()) {
@@ -194,11 +283,21 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return true;
     }
 
-    // Called when an item is spawned (optional override for child classes)
+    /**
+     * Hook method called when an item is spawned.
+     * Can be overridden by child classes for custom behavior.
+     *
+     * @param item the spawned item entity
+     * @param player the player the item was spawned for
+     */
     protected void onItemSpawned(Item item, Player player) {
     }
 
-    // Calls spawning methods for all online players
+    /**
+     * Spawns items for all online players.
+     *
+     * @return total number of items spawned across all players
+     */
     public int spawnForAllPlayers() {
         int totalSpawned = 0;
         List<Player> players = new ArrayList<>(plugin.getServer().getOnlinePlayers());
@@ -223,7 +322,12 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return totalSpawned;
     }
 
-    // Spawns items for a specific player
+    /**
+     * Spawns items for a specific player.
+     *
+     * @param player the player to spawn items for
+     * @return list of spawned item entities
+     */
     public List<Item> spawnForPlayer(Player player) {
         if (player == null || !player.isOnline()) {
             return Collections.emptyList();
@@ -231,7 +335,12 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return useGroupSpawning ? spawnGroupForPlayer(player) : spawnSpreadForPlayer(player);
     }
 
-    // Spawns items spread around the player
+    /**
+     * Spawns items spread around a player at random locations.
+     *
+     * @param player the player to spawn items around
+     * @return list of spawned item entities
+     */
     public List<Item> spawnSpreadForPlayer(Player player) {
         List<Item> spawnedItems = new ArrayList<>();
         World world = player.getWorld();
@@ -272,7 +381,12 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return spawnedItems;
     }
 
-    // Spawns a group of items near the player
+    /**
+     * Spawns a group of items near a player at a single central location.
+     *
+     * @param player the player to spawn items around
+     * @return list of spawned item entities
+     */
     public List<Item> spawnGroupForPlayer(Player player) {
         List<Item> spawnedItems = new ArrayList<>();
         World world = player.getWorld();
@@ -345,17 +459,28 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return spawnedItems;
     }
 
-    // Marks a spawned item as marked
+    /**
+     * Marks an item entity with this event's unique identifier.
+     *
+     * @param item the item entity to mark
+     */
     public void markSpawnedItem(Item item) {
         item.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
     }
 
-    // Checks if a spawned item is marked
+    /**
+     * Checks if an item entity was marked by this event.
+     *
+     * @param item the item entity to check
+     * @return true if the item was marked by this event
+     */
     public boolean isSpawnedItemMarked(Item item) {
         return item.getPersistentDataContainer().has(key, PersistentDataType.BYTE);
     }
 
-    // Deletes all spawned marked items
+    /**
+     * Deletes all items that were marked by this event across all worlds.
+     */
     public void deleteSpawnedItems() {
         EventHorizon.entityKeysToDelete.add(key);
         Bukkit.getWorlds().forEach(world -> {
@@ -367,7 +492,12 @@ public abstract class BaseItemSpawn extends BaseEvent {
         });
     }
 
-    // Method to add multiple weighted items at once
+    /**
+     * Adds multiple weighted items to the random selection pool.
+     *
+     * @param items list of item-weight pairs to add
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn addWeightedItems(List<Pair<ItemStack, Double>> items) {
         if (items != null) {
             weightedItems.addAll(items);
@@ -375,7 +505,12 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return this;
     }
 
-    // Removes a weighted item for random item spawning
+    /**
+     * Removes a specific item type from the weighted random selection pool.
+     *
+     * @param itemToRemove the item type to remove
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn removeWeightedItem(ItemStack itemToRemove) {
         if (itemToRemove != null) {
             weightedItems.removeIf(pair -> pair.getLeft().isSimilar(itemToRemove));
@@ -383,7 +518,13 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return this;
     }
 
-    // Method to set the entire list of weighted items
+    /**
+     * Sets the complete list of weighted items for random selection.
+     * Replaces any existing weighted items.
+     *
+     * @param items list of item-weight pairs
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setWeightedItems(List<Pair<ItemStack, Double>> items) {
         // Clear existing items
         weightedItems.clear();
@@ -396,7 +537,11 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return this;
     }
 
-    // Method to get random weighted item
+    /**
+     * Selects a random item from the weighted item pool.
+     *
+     * @return randomly selected ItemStack based on weights
+     */
     protected ItemStack getRandomWeightedItem() {
         if (!useRandomItemTypes || weightedItems.isEmpty()) {
             return itemType;
@@ -419,7 +564,15 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return weightedItems.getLast().getLeft();
     }
 
-    // Gets a safe location for a spawned item
+    /**
+     * Finds a safe location to spawn an item near the given coordinates.
+     *
+     * @param player the player reference for spawn radius
+     * @param initialX starting X coordinate
+     * @param initialY starting Y coordinate
+     * @param initialZ starting Z coordinate
+     * @return safe location or null if none found
+     */
     protected Location getSafeLocation(Player player, int initialX, int initialY, int initialZ) {
         World world = player.getWorld();
         int maxTries = maxSpawnAttempts * 3;
@@ -488,7 +641,16 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return null;
     }
 
-    // Gets a safe location for a group of spawned items
+    /**
+     * Finds a safe location to spawn an item within a group.
+     *
+     * @param player the player reference
+     * @param groupCenter the center location of the group
+     * @param initialX starting X coordinate
+     * @param initialY starting Y coordinate
+     * @param initialZ starting Z coordinate
+     * @return safe location or null if none found
+     */
     protected Location getGroupSafeLocation(Player player, Location groupCenter, int initialX, int initialY, int initialZ) {
         World world = player.getWorld();
         int maxTries = maxSpawnAttempts;
@@ -554,7 +716,12 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return null;
     }
 
-    // Clearance checks
+    /**
+     * Checks if a location is safe for item spawning.
+     *
+     * @param location the location to check
+     * @return true if the location is safe for spawning
+     */
     private boolean isSafeLocation(Location location) {
         World world = location.getWorld();
         if (location.getBlockY() < world.getMinHeight() || location.getBlockY() >= world.getMaxHeight()) {
@@ -569,15 +736,33 @@ public abstract class BaseItemSpawn extends BaseEvent {
                 checkBlockClearance(location);
     }
 
+    /**
+     * Checks if a block contains a permitted liquid.
+     *
+     * @param block the block to check
+     * @return true if the block contains an allowed liquid
+     */
     private boolean isLiquidLocation(Block block) {
         Material type = block.getType();
         return (type == Material.WATER && allowWaterSpawns) || (type == Material.LAVA && allowLavaSpawns);
     }
 
+    /**
+     * Checks if a block is safe for item spawning.
+     *
+     * @param block the block to check
+     * @return true if the block is safe
+     */
     private boolean isSafeBlock(Block block) {
         return block.getType() == Material.AIR || isLiquidLocation(block);
     }
 
+    /**
+     * Checks if there is enough clearance around a location.
+     *
+     * @param location the location to check
+     * @return true if there is sufficient clearance
+     */
     private boolean checkBlockClearance(Location location) {
         World world = location.getWorld();
         int baseX = location.getBlockX();
@@ -616,99 +801,210 @@ public abstract class BaseItemSpawn extends BaseEvent {
         return true;
     }
 
-    // Gets a random offset between min and max
+    /**
+     * Generates a random offset between min and max values.
+     *
+     * @param min minimum value
+     * @param max maximum value
+     * @return random offset between -max and -min or min and max
+     */
     private int getRandomOffset(int min, int max) {
         int range = max - min;
         int offset = random.nextInt(range + 1) + min;
         return random.nextBoolean() ? offset : -offset;
     }
 
-    // Getter for last spawn count
+    /**
+     * Gets the number of items spawned in the last execution.
+     *
+     * @return the count of items spawned in the most recent spawn operation
+     */
     public int getLastSpawnCount() {
         return lastSpawnCount;
     }
 
-    // Setters for configuration
+    /**
+     * Sets the default item type to spawn when random item types are disabled.
+     *
+     * @param itemType the ItemStack to use as default spawn type
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setItemType(ItemStack itemType) {
         this.itemType = itemType;
         return this;
     }
 
+    /**
+     * Sets the number of items to spawn per player.
+     *
+     * @param count the number of items to spawn
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setItemCount(int count) {
         this.itemCount = count;
         return this;
     }
 
+    /**
+     * Sets the maximum radius from the player where items can spawn.
+     *
+     * @param radius the maximum spawn radius in blocks
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setMaxSpawnRadius(int radius) {
         this.maxSpawnRadius = radius;
         return this;
     }
 
+    /**
+     * Sets the minimum radius from the player where items can spawn.
+     *
+     * @param radius the minimum spawn radius in blocks
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setMinSpawnRadius(int radius) {
         this.minSpawnRadius = radius;
         return this;
     }
 
+    /**
+     * Sets the maximum vertical distance from the player where items can spawn.
+     *
+     * @param radius the maximum vertical spawn distance in blocks
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setMaxYRadius(int radius) {
         this.maxYRadius = radius;
         return this;
     }
 
+    /**
+     * Sets the minimum vertical distance from the player where items can spawn.
+     *
+     * @param radius the minimum vertical spawn distance in blocks
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setMinYRadius(int radius) {
         this.minYRadius = radius;
         return this;
     }
 
+    /**
+     * Sets the maximum number of attempts to find a valid spawn location.
+     *
+     * @param attempts maximum number of spawn location attempts per item
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setMaxSpawnAttempts(int attempts) {
         this.maxSpawnAttempts = attempts;
         return this;
     }
 
+    /**
+     * Sets the required horizontal clearance for item spawning.
+     *
+     * @param clearance the required horizontal clearance in blocks
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setWidthClearance(double clearance) {
         this.widthClearance = clearance;
         return this;
     }
 
+    /**
+     * Sets the required vertical clearance for item spawning.
+     *
+     * @param clearance the required vertical clearance in blocks
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setHeightClearance(double clearance) {
         this.heightClearance = clearance;
         return this;
     }
 
+    /**
+     * Sets the spacing between items when spawning in groups.
+     *
+     * @param spacing the distance between items in blocks
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setGroupSpacing(int spacing) {
         this.groupSpacing = spacing;
         return this;
     }
 
+    /**
+     * Sets the interval between continuous spawns.
+     *
+     * @param seconds the time between spawns in seconds
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setSpawnInterval(int seconds) {
         this.spawnInterval = seconds;
         return this;
     }
 
+    /**
+     * Sets whether items should only spawn on surface blocks.
+     *
+     * @param surfaceOnly true to restrict spawning to surface blocks only
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setSurfaceOnlySpawning(boolean surfaceOnly) {
         this.surfaceOnlySpawning = surfaceOnly;
         return this;
     }
 
+    /**
+     * Sets whether items can spawn in water.
+     *
+     * @param allow true to allow spawning in water
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setAllowWaterSpawns(boolean allow) {
         this.allowWaterSpawns = allow;
         return this;
     }
 
+    /**
+     * Sets whether items can spawn in lava.
+     *
+     * @param allow true to allow spawning in lava
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setAllowLavaSpawns(boolean allow) {
         this.allowLavaSpawns = allow;
         return this;
     }
 
+    /**
+     * Sets whether items should spawn in groups or spread out.
+     *
+     * @param groupSpawn true to enable group spawning
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setUseGroupSpawning(boolean groupSpawn) {
         this.useGroupSpawning = groupSpawn;
         return this;
     }
 
+    /**
+     * Sets whether items should continuously spawn at intervals.
+     *
+     * @param continuousSpawn true to enable continuous spawning
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setUseContinuousSpawning(boolean continuousSpawn) {
         this.useContinuousSpawning = continuousSpawn;
         return this;
     }
 
+    /**
+     * Sets whether to randomly select from available item types.
+     *
+     * @param useRandom true to enable random item type selection
+     * @return this instance for method chaining
+     */
     public BaseItemSpawn setRandomItemTypes(boolean useRandom) {
         this.useRandomItemTypes = useRandom;
         return this;

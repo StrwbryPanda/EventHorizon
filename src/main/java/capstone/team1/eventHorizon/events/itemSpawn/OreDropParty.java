@@ -8,9 +8,20 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 
 /**
- * Event that spawns random weighted ore drops near players
+ * A positive event that spawns random weighted ore items near players.
+ * Ore items have different spawn weights, with rarer ores having lower weights.
+ * The items are spawned within configured radius limits and following specific spawn rules.
  */
 public class OreDropParty extends BaseItemSpawn {
+    /**
+     * Constructs a new OreDropParty event with predefined spawn configurations and weighted ore items.
+     * The event is classified as POSITIVE and named "oreDropParty".
+     * Initializes spawn parameters including:
+     * - 32 items per spawn
+     * - Spawn radius between 1-20 blocks
+     * - Vertical spawn range between 1-10 blocks
+     * - Various ore items with weights from 0.5 (rarest) to 15.0 (most common)
+     */
     public OreDropParty() {
         super(EventClassification.POSITIVE, "oreDropParty");
         setItemCount(32)
@@ -44,11 +55,19 @@ public class OreDropParty extends BaseItemSpawn {
                 ));
     }
 
+    /**
+     * Executes the OreDropParty event, spawning configured ore items near players.
+     * Calls the parent class's execute method to handle the actual spawning logic.
+     */
     @Override
     public void execute() {
         super.execute();
     }
 
+    /**
+     * Terminates the OreDropParty event, cleaning up any ongoing processes.
+     * Calls the parent class's terminate method to handle the cleanup.
+     */
     @Override
     public void terminate() {
         super.terminate();
