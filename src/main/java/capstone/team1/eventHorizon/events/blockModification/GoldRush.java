@@ -6,19 +6,18 @@ import capstone.team1.eventHorizon.events.utility.fawe.BlockEditor;
 import capstone.team1.eventHorizon.events.utility.fawe.region.GenericCuboidRegion;
 import capstone.team1.eventHorizon.events.utility.fawe.region.GenericCylindricalRegion;
 import org.bukkit.Material;
-import org.bukkit.entity.Minecart;
 
-public class IceIsNice extends BaseBlockModification
+public class GoldRush extends BaseBlockModification
 {
-    public IceIsNice()
+    public GoldRush()
     {
-        super(EventClassification.NEUTRAL, "iceIsNice", new GenericCylindricalRegion(100,10,0), Material.PACKED_ICE, EventHorizon.getBlockMasks().getGroundBlocks(), false);
+        super(EventClassification.POSITIVE, "goldRush", new GenericCuboidRegion(50,400,200), Material.GOLD_ORE, EventHorizon.getBlockMasks().getUndergroundBlocks(), false);
     }
     public void execute(){
         super.execute();
     }
     @Override
     public void terminate(){
-        BlockEditor.clearActiveEditSessions();
+        super.terminate();
     }
 }
