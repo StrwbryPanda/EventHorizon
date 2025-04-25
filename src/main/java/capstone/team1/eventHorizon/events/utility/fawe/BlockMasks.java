@@ -35,6 +35,11 @@ public class BlockMasks
      * Collection of block types that are considered as air blocks.
      * These blocks are typically transparent and do not obstruct movement.
      */
+    /**
+     * Collection of block types that are considered plants.
+     * These blocks typically grow on soil.
+     */
+    private Collection<BlockType> plants;
     private final Collection<BlockType> air;
 
     /**
@@ -45,6 +50,7 @@ public class BlockMasks
         initializeGroundBlocks();
         initializeCannotBeReplaced();
         initializeUndergroundBlocks();
+        initializePlants();
         air =  new ArrayList<>();
         air.addAll(getBlocksFromTag(MaterialSetTag.AIR)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#air
 
@@ -146,6 +152,19 @@ public class BlockMasks
         undergroundBlocks = new ArrayList<>();
         undergroundBlocks.addAll(getBlocksFromTag(MaterialSetTag.BASE_STONE_OVERWORLD)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#base_stone_overworld
     }
+    /**
+     * Initializes the collection of plants.
+     * These blocks typically grow on soil.
+     */
+    public void initializePlants(){
+        plants = new ArrayList<>();
+        plants.addAll(getBlocksFromTag(MaterialSetTag.FLOWERS)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#flowers
+        plants.addAll(getBlocksFromTag(MaterialSetTag.CROPS)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#crops
+        plants.addAll(getBlocksFromTag(MaterialSetTag.SAPLINGS)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#saplings
+        plants.addAll(getBlocksFromTag(MaterialSetTag.REPLACEABLE_BY_TREES)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#replaceable_by_trees
+        plants.removeAll(getBlocksFromTag(MaterialSetTag.LEAVES)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#sand
+
+    }
 
     /**
      * Gets the collection of blocks considered as ground blocks.
@@ -184,5 +203,14 @@ public class BlockMasks
     public Collection<BlockType> getUndergroundBlocks()
     {
         return undergroundBlocks;
+    }
+    /**
+     * Gets the collection of blocks considered as plants.
+     *
+     * @return Collection of plant block types
+     */
+    public Collection<BlockType> getPlants()
+    {
+        return plants;
     }
 }

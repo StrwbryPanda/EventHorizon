@@ -5,6 +5,7 @@ import capstone.team1.eventHorizon.events.EventClassification;
 import capstone.team1.eventHorizon.events.utility.fawe.BlockEditor;
 import capstone.team1.eventHorizon.events.utility.fawe.region.GenericRegion;
 import capstone.team1.eventHorizon.utility.MsgUtility;
+import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.world.block.BlockType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -18,6 +19,7 @@ public abstract class BaseBlockModification extends BaseEvent
 {
     protected GenericRegion region;
     protected  Material replacementBlock;
+    protected  Pattern replacingPattern;
     protected  boolean isMaskInverted;
     protected Collection<BlockType> blockTypesToReplace;
 
@@ -29,9 +31,20 @@ public abstract class BaseBlockModification extends BaseEvent
         this.blockTypesToReplace = blockTypesToReplace;
         this.isMaskInverted = isMaskInverted;
     }
+    public BaseBlockModification(EventClassification classification, String eventName, GenericRegion region, Pattern pattern, Collection<BlockType> blockTypesToReplace, boolean isMaskInverted) {
+        super(classification, eventName);
+        this.region = region;
+        this.replacingPattern = pattern;
+        this.blockTypesToReplace = blockTypesToReplace;
+        this.isMaskInverted = isMaskInverted;
+    }
 
-    public void execute(){
-        applyBlockEditToAllPlayers(replacementBlock, blockTypesToReplace, isMaskInverted);
+    public void execute(boolean isUsingPattern){
+        if(!isUsingPattern) {
+            applyBlockEditToAllPlayers(replacementBlock, blockTypesToReplace, isMaskInverted);
+            return;
+        }
+        applyBlockEditToAllPlayers(replacingPattern, blockTypesToReplace, isMaskInverted);
     }
 
     public void terminate(){
@@ -45,6 +58,20 @@ public abstract class BaseBlockModification extends BaseEvent
         for (Player player : players) {
             try {
                 BlockEditor.replaceBlocksInRegion(this.region.getRegion(player), replacementBlock, blockTypesToReplace, isMaskInverted);
+                successCount++;
+            } catch (Exception e) {
+                MsgUtility.warning("Failed to apply block edit to player " + player.getName() + ": " + e.getMessage());
+            }
+        }
+        MsgUtility.log("<green>Applied block edit to " + successCount + "/" + players.size() + " players for event: " + this.eventName);
+    }
+    public void applyBlockEditToAllPlayers(Pattern replacingPattern, Collection<BlockType> blockTypesToReplace, boolean isMaskInverted) {
+        int successCount = 0;
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+
+        for (Player player : players) {
+            try {
+                BlockEditor.replaceBlocksInRegion(this.region.getRegion(player), replacingPattern, blockTypesToReplace, isMaskInverted);
                 successCount++;
             } catch (Exception e) {
                 MsgUtility.warning("Failed to apply block edit to player " + player.getName() + ": " + e.getMessage());

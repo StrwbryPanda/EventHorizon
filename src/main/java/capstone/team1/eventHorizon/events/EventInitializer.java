@@ -3,6 +3,7 @@ package capstone.team1.eventHorizon.events;
 import capstone.team1.eventHorizon.events.attributes.*;
 import capstone.team1.eventHorizon.events.blockModification.GoldRush;
 import capstone.team1.eventHorizon.events.blockModification.IceIsNice;
+import capstone.team1.eventHorizon.events.blockModification.NetherInvasion;
 import capstone.team1.eventHorizon.events.dropModification.BlockDropShuffle;
 import capstone.team1.eventHorizon.events.dropModification.DoubleOrNothing;
 import capstone.team1.eventHorizon.events.dropModification.MobDropShuffle;
@@ -96,6 +97,7 @@ public class EventInitializer {
         // Block modification events
         registeredEvents.put("iceisnice", new IceIsNice());
         registeredEvents.put("goldrush", new GoldRush());
+        registeredEvents.put("netherinvasion", new NetherInvasion());
 
         // Drop modification events
         registeredEvents.put("blockdropshuffle", new BlockDropShuffle());

@@ -14,7 +14,7 @@ public class GoldRush extends BaseBlockModification
         super(EventClassification.POSITIVE, "goldRush", new GenericCuboidRegion(50,400,200), Material.GOLD_ORE, EventHorizon.getBlockMasks().getUndergroundBlocks(), false);
     }
     public void execute(){
-        super.execute();
+        super.execute(false);
     }
     @Override
     public void terminate(){

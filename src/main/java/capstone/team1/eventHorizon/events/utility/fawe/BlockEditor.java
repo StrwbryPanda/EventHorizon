@@ -1,5 +1,6 @@
 package capstone.team1.eventHorizon.events.utility.fawe;
 
+import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.utility.MsgUtility;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -58,7 +59,7 @@ public class BlockEditor
         editSession.flushQueue();
         activeEditSessions.add(editSession);
     }
-    public static void replaceBlocksInRegion(Region region, Material blockId, Collection<BlockType> blockTypesToReplace, Collection<BlockState> replacingPattern, boolean isMaskInverted) {
+    public static void replaceBlocksInRegion(Region region, Pattern replacingPattern, Collection<BlockType> blockTypesToReplace, boolean isMaskInverted) {
 
         com.sk89q.worldedit.world.World world = region.getWorld();
         EditSession editSession = WorldEdit.getInstance()
@@ -67,22 +68,15 @@ public class BlockEditor
                 .maxBlocks(-1)
                 .build();
 
-        BlockType blockType = BukkitAdapter.asBlockType(blockId);
-        if (blockType == null) {
-            MsgUtility.warning("Block type Null");
-        }
-
-        //Pattern pattern = new TypeApplyingPattern(editSession, replacingPattern);
-        Pattern pattern = blockType.getDefaultState();
         BlockTypeMask mask = new BlockTypeMask(editSession, blockTypesToReplace);
 
-        editSession.replaceBlocks(region, isMaskInverted ? mask.inverse() : mask, pattern);
+        editSession.replaceBlocks(region, isMaskInverted ? mask.inverse() : mask, replacingPattern);
         Operations.complete(editSession.commit());
         editSession.flushQueue();
         activeEditSessions.add(editSession);
     }
 
-    /**
+     /**
      * Undoes all block modifications made through active edit sessions.
      * Clears the list of active sessions after undoing all changes.
      * If an error occurs during the undo process, it will be logged as a warning.
