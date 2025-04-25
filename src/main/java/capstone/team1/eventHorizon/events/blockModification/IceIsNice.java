@@ -11,7 +11,7 @@ public class IceIsNice extends BaseBlockModification
 {
     public IceIsNice()
     {
-        super(EventClassification.NEUTRAL, "iceIsNice", new GenericCylindricalRegion(10,3,0), Material.PACKED_ICE, EventHorizon.getBlockMasks().getGroundBlocks(), false);
+        super(EventClassification.NEUTRAL, "iceIsNice", new GenericCylindricalRegion(100,200,0), Material.PACKED_ICE, EventHorizon.getBlockMasks().getGroundBlocks(), false);
     }
     public void execute(){
         super.execute();
