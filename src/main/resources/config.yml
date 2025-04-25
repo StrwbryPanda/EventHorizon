@@ -31,6 +31,7 @@ enabled-events:
 - "ButterFingers" #inventoryAdjustment: negative
 - "FlightSchool" #inventoryAdjustment: positive
 - "SpoiledFood" #inventoryAdjustment: negative
+- "DropParty" #itemSpawn: positive
 - "Feast" #itemSpawn: positive
 - "OreDropParty" #itemSpawn: positive
 - "ChickenFlock" #mobSpawn: positive

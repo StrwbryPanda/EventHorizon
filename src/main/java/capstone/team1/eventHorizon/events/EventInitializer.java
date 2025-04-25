@@ -10,6 +10,7 @@ import capstone.team1.eventHorizon.events.gameRule.LifestealOnly;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.ButterFingers;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.FlightSchool;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.SpoiledFood;
+import capstone.team1.eventHorizon.events.itemSpawn.DropParty;
 import capstone.team1.eventHorizon.events.itemSpawn.Feast;
 import capstone.team1.eventHorizon.events.itemSpawn.OreDropParty;
 import capstone.team1.eventHorizon.events.mobSpawn.*;
@@ -111,6 +112,7 @@ public class EventInitializer {
         registeredEvents.put("spoiledfood", new SpoiledFood());
 
         // Item spawn events
+        registeredEvents.put("dropparty", new DropParty());
         registeredEvents.put("feast", new Feast());
         registeredEvents.put("oredropparty", new OreDropParty());
 
