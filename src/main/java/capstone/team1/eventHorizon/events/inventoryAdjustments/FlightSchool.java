@@ -1,5 +1,6 @@
 package capstone.team1.eventHorizon.events.inventoryAdjustments;
 
+import capstone.team1.eventHorizon.EventHorizon;
 import capstone.team1.eventHorizon.events.EventClassification;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -41,6 +42,7 @@ public class FlightSchool extends BaseInventoryAdjustment {
 
         // Set up equipment items - specifically the elytra for the chest slot
         equipmentItems.put(EquipmentSlot.CHEST, bindingElytra);
+        EventHorizon.entityKeysToDelete.add(key);
     }
 
     /**
@@ -91,5 +93,6 @@ public class FlightSchool extends BaseInventoryAdjustment {
 
         // Delete all marked items
         deleteMarkedItems();
+        deleteMarkedItemStacks();
     }
 }
