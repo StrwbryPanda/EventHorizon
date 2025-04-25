@@ -7,6 +7,7 @@ import capstone.team1.eventHorizon.events.utility.EntityAddToWorldListener;
 import capstone.team1.eventHorizon.events.utility.PlayerDropItemListener;
 import capstone.team1.eventHorizon.events.utility.PlayerInventoryListener;
 import capstone.team1.eventHorizon.events.utility.fawe.BlockMasks;
+import capstone.team1.eventHorizon.events.utility.fawe.RandomPatterns;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -42,6 +43,8 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
 
     /** Utility for handling block masks in WorldEdit operations */
     private static BlockMasks blockMasks;
+    /** Utility for generating random patterns in WorldEdit operations */
+    private static RandomPatterns randomPatterns;
 
     /** Collection of entity keys that need to be cleaned up */
     public static Collection<NamespacedKey> entityKeysToDelete = new ArrayList<>();
@@ -63,6 +66,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
     public void onEnable() {
         plugin = this;
         blockMasks = new BlockMasks();
+        randomPatterns = new RandomPatterns();
         eventInitializer  = new EventInitializer();
         eventManager = new EventManager();
         scheduler = new Scheduler();
@@ -121,5 +125,12 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
      */
     public static Scheduler getScheduler() {
         return scheduler;
+    }
+    /**
+     * Gets the random patterns utility instance.
+     * @return The active RandomPatterns instance
+     */
+    public static RandomPatterns getRandomPatterns() {
+        return randomPatterns;
     }
 }
