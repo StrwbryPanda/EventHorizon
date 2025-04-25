@@ -10,6 +10,7 @@ import capstone.team1.eventHorizon.events.effects.*;
 import capstone.team1.eventHorizon.events.gameRule.LifestealOnly;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.ButterFingers;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.FlightSchool;
+import capstone.team1.eventHorizon.events.inventoryAdjustments.InventorySwap;
 import capstone.team1.eventHorizon.events.inventoryAdjustments.SpoiledFood;
 import capstone.team1.eventHorizon.events.itemSpawn.DropParty;
 import capstone.team1.eventHorizon.events.itemSpawn.Feast;
@@ -111,6 +112,7 @@ public class EventInitializer {
         // Inventory adjustment events
         registeredEvents.put("butterfingers", new ButterFingers());
         registeredEvents.put("flightschool", new FlightSchool());
+        registeredEvents.put("inventoryswap", new InventorySwap());
         registeredEvents.put("spoiledfood", new SpoiledFood());
 
         // Item spawn events
@@ -122,6 +124,8 @@ public class EventInitializer {
         registeredEvents.put("chickenflock", new ChickenFlock());
         registeredEvents.put("cowherd", new CowHerd());
         registeredEvents.put("dropcreeper", new DropCreeper());
+        registeredEvents.put("endraid", new EndRaid());
+        registeredEvents.put("netherraid", new NetherRaid());
         registeredEvents.put("randommobspawn", new RandomMobSpawn());
         registeredEvents.put("wolfpack", new WolfPack());
         registeredEvents.put("zombiehorde", new ZombieHorde());

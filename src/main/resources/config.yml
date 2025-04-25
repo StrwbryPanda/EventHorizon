@@ -31,6 +31,7 @@ enabled-events:
 - "YoureTooSlow" #effects: negative
 - "ButterFingers" #inventoryAdjustment: negative
 - "FlightSchool" #inventoryAdjustment: positive
+- "InventorySwap" #inventoryAdjustment: neutral
 - "SpoiledFood" #inventoryAdjustment: negative
 - "DropParty" #itemSpawn: positive
 - "Feast" #itemSpawn: positive
@@ -38,6 +39,8 @@ enabled-events:
 - "ChickenFlock" #mobSpawn: positive
 - "CowHerd" #mobSpawn: positive
 - "DropCreeper" #mobSpawn: negative
+- "EndRaid" #mobSpawn: negative
+- "NetherRaid" #mobSpawn: negative
 - "RandomMobSpawn" #mobSpawn: neutral
 - "WolfPack" #mobSpawn: negative
 - "ZombieHorde" #mobSpawn: negative
