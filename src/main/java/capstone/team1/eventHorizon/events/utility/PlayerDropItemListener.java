@@ -37,7 +37,6 @@ public class PlayerDropItemListener implements Listener {
             if (itemPDC.has(key, PersistentDataType.BYTE)) {
                 // Mark the dropped item entity
                 droppedItem.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
-                EventHorizon.getPlugin().getLogger().info("Marked dropped item with key: " + key.toString());
             }
         }
     }

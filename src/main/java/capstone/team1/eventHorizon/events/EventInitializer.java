@@ -120,6 +120,8 @@ public class EventInitializer {
         registeredEvents.put("chickenflock", new ChickenFlock());
         registeredEvents.put("cowherd", new CowHerd());
         registeredEvents.put("dropcreeper", new DropCreeper());
+        registeredEvents.put("endraid", new EndRaid());
+        registeredEvents.put("netherraid", new NetherRaid());
         registeredEvents.put("randommobspawn", new RandomMobSpawn());
         registeredEvents.put("wolfpack", new WolfPack());
         registeredEvents.put("zombiehorde", new ZombieHorde());

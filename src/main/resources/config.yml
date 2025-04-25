@@ -37,6 +37,8 @@ enabled-events:
 - "ChickenFlock" #mobSpawn: positive
 - "CowHerd" #mobSpawn: positive
 - "DropCreeper" #mobSpawn: negative
+- "EndRaid" #mobSpawn: negative
+- "NetherRaid" #mobSpawn: negative
 - "RandomMobSpawn" #mobSpawn: neutral
 - "WolfPack" #mobSpawn: negative
 - "ZombieHorde" #mobSpawn: negative
