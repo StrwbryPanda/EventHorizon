@@ -4,6 +4,7 @@ import capstone.team1.eventHorizon.commands.CommandRootEventHorizon;
 import capstone.team1.eventHorizon.events.EventInitializer;
 import capstone.team1.eventHorizon.events.EventManager;
 import capstone.team1.eventHorizon.events.utility.EntityAddToWorldListener;
+import capstone.team1.eventHorizon.events.utility.PlayerDropItemListener;
 import capstone.team1.eventHorizon.events.utility.PlayerInventoryListener;
 import capstone.team1.eventHorizon.events.utility.fawe.BlockMasks;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -69,6 +70,7 @@ public final class EventHorizon extends JavaPlugin implements CommandExecutor
         // Register event listeners
         getServer().getPluginManager().registerEvents(new EntityAddToWorldListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerInventoryListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDropItemListener(), this);
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) { //
             new PlaceholderEventHorizon().register();
