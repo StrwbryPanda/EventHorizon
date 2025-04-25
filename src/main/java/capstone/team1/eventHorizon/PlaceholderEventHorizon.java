@@ -67,7 +67,7 @@ package capstone.team1.eventHorizon;
                 return formatTime(EventHorizon.getScheduler().getRemainingTime());
             }
 
-            return null;
+            return "Not started";
         }
 
         /**

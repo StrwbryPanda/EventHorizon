@@ -31,7 +31,7 @@ public class BaseGameRule<T> extends BaseEvent
     }
 
     protected void applyGameRuleToWorld(World world, GameRule<T> gameRule, T value) {
-        initialValue = world.getGameRuleValue(gameRule);
+        //initialValue = world.getGameRuleValue(gameRule);
         world.setGameRule(gameRule, value);
     }
     protected void applyGameRuleToAllWorlds(GameRule<T> gameRule, T value) {
@@ -41,7 +41,7 @@ public class BaseGameRule<T> extends BaseEvent
     }
 
     protected void restoreGameRuleToWorld(World world, GameRule<T> gameRule) {
-        world.setGameRule(gameRule, initialValue);
+        //world.setGameRule(gameRule, initialValue);
     }
 
 }
