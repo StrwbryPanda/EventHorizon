@@ -16,8 +16,8 @@ import java.util.Collection;
 public class BlockMasks
 {
     /**
-     * Collection of block types that are considered as ground blocks.
-     * These are blocks that can be replaced by other blocks.
+     * Collection of block types that are considered to be ground blocks.
+     * These are blocks that you would likely want replaced on the surface.
      */
     private Collection<BlockType> groundBlocks;
     /**
@@ -27,10 +27,15 @@ public class BlockMasks
      */
     private Collection<BlockType> cannotBeReplaced;
     /**
+     * Collection of block types that are considered underground blocks.
+     * These are blocks you would likely want to replace in a cave.
+     */
+    private Collection<BlockType> undergroundBlocks;
+    /**
      * Collection of block types that are considered as air blocks.
      * These blocks are typically transparent and do not obstruct movement.
      */
-    private Collection<BlockType> air;
+    private final Collection<BlockType> air;
 
     /**
      * Constructs a new BlockMasks instance and initializes all block collections.
@@ -39,6 +44,7 @@ public class BlockMasks
     public BlockMasks() {
         initializeGroundBlocks();
         initializeCannotBeReplaced();
+        initializeUndergroundBlocks();
         air =  new ArrayList<>();
         air.addAll(getBlocksFromTag(MaterialSetTag.AIR)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#air
 
@@ -133,6 +139,15 @@ public class BlockMasks
     }
 
     /**
+     * Initializes the collection of underground blocks.
+     * These blocks are typically found in caves.
+     */
+    public void initializeUndergroundBlocks(){
+        undergroundBlocks = new ArrayList<>();
+        undergroundBlocks.addAll(getBlocksFromTag(MaterialSetTag.BASE_STONE_OVERWORLD)); //https://minecraft.wiki/w/Block_tag_(Java_Edition)#base_stone_overworld
+    }
+
+    /**
      * Gets the collection of blocks considered as ground blocks.
      *
      * @return Collection of ground block types
@@ -160,5 +175,14 @@ public class BlockMasks
     public Collection<BlockType> getAir()
     {
         return air;
+    }
+    /**
+     * Gets the collection of blocks considered as underground blocks.
+     *
+     * @return Collection of underground block types
+     */
+    public Collection<BlockType> getUndergroundBlocks()
+    {
+        return undergroundBlocks;
     }
 }

@@ -20,6 +20,7 @@ enabled-events:
 - "LifestealOnly" #attribute: negative
 - "ZeroGravity" #attribute: neutral
 - "IceIsNice" #blockModification: neutral
+- "GoldRush" #blockModification: positive
 - "BlockDropShuffle" #dropModification: neutral
 - "DoubleOrNothing" #dropModification: negative
 - "MobDropShuffle" #dropModification: neutral

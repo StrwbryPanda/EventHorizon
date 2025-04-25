@@ -7,7 +7,10 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.function.mask.BlockTypeMask;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.function.pattern.Pattern;
+import com.sk89q.worldedit.function.pattern.RandomPattern;
+import com.sk89q.worldedit.function.pattern.TypeApplyingPattern;
 import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.world.block.BlockState;
 import com.sk89q.worldedit.world.block.BlockType;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import org.bukkit.Material;
@@ -55,6 +58,29 @@ public class BlockEditor
         editSession.flushQueue();
         activeEditSessions.add(editSession);
     }
+    public static void replaceBlocksInRegion(Region region, Material blockId, Collection<BlockType> blockTypesToReplace, Collection<BlockState> replacingPattern, boolean isMaskInverted) {
+
+        com.sk89q.worldedit.world.World world = region.getWorld();
+        EditSession editSession = WorldEdit.getInstance()
+                .newEditSessionBuilder()
+                .world(world)
+                .maxBlocks(-1)
+                .build();
+
+        BlockType blockType = BukkitAdapter.asBlockType(blockId);
+        if (blockType == null) {
+            MsgUtility.warning("Block type Null");
+        }
+
+        //Pattern pattern = new TypeApplyingPattern(editSession, replacingPattern);
+        Pattern pattern = blockType.getDefaultState();
+        BlockTypeMask mask = new BlockTypeMask(editSession, blockTypesToReplace);
+
+        editSession.replaceBlocks(region, isMaskInverted ? mask.inverse() : mask, pattern);
+        Operations.complete(editSession.commit());
+        editSession.flushQueue();
+        activeEditSessions.add(editSession);
+    }
 
     /**
      * Undoes all block modifications made through active edit sessions.
@@ -72,5 +98,12 @@ public class BlockEditor
         } catch (Exception e) {
             MsgUtility.warning("Failed to undo block modifications: " + e.getMessage());
         }
+    }
+
+    public static void clearActiveEditSessions() {
+        for (EditSession session : activeEditSessions) {
+            session.close();
+        }
+        activeEditSessions.clear();
     }
 }
