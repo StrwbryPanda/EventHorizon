@@ -11,7 +11,7 @@ For guidance on setting up a Paper server, refer to the official documentation:\
 \
 \
 <ins>Once your server is up and running:</ins>
-- Download the latest EventHorizon plugin .jar file from the GitHub repository, located in the following directory: **.idea/artifacts/EventHorizon_jar.xml**
+- Download the latest EventHorizon plugin .jar file from the releases tab on the right. 
 * Place the .jar file into your server's /plugins folder.
 + Start or restart your Minecraft server. The plugin should load automatically.
 
