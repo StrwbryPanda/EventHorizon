@@ -6,7 +6,7 @@
 
     <groupId>capstone.team1</groupId>
     <artifactId>EventHorizon</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>EventHorizon</name>
