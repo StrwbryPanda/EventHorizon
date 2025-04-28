@@ -16,12 +16,21 @@ import org.bukkit.entity.Player;
 
 import java.util.concurrent.CompletableFuture;
 
-//command that stops the tournament timer
+/**
+ * Command handler for stopping the tournament timer in the EventHorizon plugin.
+ * Provides functionality to end ongoing tournament events completely.
+ * Requires operator permissions to execute.
+ */
 public class CommandEnd
 {
 
-    //builds the command
-    //allows setting of permissions, subcommands, etc.
+    /**
+     * Builds the end command structure with permission requirements.
+     * Creates a command that can only be executed by operators.
+     *
+     * @param commandName The name of the command to be registered
+     * @return LiteralCommandNode containing the configured command structure
+     */
     public static LiteralCommandNode<CommandSourceStack> buildCommand(final String commandName) {
         return Commands.literal(commandName)
                 .requires(sender -> sender.getSender().isOp())
@@ -29,6 +38,13 @@ public class CommandEnd
                 .build();
     }
 
+    /**
+     * Executes the end command logic by attempting to stop the tournament timer.
+     * Sends feedback message to the command sender indicating success or failure.
+     *
+     * @param ctx Command context containing the sender information
+     * @return Command success status
+     */
     private static int executeCommandLogic(CommandContext<CommandSourceStack> ctx){
         CommandSender sender = ctx.getSource().getSender(); // Retrieve the command sender
 

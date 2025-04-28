@@ -18,20 +18,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Event that has a 50% chance of dropping nothing
- * and a 50% chance of dropping double the amount of items.
+ * A drop modification event that implements a double-or-nothing mechanic.
+ * When active, each block break or entity death has a 50% chance to either:
+ * - Double all drops and experience, or
+ * - Drop nothing and no experience
+ * The outcome is determined randomly but consistently for each block/entity.
  */
 public class DoubleOrNothing extends BaseDropModification {
+    /** Metadata key used to store the drop outcome for blocks */
     private static final String METADATA_KEY = "doubleOrNothing";
 
+    /**
+     * Constructs a new DoubleOrNothing event with NEGATIVE classification.
+     * Initializes the event with the name "doubleOrNothing".
+     */
     public DoubleOrNothing() {
         super(EventClassification.NEGATIVE, "doubleOrNothing");
     }
 
+    /**
+     * No setup required for this modification as it doesn't use predefined drops.
+     */
     @Override
     protected void setupDropModifications() {
     }
 
+    /**
+     * Handles block breaking events by determining and storing the drop outcome.
+     * Uses a consistent random seed based on block location and player name.
+     * Sets metadata on the block and modifies XP drops accordingly.
+     *
+     * @param event the block break event
+     */
     @EventHandler(priority = EventPriority.HIGH)
     @Override
     public void onBlockBreak(BlockBreakEvent event) {
@@ -63,6 +81,13 @@ public class DoubleOrNothing extends BaseDropModification {
         }
     }
 
+    /**
+     * Processes block drops according to the stored outcome.
+     * Either doubles all item drops or cancels them entirely.
+     *
+     * @param event the block drop item event
+     * @return true if drops were modified, false if event was ignored
+     */
     @Override
     protected boolean handleBlockDrops(BlockDropItemEvent event) {
         if (!isActive || event.getPlayer().getGameMode() == GameMode.CREATIVE || event.getItems().isEmpty()) {
@@ -99,6 +124,13 @@ public class DoubleOrNothing extends BaseDropModification {
         return true;
     }
 
+    /**
+     * Processes entity drops with a 50% chance to either double or remove drops.
+     * Affects both item drops and experience points.
+     *
+     * @param event the entity death event
+     * @return true if drops were modified, false if event was ignored
+     */
     @Override
     protected boolean handleEntityDrops(EntityDeathEvent event) {
         if (!isActive) {
@@ -145,11 +177,19 @@ public class DoubleOrNothing extends BaseDropModification {
         return true;
     }
 
+    /**
+     * Executes the double-or-nothing event by registering listeners.
+     * Delegates to parent class.
+     */
     @Override
     public void execute() {
         super.execute();
     }
 
+    /**
+     * Terminates the double-or-nothing event by unregistering listeners.
+     * Delegates to parent class.
+     */
     @Override
     public void terminate() {
         super.terminate();

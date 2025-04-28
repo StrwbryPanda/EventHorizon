@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+/** Class is WIP */
 public class LifestealOnly<Boolean> extends BaseGameRule<Boolean> implements Listener {
 
     public LifestealOnly() {
