@@ -7,7 +7,8 @@ The EventHorizon plugin is compatible with Minecraft version 1.21.4 and the corr
 *EventHorizon assumes that **ALL** worlds are participating in EventHorizon, meaning that all gamerules, entities, etc. are potentially being modified on every loaded world.*  
 
 For guidance on setting up a Paper server, refer to the official documentation:\
-👉 [Getting Started with PaperMC](https://docs.papermc.io/paper/getting-started)
+👉 [Getting Started with PaperMC](https://docs.papermc.io/paper/getting-started)  
+Alternatively: [Setting up a local Minecraft Server](https://www.setup.md/guides/self-host/win)
 \
 \
 <ins>Once your server is up and running:</ins>
