@@ -22,6 +22,23 @@ Alternatively: [Setting up a local Minecraft Server](https://www.setup.md/guides
 + Build the project using your preferred Java build tool.
 - Use the generated .jar as outlined above.
 
+
+
+## Dependencies
+- FastAsyncWorldEdit
+- PlaceholderAPI
+- Recommended: TAB
+  - Add this code to the TAB config file to use our scoreboard
+```
+scoreboards:
+    scoreboard-1.20.3+:
+      title: "<#E0B11E>EventHorizon</#FF0000>"
+      display-condition: "%player-version-id%>=765;%bedrock%=false" # Only display it to players using 1.20.3+ AND NOT bedrock edition
+      lines:
+        - "<light_purple>Remaining Time:"
+        - "<white>%eventhorizon_remainingtime_formatted%"
+```
+
 ## Help?
 - Check out the [Wiki](https://github.com/StrwbryPanda/EventHorizon/wiki) for usage instructions and event configurations.
 * For comprehensive details regarding the overall project structure and design, please refer to the [Game Design Document](https://github.com/user-attachments/files/19817534/Team.1.Design.Document.docx.pdf)
